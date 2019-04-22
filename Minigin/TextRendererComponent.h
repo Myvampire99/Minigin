@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
+#include "TextObject.h"
+
 class TextRendererComponent : public BaseComponent
 {
 public:

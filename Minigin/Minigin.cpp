@@ -1,19 +1,7 @@
 #include "MiniginPCH.h"
 #include "Minigin.h"
-#include <chrono>
-#include <thread>
-#include "InputManager.h"
-#include "SceneManager.h"
-#include "Renderer.h"
-#include "ResourceManager.h"
-#include <SDL.h>
-#include "TextObject.h"
-#include "GameObject.h"
 #include "Scene.h"
-#include <string>
 
-#include "FPSComponent.h"
-#include "TextRendererComponent.h"
 
 void dae::Minigin::Initialize()
 {
@@ -46,7 +34,8 @@ void dae::Minigin::Initialize()
 
 void dae::Minigin::LoadGame() 
 {
-	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
+	dae::Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
+	
 
 	std::shared_ptr<GameObject> go = std::make_shared<GameObject>();
 	go->SetTexture("background.jpg");
@@ -97,37 +86,37 @@ void dae::Minigin::Run()
 	LoadGame();
 
 	{
-		auto t = std::chrono::high_resolution_clock::now();
+		//local Initialize
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
-		auto& input = InputManager::GetInstance();
-
+		auto& input = Singleton<InputManager>::GetInstance();
+		bool doContinue = true;
+		auto lastTime = std::chrono::high_resolution_clock::now();
+		double  lag = 0.0f;
+		//
 
 
 		sceneManager.Initialize(); // in loop but check if new
 
-		auto lastTime = std::chrono::high_resolution_clock::now(); 
-		double  lag = 0.0f;
-		bool doContinue = true;
 		while (doContinue)
 		{
+			//Calculate deltaTime and lag
 			const auto currentTime = std::chrono::high_resolution_clock::now();
 			double  deltaTime = std::chrono::duration<double>(currentTime - lastTime).count();
 			lastTime = currentTime;
 			lag += deltaTime;
+			//
 
 			doContinue = input.ProcessInput();
+			input.HandleInput();
 
-			//while (lag >= msPerFrame) {
+			while (lag*10 >= msPerFrame) {
 				UpdateGame();//Temporary//TODO: need to make proper scenes 
-				sceneManager.Update((float)msPerFrame);//elapsed time
+				sceneManager.Update(float(msPerFrame));
 				lag -= msPerFrame;
-			//}
+			}
 
 			renderer.Render();
-
-			t += std::chrono::milliseconds(msPerFrame);
-			std::this_thread::sleep_until(t);
 		}
 	}
 

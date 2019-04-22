@@ -1,24 +1,37 @@
 #pragma once
 #include <XInput.h>
-#include "Singleton.h"
+#include <unordered_map>
+#include "Command.h"
 
-namespace dae
+enum class ControllerButton
 {
-	enum class ControllerButton
-	{
-		ButtonA,
-		ButtonB,
-		ButtonX,
-		ButtonY
-	};
+	Button_A = XINPUT_GAMEPAD_A,
+	Button_B = XINPUT_GAMEPAD_B,
+	Button_X = XINPUT_GAMEPAD_X,
+	Button_Y = XINPUT_GAMEPAD_Y,
 
-	class InputManager final : public Singleton<InputManager>
-	{
-	public:
-		bool ProcessInput();
-		bool IsPressed(ControllerButton button) const;
-	private:
-		XINPUT_STATE currentState{};
-	};
+	Keyboard_A = VK_ESCAPE
 
-}
+};
+
+
+class InputManager
+{
+public:
+	bool ProcessInput();
+	bool IsPressed(ControllerButton button) const;
+
+	InputManager();
+
+	//template<class T>
+	void AssignButton(ControllerButton button, Command *pointer);
+	void HandleInput();
+
+private:
+	std::unordered_map<ControllerButton, Command*> m_Buttons;
+	XINPUT_STATE m_States;
+	bool m_ControllerConected;
+};
+
+
+//template<class T>

@@ -1,12 +1,25 @@
 #include "MiniginPCH.h"
 #include "InputManager.h"
-#include <SDL.h>
 
-
-bool dae::InputManager::ProcessInput()
+InputManager::InputManager()
+	:m_ControllerConected{false}
 {
-	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
-	XInputGetState(0, &currentState);
+}
+
+bool InputManager::ProcessInput()
+{
+
+	//	for (DWORD i = 0; i < XUSER_MAX_COUNT; ++i)
+	//{ //For multiple controllers
+	// todo: read the input
+
+	m_ControllerConected = true;
+	ZeroMemory(&m_States, sizeof(XINPUT_STATE));
+	DWORD dwResult;
+	dwResult = XInputGetState(0, &m_States);
+	if (dwResult != ERROR_SUCCESS)
+		m_ControllerConected = false;
+
 
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -14,29 +27,39 @@ bool dae::InputManager::ProcessInput()
 			return false;
 		}
 		if (e.type == SDL_KEYDOWN) {
-			
+
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
-			
+
 		}
 	}
 
 	return true;
 }
 
-bool dae::InputManager::IsPressed(ControllerButton button) const
+bool InputManager::IsPressed(ControllerButton button) const
 {
-	switch (button)
+	if ((m_States.Gamepad.wButtons & (WORD)button) == (WORD)button)
+		return true;
+
+	if(GetKeyboardState((PBYTE)button))
+		return true;
+
+	return false;
+}
+
+void InputManager::HandleInput()
+{
+	for (auto& button : m_Buttons)
 	{
-	case ControllerButton::ButtonA:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
-	case ControllerButton::ButtonB:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_B;
-	case ControllerButton::ButtonX:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_X;
-	case ControllerButton::ButtonY:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_Y;
-	default: return false;
+		if (IsPressed(button.first))
+			button.second->Execute();
+			
 	}
 }
 
+
+void InputManager::AssignButton(ControllerButton button, Command *pointer)
+{
+	m_Buttons[button] = pointer;
+}

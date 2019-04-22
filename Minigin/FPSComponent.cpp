@@ -20,7 +20,7 @@ void FPSComponent::Update(const float elapsedTime)
 void FPSComponent::Draw()
 {
 	it++;
-	if (m_ElapsedTime > 1000) {
+	if (m_ElapsedTime > 1) {
 		m_FPS = (float)it;
 		m_ElapsedTime = 0;
 		it = 0;

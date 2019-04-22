@@ -3,7 +3,8 @@
 
 namespace dae
 {
-	class SceneObject;
+	//class SceneObject;
+	class SceneManager;
 	class Scene
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
@@ -20,8 +21,9 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-	private: 
 		explicit Scene(const std::string& name);
+	private: 
+		
 
 		std::string mName{};
 		std::vector < std::shared_ptr<SceneObject>> mObjects{};

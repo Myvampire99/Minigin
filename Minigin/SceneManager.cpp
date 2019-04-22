@@ -1,7 +1,5 @@
 #include "MiniginPCH.h"
 #include "SceneManager.h"
-#include "Scene.h"
-
 
 void dae::SceneManager::Update(const float elapsedTime)
 {
