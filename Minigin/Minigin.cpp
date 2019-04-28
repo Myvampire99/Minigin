@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "Minigin.h"
 #include "Scene.h"
+#include "TestScene.h"
 
 
 void dae::Minigin::Initialize()
@@ -34,38 +35,18 @@ void dae::Minigin::Initialize()
 
 void dae::Minigin::LoadGame() 
 {
-	dae::Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
-	
+	//dae::Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
+	Scene *scene = new TestScene();
+	SceneManager::GetInstance().AddScene(scene);
+	SceneManager::GetInstance().SetSceneActive("TestScene", true);
 
-	std::shared_ptr<GameObject> go = std::make_shared<GameObject>();
-	go->SetTexture("background.jpg");
-	//scene.Add(go);
 
-	//go = std::make_shared<GameObject>();
-	//go->SetTexture("logo.png");
-	//go->SetPosition(216, 180);
-	//scene.Add(go);
 
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	//auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
-	//scene.Add(to);
-	//to->SetPosition(80, 20);
-
-	txt = std::make_shared<GameObject>();//TEMPORARY, Need Scenes for this
-	txt->SetTexture("");
-	txt->SetPosition(20, 20);
-	txt->AddComponent(new FPSComponent);
-	
-	txt->AddComponent(new TextRendererComponent("BRRRR", font));
-	scene.Add(txt);
-	//scene.Add(to);
 }
 
 void dae::Minigin::UpdateGame()//TEMPORARY, Need Scenes for this
 {
-	std::string temp;
-	temp = std::to_string(txt->GetComponent<FPSComponent>()->GetFps());
-	txt->GetComponent<TextRendererComponent>()->SetText(temp);
+	
 }
 
 void dae::Minigin::Cleanup()

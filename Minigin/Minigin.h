@@ -15,8 +15,6 @@ namespace dae
 		void Run();
 		void UpdateGame();//TEMPORARY, Need Scenes for this
 
-		//GameObject* txt;//TEMPORARY, Need Scenes for this
-		std::shared_ptr<GameObject> txt;
 
 
 		void TestFunction(bool &Continue);
