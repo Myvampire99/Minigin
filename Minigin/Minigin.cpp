@@ -25,6 +25,10 @@ void dae::Minigin::Initialize()
 	}
 
 	Renderer::GetInstance().Init(window);
+
+
+
+
 }
 
 /**
@@ -35,18 +39,9 @@ void dae::Minigin::Initialize()
 
 void dae::Minigin::LoadGame() 
 {
-	//dae::Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
 	Scene *scene = new TestScene();
 	SceneManager::GetInstance().AddScene(scene);
 	SceneManager::GetInstance().SetSceneActive("TestScene", true);
-
-
-
-}
-
-void dae::Minigin::UpdateGame()//TEMPORARY, Need Scenes for this
-{
-	
 }
 
 void dae::Minigin::Cleanup()
@@ -92,12 +87,16 @@ void dae::Minigin::Run()
 			input.HandleInput();
 
 			while (lag*10 >= msPerFrame) {
-				UpdateGame();//Temporary//TODO: need to make proper scenes 
+				//
+				
+				//
 				sceneManager.Update(float(msPerFrame));
 				lag -= msPerFrame;
 			}
 
+			
 			renderer.Render();
+		
 		}
 	}
 

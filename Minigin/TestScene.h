@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Font.h"
 #include "GameObject.h"
+#include "Sprite.h"
 
 class GameObject;
 class TestScene :public dae::Scene

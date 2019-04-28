@@ -16,3 +16,17 @@ dae::Texture2D::Texture2D(SDL_Texture* texture)
 {
 	mTexture = texture;
 }
+
+float dae::Texture2D::GetWidth() const
+{
+	int w, h;
+	SDL_QueryTexture(mTexture, nullptr, nullptr, &w, &h);
+	return float(w);
+}
+
+float dae::Texture2D::GetHeight() const
+{
+	int w, h;
+	SDL_QueryTexture(mTexture, nullptr, nullptr, &w, &h);
+	return float(h);
+}

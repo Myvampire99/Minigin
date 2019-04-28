@@ -1,6 +1,7 @@
 #pragma once
 #include "Font.h"
 #include "GameObject.h"
+#include "Sprite.h"
 struct SDL_Window;
 namespace dae
 {
@@ -13,9 +14,8 @@ namespace dae
 		void LoadGame() ;//const
 		void Cleanup();
 		void Run();
-		void UpdateGame();//TEMPORARY, Need Scenes for this
 
-
+		
 
 		void TestFunction(bool &Continue);
 	};

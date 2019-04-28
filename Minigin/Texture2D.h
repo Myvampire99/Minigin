@@ -10,6 +10,9 @@ namespace dae
 		explicit Texture2D(SDL_Texture* texture);
 		~Texture2D();
 
+		float GetWidth() const;
+		float GetHeight() const;
+
 		Texture2D(const Texture2D &) = delete;
 		Texture2D(Texture2D &&) = delete;
 		Texture2D & operator= (const Texture2D &) = delete;

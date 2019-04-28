@@ -42,10 +42,10 @@ void dae::GameObject::Initialize()
 
 void dae::GameObject::SetTexture(const std::string& filename)
 {
-	//NEED TO CHANGE THIS!!!
+	//TODO: NEED TO CHANGE THIS!!!
 	mTexture = nullptr;
 	if(filename != "")
-	mTexture = ResourceManager::GetInstance().LoadTexture(filename);
+		mTexture = ResourceManager::GetInstance().LoadTexture(filename);
 
 }
 
