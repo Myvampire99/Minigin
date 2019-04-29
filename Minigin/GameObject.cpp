@@ -9,6 +9,7 @@ void dae::GameObject::AddComponent(BaseComponent * cmp)
 	//logger for all errors!
 	//Check if not attached to something else already
 	if (cmp) {
+		cmp->m_GameObject = this;
 		m_pComponents.push_back(cmp);
 	}
 }
@@ -52,4 +53,11 @@ void dae::GameObject::SetTexture(const std::string& filename)
 void dae::GameObject::SetPosition(float x, float y)
 {
 	mTransform.SetPosition(x, y, 0.0f);
+}
+
+dae::Vector2 dae::GameObject::GetPos() const
+{
+
+	return { mTransform.GetPosition().x,mTransform.GetPosition().y };
+	
 }

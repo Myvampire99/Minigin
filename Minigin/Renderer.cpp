@@ -12,9 +12,7 @@ void dae::Renderer::Init(SDL_Window * window)
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
 
-	//
-	m_TestSprite = new Sprite{ "Resources/Sprites/character.png",2,8,16,1 };
-	//
+	
 
 }
 
@@ -23,10 +21,6 @@ void dae::Renderer::Render()
 	SDL_RenderClear(mRenderer);
 
 	SceneManager::GetInstance().Render();
-	//
-	m_TestSprite->Update(float(1));
-	m_TestSprite->Draw({ 10,10 }, 0);
-	//
 	
 	SDL_RenderPresent(mRenderer);
 }

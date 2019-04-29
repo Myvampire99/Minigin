@@ -22,6 +22,8 @@ void TestScene::SceneInitialize()
 
 	go = std::make_shared<dae::GameObject>();
 	//go->SetTexture("background.jpg");
+	go->SetPosition(20, 20);
+	go->AddComponent(new dae::SpriteComponent(0,new dae::Sprite{"Resources/Sprites/character.png",2,8,16,1}));
 	Add(go);
 
 	txt = std::make_shared<dae::GameObject>();

@@ -1,16 +1,21 @@
 #pragma once
-#pragma warning(push)
-#pragma warning (disable:4201)
-#include <glm/vec3.hpp>
-#pragma warning(pop)
+//#pragma warning(push)
+//#pragma warning (disable:4201)
+//#include <glm/vec3.hpp>
+//#pragma warning(pop)
 
 namespace dae
 {
 	class Transform final
 	{
-		glm::vec3 mPosition;
+		
+		dae::Vector3 mPosition;
+
 	public:
-		const glm::vec3& GetPosition() const { return mPosition; }
+		Transform();
+
+		dae::Vector2 GetPosition2D() const { return { mPosition.x,mPosition.y }; }
+		dae::Vector3 GetPosition() const;
 		void SetPosition(float x, float y, float z);
 	};
 }

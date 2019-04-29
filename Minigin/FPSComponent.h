@@ -5,7 +5,6 @@ class FPSComponent : public BaseComponent
 public:
 	FPSComponent();
 	~FPSComponent() = default;
-	//rule of 5
 
 	float GetFps();
 protected:

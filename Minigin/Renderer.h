@@ -1,6 +1,5 @@
 #pragma once
 #include "Singleton.h"
-#include "Sprite.h"//============================================
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -22,12 +21,6 @@ namespace dae
 		void RenderTexture(const Texture2D& texture, const dae::Vector2& DestPos, const dae::Vector2& SrcPos, const dae::Vector2& DestWH, const dae::Vector2& SrcWH) const;
 		
 		SDL_Renderer* GetSDLRenderer() const { return mRenderer; }
-
-
-		//
-		dae::Sprite* m_TestSprite;
-		//
-
 
 	};
 }

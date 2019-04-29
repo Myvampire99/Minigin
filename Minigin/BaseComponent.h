@@ -9,7 +9,7 @@ public:
 
 
 //protected: ??
-	GameObject *m_GameObject;
+	dae::GameObject *m_GameObject;
 	virtual void Update(float elapsedTime) = 0;
 	virtual void Draw() = 0;
 	virtual void Initialize() = 0;
