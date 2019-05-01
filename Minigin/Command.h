@@ -1,6 +1,7 @@
 #pragma once
 #include "MiniginPCH.h"
 #include "Minigin.h"
+#include "BaseCharacterComponent.h"
 
 class Command
 {
@@ -14,9 +15,11 @@ public:
 //TODO: Remove
 //Dummy Classes
 //====
-class FireCommand : public Command
+class MoveX : public Command
 {
 public:
+	//MoveX(BaseCharacterComponent)
+
 	void Execute() override { std::cout << "FIRE" << std::endl; }
 };
 
@@ -37,11 +40,19 @@ public:
 	}
 };
 
-class DuckCommand : public Command
+class GoRight : public Command
 {
 public:
+	GoRight(BaseCharacterComponent *p)
+		:cp{p}
+	{
+		
+	}
+
+	BaseCharacterComponent *cp;
+
 	void Execute() override {
-		std::cout << "DUCK" << std::endl;
+		cp->Xforward(0.01f, 1);
 	}
 };
 

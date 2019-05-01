@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneObject.h"
 #include "Transform.h"
+#include "Scene.h"
 
 class BaseComponent;
 
@@ -12,6 +13,7 @@ namespace dae
 		void Update(const float elapsedTime) override;
 		void Render() const override;
 		void Initialize() override;
+
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
@@ -34,9 +36,6 @@ namespace dae
 
 		std::vector<BaseComponent*> m_pComponents;
 		//TODO: + Children 
-
-
-
 
 
 	public:

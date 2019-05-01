@@ -1,4 +1,6 @@
 #pragma once
+//#include "Scene.h"
+
 namespace dae
 {
 	class SceneObject
@@ -14,5 +16,6 @@ namespace dae
 		SceneObject(SceneObject&& other) = delete;
 		SceneObject& operator=(const SceneObject& other) = delete;
 		SceneObject& operator=(SceneObject&& other) = delete;
+
 	};
 }
