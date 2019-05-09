@@ -1,7 +1,8 @@
 #pragma once
-#include <XInput.h>
-#include <unordered_map>
-#include "Command.h"
+//#include <XInput.h>
+//#include <unordered_map>
+/*
+#include "Command.h"*/
 
 enum class ControllerButton
 {
@@ -14,7 +15,7 @@ enum class ControllerButton
 
 };
 
-
+class Command;
 class InputManager
 {
 public:

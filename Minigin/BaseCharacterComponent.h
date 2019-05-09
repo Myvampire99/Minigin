@@ -17,8 +17,10 @@ public:
 
 
 //private:
-	void Xforward(const float elapsedTime, int direction);
-	void Yforward(const float elapsedTime, int direction);
+	void Xforward( int direction);
+	void Yforward( int direction);
+protected:
+	virtual void LocalUpdate(const float elapsedTime);
 private:
 
 	float m_Speed;

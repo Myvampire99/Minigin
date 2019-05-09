@@ -29,20 +29,23 @@ void TestScene::SceneInitialize()
 	go = std::make_shared<dae::GameObject>();
 	//go->SetTexture("background.jpg");
 	go->SetPosition(20, 20);
-	go->AddComponent(new dae::SpriteComponent(0,new dae::Sprite{"Resources/Sprites/character.png",2,8,16,1}));
+	//go->AddComponent(new dae::SpriteComponent(0,new dae::Sprite{"Resources/Sprites/character.png",2,8,16,1}));
 
 	auto inputcomponent = new InputComponent;
 	inputcomponent->AssignButton(left,ControllerButton::Button_X);
-	inputcomponent->AssignButton(right, ControllerButton::Button_Y);
-	inputcomponent->AssignButton(up, ControllerButton::Button_B);
+	inputcomponent->AssignButton(right, ControllerButton::Button_B);
+	inputcomponent->AssignButton(up, ControllerButton::Button_Y);
 	inputcomponent->AssignButton(down, ControllerButton::Button_A);
 	go->AddComponent(inputcomponent);
 
-	auto controller = new BaseCharacterComponent;
+	auto levelcomp = new GridLevel(8, 8, 50, { 50,50 });
+	auto level = std::make_shared<dae::GameObject>();
+	auto controller = new DiggerCharacterComponent(levelcomp);//new BaseCharacterComponent;
 	controller->AssignButton(left, right, up, down);
 	go->AddComponent(controller);
 
-	Add(go);
+	//Add(go);
+
 
 	txt = std::make_shared<dae::GameObject>();
 	txt->SetPosition(20, 20);
@@ -51,5 +54,29 @@ void TestScene::SceneInitialize()
 	Add(txt);
 
 	
+	level->AddComponent(levelcomp);
+
+	LevelObject *test = new LevelObject("Resources/Textures/block.jpg");
+	test->SetSize(50.f);
+	level->GetComponent<GridLevel>()->FillLevel(test);
+
+	LevelObject *test2 = new RockBlock("Resources/Textures/rock.jpg", levelcomp);
+	test2->SetSize(50.f);
+	level->GetComponent<GridLevel>()->ChangeBlock(test2,17);
+
+	Add(level);
+
+	
+	auto snap = std::make_shared<dae::GameObject>();
+	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(snap);
+
+	snap->SetTexture("Resources/Textures/point.jpg");
+	snap->SetPosition(380, 120);
+	snap->AddComponent(new GridComponent(level->GetComponent<GridLevel>()));
+	snap->AddComponent(inputcomponent);
+	snap->AddComponent(controller);
+	Add(snap);
+	
+
 
 }

@@ -1,5 +1,5 @@
 #pragma once
-class GameObject;
+
 class BaseComponent
 {
 public:

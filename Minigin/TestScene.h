@@ -1,10 +1,10 @@
 #pragma once
-#include "Scene.h"
-#include "Font.h"
-#include "GameObject.h"
-#include "Sprite.h"
+//#include "Scene.h"
+//#include "Font.h"
+//#include "GameObject.h"
+//#include "Sprite.h"
 
-class GameObject;
+//class GameObject;
 class TestScene :public dae::Scene
 {
 public:

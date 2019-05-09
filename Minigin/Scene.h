@@ -3,7 +3,7 @@
 
 namespace dae
 {
-	//class SceneObject;
+	class SceneObject;
 	class SceneManager;
 	class Scene
 	{

@@ -9,13 +9,13 @@ namespace dae
 	class Transform final
 	{
 		
-		dae::Vector3 mPosition;
+		Vector3 mPosition;
 
 	public:
 		Transform();
 
-		dae::Vector2 GetPosition2D() const { return { mPosition.x,mPosition.y }; }
-		dae::Vector3 GetPosition() const;
+		Vector2 GetPosition2D() const { return { mPosition.x,mPosition.y }; }
+		Vector3 GetPosition() const;
 		void SetPosition(float x, float y, float z);
 	};
 }

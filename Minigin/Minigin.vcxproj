@@ -194,19 +194,28 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="BaseCharacterComponent.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="Command.h" />
+    <ClInclude Include="DigDugLevel.h" />
+    <ClInclude Include="DiggerCharacterComponent.h" />
+    <ClInclude Include="EmptyBlock.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GridComponent.h" />
+    <ClInclude Include="GridLevel.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="LevelObject.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
+    <ClInclude Include="PookaCharacterComponent.h" />
+    <ClInclude Include="RockBlock.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteComponent.h" />
@@ -220,11 +229,17 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
   <ItemGroup>
     <ClCompile Include="BaseCharacterComponent.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="DigDugLevel.cpp" />
+    <ClCompile Include="DiggerCharacterComponent.cpp" />
+    <ClCompile Include="EmptyBlock.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GridComponent.cpp" />
+    <ClCompile Include="GridLevel.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="LevelObject.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
@@ -235,10 +250,13 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="PookaCharacterComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="RockBlock.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ServiceLocator.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="TestScene.cpp" />

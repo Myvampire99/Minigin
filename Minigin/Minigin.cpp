@@ -82,17 +82,18 @@ void dae::Minigin::Run()
 			lastTime = currentTime;
 			lag += deltaTime;
 			//
+			dae::Singleton<ServiceLocator>::GetInstance().SetElapsedTime(float(deltaTime));
 
 			doContinue = input.ProcessInput();
 			input.HandleInput();
 
-			while (lag*10 >= msPerFrame) {
+			//while (lag*10 >= msPerFrame) {
 				//
 				
 				//
-				sceneManager.Update(float(msPerFrame));
+				sceneManager.Update(float(deltaTime));
 				lag -= msPerFrame;
-			}
+			//}
 
 			
 			renderer.Render();

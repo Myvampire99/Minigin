@@ -1,11 +1,10 @@
 #pragma once
 #include "SceneObject.h"
-#include "Transform.h"
 
 namespace dae
 {
-	class Font;
-	class Texture2D;
+	//class Font;
+	//class Texture2D;
 
 	class TextObject : public SceneObject
 	{

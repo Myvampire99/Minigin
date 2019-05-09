@@ -1,12 +1,13 @@
 #pragma once
 #include "SceneObject.h"
-#include "Transform.h"
-#include "Scene.h"
 
-class BaseComponent;
+//#include "Transform.h"
+//class BaseComponent;
+	class BaseComponent;
 
 namespace dae
 {
+
 	class GameObject final : public SceneObject
 	{
 	public:
@@ -42,11 +43,18 @@ namespace dae
 		template <class T>
 		T* GetComponent()//search in children ?
 		{
-			const type_info& ti = typeid(T);
+
+			//const type_info& ti = typeid(T); 
 			for (auto* comp : m_pComponents) {
-				if (typeid(*comp) == ti) { // does it really need to check for nullptr ??
-					return static_cast<T*>(comp);
+
+				
+				if (dynamic_cast<T*>(comp) != nullptr) {
+						return static_cast<T*>(comp);
 				}
+
+				//if (typeid(*comp) == ti) { // does it really need to check for nullptr ??
+				//	return static_cast<T*>(comp);
+				//}
 			}
 			return nullptr;
 		}
