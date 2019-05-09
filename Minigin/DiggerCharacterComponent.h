@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseCharacterComponent.h"
+
 class DiggerCharacterComponent : public BaseCharacterComponent
 {
 public:
@@ -8,6 +9,7 @@ public:
 
 	void Fire();
 	void LocalUpdate(float elapsedTime) override;
+	void Draw() override;
 private:
 	GridLevel* m_Level;
 	int m_LastID;
@@ -18,8 +20,11 @@ private:
 	};
 	FireStates m_FireState;
 	float m_ThrowingSpeed,m_CurrentElapsedThrow;
-	dae::Vector2 m_CurrentThrowPos;
+	dae::Transform m_CurrentThrowPos;
 	float m_DistanceThrow;
 
+	std::shared_ptr<dae::Texture2D> m_Sling;
+	int fire;//TODO: change this hardcoded thing
+	void localIni() override;
 };
 

@@ -10,7 +10,7 @@ enum class ControllerButton
 	Button_B = XINPUT_GAMEPAD_B,
 	Button_X = XINPUT_GAMEPAD_X,
 	Button_Y = XINPUT_GAMEPAD_Y,
-
+	Button_DU = XINPUT_GAMEPAD_DPAD_UP,
 	Keyboard_A = VK_ESCAPE
 
 };

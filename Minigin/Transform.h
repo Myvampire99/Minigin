@@ -10,6 +10,7 @@ namespace dae
 	{
 		
 		Vector3 mPosition;
+		float mAngle;
 
 	public:
 		Transform();
@@ -17,5 +18,10 @@ namespace dae
 		Vector2 GetPosition2D() const { return { mPosition.x,mPosition.y }; }
 		Vector3 GetPosition() const;
 		void SetPosition(float x, float y, float z);
+		void SetPosition(float x, float y);
+		void SetPosition(const dae::Vector2 &pos);
+		void Translate(const dae::Vector2 &forward);//TODO: Z?
+		void SetAngle(float angle);
+		float GetAngle() const;
 	};
 }

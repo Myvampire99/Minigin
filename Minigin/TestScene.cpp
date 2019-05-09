@@ -36,6 +36,7 @@ void TestScene::SceneInitialize()
 	inputcomponent->AssignButton(right, ControllerButton::Button_B);
 	inputcomponent->AssignButton(up, ControllerButton::Button_Y);
 	inputcomponent->AssignButton(down, ControllerButton::Button_A);
+	inputcomponent->AssignButton(4, ControllerButton::Button_DU);
 	go->AddComponent(inputcomponent);
 
 	auto levelcomp = new GridLevel(8, 8, 50, { 50,50 });
@@ -43,6 +44,7 @@ void TestScene::SceneInitialize()
 	auto controller = new DiggerCharacterComponent(levelcomp);//new BaseCharacterComponent;
 	controller->AssignButton(left, right, up, down);
 	go->AddComponent(controller);
+
 
 	//Add(go);
 
@@ -75,6 +77,9 @@ void TestScene::SceneInitialize()
 	snap->AddComponent(new GridComponent(level->GetComponent<GridLevel>()));
 	snap->AddComponent(inputcomponent);
 	snap->AddComponent(controller);
+
+	snap->GetTransform()->SetAngle(-90.f);
+
 	Add(snap);
 	
 

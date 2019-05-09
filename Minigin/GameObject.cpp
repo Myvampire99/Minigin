@@ -3,6 +3,10 @@
 
 dae::GameObject::~GameObject() = default;
 
+dae::GameObject::GameObject() {
+	mTransform = new dae::Transform();
+}
+
 void dae::GameObject::AddComponent(BaseComponent * cmp)
 {
 	//TODO:
@@ -24,21 +28,26 @@ void dae::GameObject::Update(const float elapsedTime){
 
 void dae::GameObject::Render() const
 {
-	const auto pos = mTransform.GetPosition();
+	const auto pos = mTransform->GetPosition();
 
 	for (auto comp : m_pComponents) {
 		comp->Draw();
 	}
 
 	if(mTexture != nullptr)
-		Renderer::GetInstance().RenderTexture(*mTexture, pos.x, pos.y);
+		Renderer::GetInstance().RenderTexture(*mTexture, pos.x, pos.y, mTransform->GetAngle());
 }
 
 void dae::GameObject::Initialize()
 {
+
 	for (auto comp : m_pComponents) {
 		comp->Initialize();
 	}
+}
+
+dae::Transform* dae::GameObject::GetTransform() {
+	return mTransform;
 }
 
 void dae::GameObject::SetTexture(const std::string& filename)
@@ -52,12 +61,13 @@ void dae::GameObject::SetTexture(const std::string& filename)
 
 void dae::GameObject::SetPosition(float x, float y)
 {
-	mTransform.SetPosition(x, y, 0.0f);
+	mTransform->SetPosition(x, y, 0.0f);
 }
 
 dae::Vector2 dae::GameObject::GetPos() const
 {
 
-	return { mTransform.GetPosition().x,mTransform.GetPosition().y };
+	return { mTransform->GetPosition().x,mTransform->GetPosition().y };
 	
 }
+

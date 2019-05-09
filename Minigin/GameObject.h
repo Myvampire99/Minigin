@@ -11,6 +11,8 @@ namespace dae
 	class GameObject final : public SceneObject
 	{
 	public:
+
+
 		void Update(const float elapsedTime) override;
 		void Render() const override;
 		void Initialize() override;
@@ -21,7 +23,7 @@ namespace dae
 
 		dae::Vector2 GetPos() const;
 
-		GameObject() = default;
+		GameObject();// = default;
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -30,9 +32,10 @@ namespace dae
 
 		
 		void AddComponent(BaseComponent *cmp);
+		dae::Transform* GetTransform();
 
 	private:
-		Transform mTransform;
+		dae::Transform *mTransform;
 		std::shared_ptr<Texture2D> mTexture;
 
 		std::vector<BaseComponent*> m_pComponents;

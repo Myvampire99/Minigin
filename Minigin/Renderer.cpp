@@ -43,6 +43,23 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+
+void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y,float angle) const
+{
+	SDL_Rect dst;
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(y);
+	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
+
+	//Done automaticly if nullptr
+	//SDL_Point center;
+	//center.x = dst.x + dst.w / 2.f;
+	//center.x = dst.y + dst.h / 2.f;
+
+	//SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, double(angle), nullptr, SDL_FLIP_NONE);
+}
+
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
 {
 	SDL_Rect dst;
@@ -68,5 +85,32 @@ void dae::Renderer::RenderTexture(const Texture2D& texture,const dae::Vector2& D
 	src.h = static_cast<int>(SrcWH.y);
 
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
+	//SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst, double(angle), nullptr, SDL_FLIP_NONE);
+}
+
+void dae::Renderer::RenderTexture(const Texture2D& texture, const dae::Vector2& DestPos, const dae::Vector2& SrcPos, const dae::Vector2& DestWH, const dae::Vector2& SrcWH, float angle, const dae::Vector2& center) const
+{
+	SDL_Rect dst;
+	dst.x = static_cast<int>(DestPos.x);
+	dst.y = static_cast<int>(DestPos.y);
+	dst.w = static_cast<int>(DestWH.x);
+	dst.h = static_cast<int>(DestWH.y);
+
+	SDL_Rect src;
+	src.x = static_cast<int>(SrcPos.x);
+	src.y = static_cast<int>(SrcPos.y);
+	src.w = static_cast<int>(SrcWH.x);
+	src.h = static_cast<int>(SrcWH.y);
+
+	SDL_Point point;
+	point.x = 0;//(int)center.x;
+	point.y = 0;//(int)center.y;
+
+	UNREFERENCED_PARAMETER(point);
+	UNREFERENCED_PARAMETER(angle);
+	UNREFERENCED_PARAMETER(center);
+
+	//SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst, double(angle), &point, SDL_FLIP_NONE);
 }
 

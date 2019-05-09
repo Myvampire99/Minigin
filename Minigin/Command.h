@@ -106,4 +106,12 @@ public:
 		dae::Singleton<ServiceLocator>::GetInstance().GetPlayersObject(0)->GetComponent<BaseCharacterComponent>()->Xforward(1);
 	}
 };
+
+class PlayerFire : public Command
+{
+public:
+	virtual void Execute() override {//TODO: multiple players
+		dynamic_cast<DiggerCharacterComponent*>(dae::Singleton<ServiceLocator>::GetInstance().GetPlayersObject(0)->GetComponent<BaseCharacterComponent>())->Fire();
+	}
+};
 //======
