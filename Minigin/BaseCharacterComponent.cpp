@@ -6,6 +6,7 @@ BaseCharacterComponent::BaseCharacterComponent()
 	:m_Speed{100}
 	, ForceStop{false}
 	, m_DirectionState{}
+	, DirectionWithoutIdle{}
 {}
 
 
@@ -15,7 +16,7 @@ BaseCharacterComponent::~BaseCharacterComponent()
 
 void BaseCharacterComponent::Update(const float elapsedTime)
 {
-	m_DirectionState = Direction::Idle;
+	
 
 	UNREFERENCED_PARAMETER(elapsedTime);
 	//TODO: Maybe if no InputComponent, do other things
@@ -28,7 +29,7 @@ void BaseCharacterComponent::Update(const float elapsedTime)
 	}
 	LocalUpdate(elapsedTime);
 
-	
+	m_DirectionState = Direction::Idle;
 
 }
 
@@ -104,10 +105,13 @@ void BaseCharacterComponent::localIni() {
 
 std::pair<bool, bool> BaseCharacterComponent::GetFlipVertnFlipHor() {
 
-	if (m_DirectionState == Direction::Left || m_DirectionState == Direction::Down)
-		if (m_DirectionState == Direction::Left)
+	if(m_DirectionState != Idle)
+		DirectionWithoutIdle = m_DirectionState;
+
+	if (DirectionWithoutIdle == Direction::Left || DirectionWithoutIdle == Direction::Down)
+		if (DirectionWithoutIdle == Direction::Left)
 			return std::make_pair<bool, bool>(false, true);
-		else if(m_DirectionState == Direction::Down)
+		else if(DirectionWithoutIdle == Direction::Down)
 			return std::make_pair<bool, bool>(true, false);
 
 		return std::make_pair<bool, bool>(false, false);

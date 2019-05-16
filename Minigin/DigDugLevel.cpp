@@ -15,12 +15,15 @@ DigDugLevel::~DigDugLevel()
 void DigDugLevel::SceneUpdate() {
 	std::pair<bool, bool> VH = m_Player->GetComponent<BaseCharacterComponent>()->GetFlipVertnFlipHor();
 	m_Player->GetComponent<dae::SpriteComponent>()->FlipSprite(VH.second || VH.first, false);//TODO: this prob isnt the best way to do it
-
-	if (m_Player->GetComponent<BaseCharacterComponent>()->GetDirection() == BaseCharacterComponent::Direction::Idle)
-		m_Player->GetComponent<dae::SpriteComponent>()->SetPause(true);
-	else 
-		m_Player->GetComponent<dae::SpriteComponent>()->SetPause(false);
 	
+	m_Player->GetComponent<dae::SpriteComponent>()->SetPause(m_Player->GetComponent<BaseCharacterComponent>()->GetDirection() == BaseCharacterComponent::Direction::Idle);
+
+
+	if (m_PlayerCharacter->IsDigging())
+		m_Player->GetComponent<dae::SpriteComponent>()->SetCurrentSprite(1);
+	else
+		m_Player->GetComponent<dae::SpriteComponent>()->SetCurrentSprite(0);
+
 }
 
 void DigDugLevel::SceneInitialize() {
@@ -62,6 +65,7 @@ void DigDugLevel::SceneInitialize() {
 	//Character Component
 	m_PlayerCharacter = new DiggerCharacterComponent(m_GridLevel);
 	m_PlayerCharacter->AssignButton(left, right, up, down);//TODO: Pls make this better
+	m_PlayerCharacter->SetWidth(25); //TODO: Hardcoded
 	//
 
 	//Player
@@ -76,5 +80,9 @@ void DigDugLevel::SceneInitialize() {
 
 	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player);
 	Add(m_Player);
+	//
+
+	//Extra Sprite
+	m_Player->GetComponent<dae::SpriteComponent>()->AddSprite(1, new dae::Sprite("Resources/Sprites/DiggingB.png", 1, 2, 2, 3));
 	//
 }

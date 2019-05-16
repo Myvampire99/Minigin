@@ -10,6 +10,8 @@ DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)
 	,m_CurrentThrowPos{}
 	, m_DistanceThrow{150}
 	, fire{4}
+	, m_IsDigging{false}
+	, m_WidthSprite{}
 {
 	m_Sling = dae::ResourceManager::GetInstance().LoadTexture("Resources/Textures/sling.png");
 	
@@ -18,6 +20,10 @@ DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)
 
 DiggerCharacterComponent::~DiggerCharacterComponent()
 {
+}
+
+void DiggerCharacterComponent::SetWidth(float width) {
+	m_WidthSprite = width;
 }
 
 void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
@@ -69,11 +75,42 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 		//break;
 	}
 	//
+	m_IsDigging = false;
 
+	
 
+	if (m_WidthSprite != 0) {
+		switch (m_DirectionState) {
+		case Left:
+		
+			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y }),GridLevel::Dir::Left)))
+				m_IsDigging = true;
+			break;
+		case Right:
+			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x + m_WidthSprite,m_GameObject->GetPos().y }), GridLevel::Dir::Right)))
+			
+				m_IsDigging = true;
+			break;
+		case Down:
+			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y - m_WidthSprite }), GridLevel::Dir::Down)))//TODO: wtf up and down are switched
+				m_IsDigging = true;
+			break;
+		case Up:
+			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y + m_WidthSprite }), GridLevel::Dir::Up)))//TODO: wtf up and down are switched
+				m_IsDigging = true;
+			break;
+		default:;
+		}
+	}
+	
 
 
 }
+
+bool DiggerCharacterComponent::IsDigging() {
+	return m_IsDigging;
+}
+
 
 //TODO: Draw in the base
 void DiggerCharacterComponent::Draw() {

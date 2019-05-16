@@ -27,11 +27,12 @@ public:
 	};
 
 	Direction GetDirection();
-
+	
 //private:
 	void Xforward( int direction);
 	void Yforward( int direction);
 protected:
+	Direction DirectionWithoutIdle;
 
 	Direction m_DirectionState;
 	virtual void LocalUpdate(const float elapsedTime);

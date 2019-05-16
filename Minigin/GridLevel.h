@@ -10,6 +10,8 @@ public:
 	void Draw() override;
 	void Initialize() override;
 
+
+
 private:
 	int m_Width;
 	int m_Height;
@@ -34,9 +36,18 @@ public:
 
 	dae::Vector2 GetClosestPosOnLine(const dae::Vector2 &currentPos);
 
+	enum Dir {
+		Center = 0,
+		Left,
+		Right,
+		Up,
+		Down
+	};
+
 	dae::Vector2 GetPosFromID(int ID);
-	LevelObject* GetObjectWithID(int ID);
+	LevelObject* GetObjectWithID(int ID, Dir dir = Center);
 	LevelObject* GetObjectWithPos(dae::Vector2 pos);
+
 
 	int GetWidth();
 	int GetHeight();
@@ -44,5 +55,7 @@ public:
 	int GetID(const LevelObject* object)const;
 
 	void SetOffset(dae::Vector2 offset);
+
+	bool InsideBounds(int ID);
 };
 

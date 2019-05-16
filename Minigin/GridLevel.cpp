@@ -140,8 +140,45 @@ int GridLevel::GetHeight() {
 	return m_Height;
 }
 
-LevelObject* GridLevel::GetObjectWithID(int ID) {
-	return m_Objects[ID];
+bool GridLevel::InsideBounds(int ID) {
+	if (ID < 0 || ID >= m_Objects.size())
+		return false;
+	return true;
+}
+
+LevelObject* GridLevel::GetObjectWithID(int ID, Dir dir) {
+
+	//if(ID < 0 && ID > m_)
+
+	int x = ID % m_Width;
+	//int y = ID / m_Width;
+
+	switch (dir) {
+	case Center:
+			return m_Objects[ID];
+		break;
+	case Left:
+		if (x != 0 && InsideBounds(ID - 1))
+			return m_Objects[ID - 1];
+		//else //TODO: Execption or something
+		break;
+	case Right:
+		if (x != m_Width && InsideBounds(ID + 1))
+			return m_Objects[ID + 1];
+		//else //TODO: Execption or something
+		break;
+	case Up:
+		if (InsideBounds(ID + m_Width))
+			return m_Objects[ID + m_Width];
+		//else //TODO: Execption or something
+		break;
+	case Down:
+		if (InsideBounds(ID - m_Width))
+			return m_Objects[ID - m_Width];
+		//else //TODO: Execption or something
+		break;
+	}
+	return nullptr;
 }
 
 LevelObject* GridLevel::GetObjectWithPos(dae::Vector2 pos) {
