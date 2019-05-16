@@ -9,7 +9,10 @@ namespace dae
 		~Sprite();
 
 		void Update(float elapsedSec);
-		void Draw(const dae::Vector2& pos, float scale);
+		void Draw(const dae::Vector2& pos, float scale, bool flipV = false, bool flipH = false, float angle = 0, dae::Vector2 center = {0,0});
+
+		float GetWidth() const;
+		float GetHeight() const;
 
 	private:
 

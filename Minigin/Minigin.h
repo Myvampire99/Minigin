@@ -1,7 +1,4 @@
 #pragma once
-//#include "Font.h"
-//#include "GameObject.h"
-//#include "Sprite.h"
 struct SDL_Window;
 namespace dae
 {

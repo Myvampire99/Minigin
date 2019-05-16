@@ -18,6 +18,8 @@ private:
 		Attached,
 		Idle
 	};
+
+
 	FireStates m_FireState;
 	float m_ThrowingSpeed,m_CurrentElapsedThrow;
 	dae::Transform m_CurrentThrowPos;

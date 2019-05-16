@@ -3,14 +3,18 @@
 class GridComponent : public BaseComponent
 {
 public:
-	GridComponent(GridLevel *level);
+	GridComponent(GridLevel *level, bool slide = false);
 	~GridComponent();
 
 	void Update(const float elapsedTime) override;
 	void Draw() override;
 	void Initialize() override;
+
+	void SetSlide(bool slide);
 private:
 	GridLevel* m_Level;
+	bool m_Slide;
 
+	dae::Vector2 m_LastPos;
 };
 

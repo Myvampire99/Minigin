@@ -18,6 +18,6 @@ private:
 
 	std::shared_ptr<dae::GameObject> txt;
 	std::shared_ptr<dae::GameObject> go;
-
+	std::shared_ptr<dae::GameObject> snap;
 };
 

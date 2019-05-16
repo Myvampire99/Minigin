@@ -21,6 +21,15 @@ dae::Sprite::~Sprite()
 {
 }
 
+float dae::Sprite::GetWidth() const {
+	return m_Width/ m_Rows;
+}
+
+float dae::Sprite::GetHeight() const
+{
+	return m_Height/ m_Cols;
+}
+
 void dae::Sprite::Update(float elapsedSec)
 {
 	m_AccuSec += elapsedSec;
@@ -33,7 +42,7 @@ void dae::Sprite::Update(float elapsedSec)
 	}
 }
 
-void dae::Sprite::Draw(const dae::Vector2& pos, float scale)
+void dae::Sprite::Draw(const dae::Vector2& pos, float scale,bool flipV,bool flipH,float angle,dae::Vector2 center)
 {
 
 	UNREFERENCED_PARAMETER(scale);//TODO: make scale
@@ -47,6 +56,14 @@ void dae::Sprite::Draw(const dae::Vector2& pos, float scale)
 
 	dae::Vector2 srcPos = { actWidth*currentRow, actHeight*currentCollumn };
 
-	if (m_pTexture != nullptr)
-		Renderer::GetInstance().RenderTexture(*m_pTexture, pos, srcPos,{ actWidth,actHeight },{ actWidth ,actHeight });//Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x,pos.y);
+	if (m_pTexture != nullptr) {
+		if(!flipV && !flipH)
+			Renderer::GetInstance().RenderTexture(*m_pTexture, pos, srcPos, { actWidth,actHeight }, { actWidth ,actHeight }, angle, center,false,false ,scale);//Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x,pos.y);
+		else if (flipV)
+			Renderer::GetInstance().RenderTexture(*m_pTexture, pos, srcPos, { actWidth,actHeight }, { actWidth ,actHeight }, angle, center, flipV, flipH, scale);
+		else {
+			Renderer::GetInstance().RenderTexture(*m_pTexture, pos, srcPos, { actWidth,actHeight }, { actWidth ,actHeight }, angle, center, flipV, flipH, scale);
+		}
+	}
+		
 }

@@ -18,7 +18,7 @@ void LevelObject::Update(float elapsedTime) {
 
 void LevelObject::Draw() {
 	if (m_Texture != nullptr)
-		dae::Renderer::GetInstance().RenderTexture(*m_Texture, m_Pos.x- m_Size/2.f, m_Pos.y - m_Size / 2.f,m_Size, m_Size);
+		dae::Renderer::GetInstance().RenderTexture(*m_Texture, m_Pos.x, m_Pos.y ,m_Size, m_Size);
 	//else
 		//LOG::ERROR
 }

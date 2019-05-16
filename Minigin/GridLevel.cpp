@@ -2,11 +2,12 @@
 #include "GridLevel.h"
 
 
-GridLevel::GridLevel(int m_Width, int m_Height,float blockSize,dae::Vector2 m_Position)
+GridLevel::GridLevel(int m_Width, int m_Height,float blockSize,dae::Vector2 m_Position,dae::Vector2 offset)
 	:m_Width{ m_Width }
 	, m_Height{ m_Height }
 	, m_Position{ m_Position }
 	, m_BlockSize{ blockSize }
+	, m_Offset{ offset }
 {}
 
 GridLevel::~GridLevel()
@@ -44,6 +45,7 @@ void  GridLevel::Update(const float elapsedTime) {
 	}
 }
 
+
 void GridLevel::Draw() {
 	for (auto object : m_Objects) {
 		object->Draw();
@@ -63,13 +65,15 @@ dae::Vector2 GridLevel::GetPosFromID(int ID) {
 	return { x,y };
 }
 
-
+void GridLevel::SetOffset(dae::Vector2 offset) {
+	m_Offset = offset;
+}
 
 dae::Vector2 GridLevel::GetClosestPosOnLine(const dae::Vector2 &currentPos) {
 
 
 	float m_deadZoneSmall = 0.05f;
-	float m_deadZoneBig = 0.2f;
+	float m_deadZoneBig = 0.4f;
 
 	float y = currentPos.y - m_Position.y;//above the level if < 0
 	float x = currentPos.x - m_Position.x;//left of the level if < 0
@@ -167,6 +171,8 @@ dae::Vector2 GridLevel::GetClosestPointViaPos(dae::Vector2 pos) {
 	return point;
 }
 //TODO: MAybe one function instead of 2
+
+//TODO: Make this pos/width to ID and not over all objects
 int GridLevel::GetClosestIDViaPos(dae::Vector2 pos) const {
 	float smallest = m_BlockSize * 2;
 	int ID = -1;

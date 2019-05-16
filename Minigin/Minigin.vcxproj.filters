@@ -102,9 +102,6 @@
     <ClInclude Include="BaseCharacterComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="GridComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GridLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -123,11 +120,17 @@
     <ClInclude Include="EmptyBlock.h">
       <Filter>DigDug</Filter>
     </ClInclude>
-    <ClInclude Include="RockBlock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PookaCharacterComponent.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DaeVector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RockBlock.h">
+      <Filter>DigDug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +200,6 @@
     <ClCompile Include="BaseCharacterComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="GridComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GridLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -218,11 +218,14 @@
     <ClCompile Include="EmptyBlock.cpp">
       <Filter>DigDug</Filter>
     </ClCompile>
-    <ClCompile Include="RockBlock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PookaCharacterComponent.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RockBlock.cpp">
+      <Filter>DigDug</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

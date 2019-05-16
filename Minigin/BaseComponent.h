@@ -3,16 +3,16 @@
 class BaseComponent
 {
 public:
-	BaseComponent();
-	~BaseComponent();//virtual ?
-	//Rule of 5 ?
+	BaseComponent(); // = default
+	virtual ~BaseComponent();
+	BaseComponent(const BaseComponent& other) = delete;
+	BaseComponent(BaseComponent&& other) = delete;
+	BaseComponent& operator=(const BaseComponent& other) = delete;
+	BaseComponent& operator=(BaseComponent&& other) = delete;
 
-
-//protected: ??
 	dae::GameObject *m_GameObject;
 	virtual void Update(float elapsedTime) = 0;
 	virtual void Draw() = 0;
 	virtual void Initialize() = 0;
-
 };
 

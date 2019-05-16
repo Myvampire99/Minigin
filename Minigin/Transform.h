@@ -11,10 +11,13 @@ namespace dae
 		
 		Vector3 mPosition;
 		float mAngle;
+		float mScale = 1;
 
 	public:
 		Transform();
 
+		void SetScale(float scale);
+		float GetScale();
 		Vector2 GetPosition2D() const { return { mPosition.x,mPosition.y }; }
 		Vector3 GetPosition() const;
 		void SetPosition(float x, float y, float z);

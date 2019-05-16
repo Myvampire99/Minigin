@@ -6,7 +6,7 @@ DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)
 	,m_Level(level)
 	, m_LastID(0)
 	, m_FireState{Idle}
-	, m_ThrowingSpeed{300}
+	, m_ThrowingSpeed{100}
 	,m_CurrentThrowPos{}
 	, m_DistanceThrow{150}
 	, fire{4}
@@ -66,7 +66,7 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 
 		break;
 		//case FireStates::Attached:
-		//	break;
+		//break;
 	}
 	//
 
@@ -75,20 +75,50 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 
 }
 
+//TODO: Draw in the base
 void DiggerCharacterComponent::Draw() {
+
+	float scale = m_GameObject->GetTransform()->GetScale();
 
 	int width{}, height{};
 	SDL_QueryTexture(m_Sling->GetSDLTexture(), nullptr, nullptr, &width, &height);
 	//TODO: somewhere else
+	//width *= (int)scale;
+	//height *= (int)scale;
+
 	m_DistanceThrow = (float)width;
 	//
 	//dae::Vector2 destWH{ m_CurrentThrowPos.GetPosition2D().x - m_GameObject->GetPos().x , (float)height};
-	dae::Vector2 destWH{ m_CurrentThrowPos.GetPosition2D().DistanceTo(m_GameObject->GetPos()), (float)height };
-	dae::Vector2 src{ width - destWH.x,0.f};
-
+	dae::Vector2 destWH{ m_CurrentThrowPos.GetPosition2D().DistanceTo({m_GameObject->GetPos().x ,m_GameObject->GetPos().y}), (float)height };
+	dae::Vector2 src{ width - destWH.x,0.f };
+	
 
 	//dae::Renderer::GetInstance().RenderTexture(*m_Sling, m_GameObject->GetPos(), src, destWH, destWH);
-	dae::Renderer::GetInstance().RenderTexture(*m_Sling, m_GameObject->GetPos(), src, destWH, destWH, m_GameObject->GetTransform()->GetAngle(), m_GameObject->GetPos());
+	
+	//TODO: not needed to draw if not action
+	
+	
+	
+
+
+
+
+	
+	dae::Renderer::GetInstance().RenderTexture(*m_Sling, { m_GameObject->GetPos().x , m_GameObject->GetPos().y }, src, destWH, destWH, m_GameObject->GetTransform()->GetAngle(), { (float)width/4.f,height / 2.f }, false, false, scale);
+	//m_Sprites[m_CurrentState]->Draw(m_GameObject->GetPos(), scale, m_FlipSpriteVert, m_FlipSpriteHor, m_GameObject->GetTransform()->GetAngle(), center);
+	
+	
+	
+
+	
+
+
+
+	
+
+
+
+	//	dae::Renderer::GetInstance().RenderTexture(*m_Sling, m_GameObject->GetPos(), src, destWH, destWH, m_GameObject->GetTransform()->GetAngle(), m_GameObject->GetPos());
 	//dae::Renderer::GetInstance().RenderTexture(*m_Sling, m_GameObject->GetPos(), src, destWH, destWH, m_GameObject->GetTransform()->GetAngle(),{0,0});	
 
 	//TODO: {0,0} or _GameObject->GetPos()

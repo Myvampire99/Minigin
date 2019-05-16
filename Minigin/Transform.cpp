@@ -13,6 +13,12 @@ dae::Transform::Transform()
 	, mAngle{0}
 {}
 
+void dae::Transform::SetScale(float scale) {
+	mScale = scale;
+}
+float dae::Transform::GetScale() {
+	return mScale;
+}
 
 dae::Vector3 dae::Transform::GetPosition() const 
 { return mPosition; }

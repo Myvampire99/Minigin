@@ -2,7 +2,7 @@
 #include "Minigin.h"
 #include "Scene.h"
 #include "TestScene.h"
-
+#include "DigDugLevel.h"
 
 void dae::Minigin::Initialize()
 {
@@ -27,21 +27,14 @@ void dae::Minigin::Initialize()
 	Renderer::GetInstance().Init(window);
 
 
-
-
 }
-
-/**
- * Code constructing the scene world starts here
- */
-
 
 
 void dae::Minigin::LoadGame() 
 {
-	Scene *scene = new TestScene();
+	Scene *scene = new DigDugLevel();
 	SceneManager::GetInstance().AddScene(scene);
-	SceneManager::GetInstance().SetSceneActive("TestScene", true);
+	SceneManager::GetInstance().SetSceneActive("DigDugLevel", true);
 }
 
 void dae::Minigin::Cleanup()

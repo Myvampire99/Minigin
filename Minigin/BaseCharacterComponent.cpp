@@ -5,9 +5,8 @@
 BaseCharacterComponent::BaseCharacterComponent()
 	:m_Speed{100}
 	, ForceStop{false}
-{
-	
-}
+	, m_DirectionState{}
+{}
 
 
 BaseCharacterComponent::~BaseCharacterComponent()
@@ -16,10 +15,11 @@ BaseCharacterComponent::~BaseCharacterComponent()
 
 void BaseCharacterComponent::Update(const float elapsedTime)
 {
+	m_DirectionState = Direction::Idle;
+
 	UNREFERENCED_PARAMETER(elapsedTime);
-	//if need update use inputocmpnent//TODO: Convert to commands
-	if(m_Input->NeedUpdate())//TODO: Convert to commands
-		//TODO: Vector or map or anything
+	//TODO: Maybe if no InputComponent, do other things
+	if(m_Input->NeedUpdate())
 	{
 		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Xleft), new PlayerLeft());
 		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Xright), new PlayerRight());
@@ -27,6 +27,9 @@ void BaseCharacterComponent::Update(const float elapsedTime)
 		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Ydown), new PlayerDown());
 	}
 	LocalUpdate(elapsedTime);
+
+	
+
 }
 
 void BaseCharacterComponent::LocalUpdate(const float elapsedTime) {
@@ -40,6 +43,16 @@ void BaseCharacterComponent::Xforward(int direction)
 		auto pos2 = m_GameObject->GetPos();
 		pos2.x += speedX;
 		m_GameObject->SetPosition(pos2.x, pos2.y);
+	
+		if (direction == 1) {
+			m_DirectionState = Direction::Right;
+			m_GameObject->GetTransform()->SetAngle(0.f);
+		}
+		else {
+			m_DirectionState = Direction::Left;
+			m_GameObject->GetTransform()->SetAngle(180.f);
+		}
+
 	}
 }
 
@@ -50,6 +63,15 @@ void BaseCharacterComponent::Yforward(int direction)
 		auto pos2 = m_GameObject->GetPos();
 		pos2.y += speedY;
 		m_GameObject->SetPosition(pos2.x, pos2.y);
+	
+		if (direction == 1) {
+			m_DirectionState = Direction::Up;
+			m_GameObject->GetTransform()->SetAngle(90.f);
+		}
+		else {
+			m_DirectionState = Direction::Down;
+			m_GameObject->GetTransform()->SetAngle(-90.f);
+		}
 	}
 }
 
@@ -71,8 +93,26 @@ void BaseCharacterComponent::Initialize()
 
 void BaseCharacterComponent::Draw() {
 
+//	if (m_DirectionState == Direction::Left || m_DirectionState == Direction::Down)
+
+//	else
 }
 
 void BaseCharacterComponent::localIni() {
 
+}
+
+std::pair<bool, bool> BaseCharacterComponent::GetFlipVertnFlipHor() {
+
+	if (m_DirectionState == Direction::Left || m_DirectionState == Direction::Down)
+		if (m_DirectionState == Direction::Left)
+			return std::make_pair<bool, bool>(false, true);
+		else if(m_DirectionState == Direction::Down)
+			return std::make_pair<bool, bool>(true, false);
+
+		return std::make_pair<bool, bool>(false, false);
+}
+
+BaseCharacterComponent::Direction BaseCharacterComponent::GetDirection() {
+	return m_DirectionState;
 }

@@ -3,7 +3,7 @@
 class GridLevel : public BaseComponent
 {
 public:
-	GridLevel(int m_Width,int m_Height,float blockSize,dae::Vector2 m_Position);
+	GridLevel(int m_Width, int m_Height, float blockSize, dae::Vector2 m_Position, dae::Vector2 offset = {});
 	~GridLevel();
 
 	void Update(const float elapsedTime) override;
@@ -21,9 +21,10 @@ private:
 	float ClosestDistanceToRoundValue(float value);
 	dae::Vector2 GetClosestPointViaPos(dae::Vector2 pos);
 
-
 	//Only values between 0 - 1
 	dae::Vector2 GetClosestPosOnLineInSquare(dae::Vector2 pos, int ID);
+
+	dae::Vector2 m_Offset;//TODO: make offfset
 public:
 	int GetClosestIDViaPos(dae::Vector2 pos) const;
 	void ChangeBlock(LevelObject* object, dae::Vector2 posInGrid);
@@ -41,5 +42,7 @@ public:
 	int GetHeight();
 
 	int GetID(const LevelObject* object)const;
+
+	void SetOffset(dae::Vector2 offset);
 };
 

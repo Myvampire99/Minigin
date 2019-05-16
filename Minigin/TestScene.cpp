@@ -1,6 +1,6 @@
 #include "MiniginPCH.h"
 #include "TestScene.h"
-#include "Sprite.h"
+//#include "Sprite.h"
 
 
 TestScene::TestScene()//dont forget to give string for real scenes
@@ -14,6 +14,9 @@ void TestScene::SceneUpdate()
 	std::string temp = std::to_string(txt->GetComponent<FPSComponent>()->GetFps());
 	txt->GetComponent<TextRendererComponent>()->SetText(temp);
 
+	std::pair<bool, bool> VH = snap->GetComponent<BaseCharacterComponent>()->GetFlipVertnFlipHor();
+	snap->GetComponent<dae::SpriteComponent>()->FlipSprite(VH.second || VH.first,false);//TODO: this prob isnt the best way to do it
+	//snap->GetComponent<dae::SpriteComponent>()->FlipSprite(true, false);
 }
 
 void TestScene::SceneInitialize()
@@ -36,7 +39,7 @@ void TestScene::SceneInitialize()
 	inputcomponent->AssignButton(right, ControllerButton::Button_B);
 	inputcomponent->AssignButton(up, ControllerButton::Button_Y);
 	inputcomponent->AssignButton(down, ControllerButton::Button_A);
-	inputcomponent->AssignButton(4, ControllerButton::Button_DU);
+	inputcomponent->AssignButton(4, ControllerButton::Dpad_Up);
 	go->AddComponent(inputcomponent);
 
 	auto levelcomp = new GridLevel(8, 8, 50, { 50,50 });
@@ -69,7 +72,7 @@ void TestScene::SceneInitialize()
 	Add(level);
 
 	
-	auto snap = std::make_shared<dae::GameObject>();
+	snap = std::make_shared<dae::GameObject>();
 	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(snap);
 
 	snap->SetTexture("Resources/Textures/point.jpg");
@@ -78,8 +81,10 @@ void TestScene::SceneInitialize()
 	snap->AddComponent(inputcomponent);
 	snap->AddComponent(controller);
 
-	snap->GetTransform()->SetAngle(-90.f);
+	//snap->GetTransform()->SetAngle(0.f);
 
+	snap->AddComponent(new dae::SpriteComponent(0,new dae::Sprite("Resources/Sprites/Character2.png",1,8,8,1)));
+	
 	Add(snap);
 	
 
