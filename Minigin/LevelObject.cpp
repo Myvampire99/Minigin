@@ -3,6 +3,8 @@
 #include "ResourceManager.h"
 
 LevelObject::LevelObject(std::string path)
+	: m_IsWalkable{true}
+	, m_Collision{nullptr}
 {
 	m_Texture = dae::ResourceManager::GetInstance().LoadTexture(path);
 }
@@ -25,6 +27,18 @@ void LevelObject::Draw() {
 
 void LevelObject::Initialize() {
 	
+}
+
+CollisionObject* LevelObject::GetCollision() {
+	return m_Collision;
+}
+
+bool LevelObject::IsWalkable(){
+	return m_IsWalkable;
+}
+
+void LevelObject::SetWalkable(bool iswalkable) {
+	m_IsWalkable = iswalkable;
 }
 
 //void LevelObject::SetTexture(dae::Texture2D * texture) {

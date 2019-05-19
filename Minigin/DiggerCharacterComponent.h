@@ -1,10 +1,12 @@
 #pragma once
 #include "BaseCharacterComponent.h"
 
+class CollisionObject;
+class CollisionComponent;
 class DiggerCharacterComponent : public BaseCharacterComponent
 {
 public:
-	DiggerCharacterComponent(GridLevel* level);
+	DiggerCharacterComponent(GridLevel* level);//, CollisionComponent* collision);
 	~DiggerCharacterComponent();
 
 	void Fire();
@@ -24,6 +26,7 @@ private:
 		Idle
 	};
 
+	//CollisionObject* m_Collision;
 
 	FireStates m_FireState;
 	float m_ThrowingSpeed,m_CurrentElapsedThrow;

@@ -77,6 +77,9 @@ void dae::Minigin::Run()
 			//
 			dae::Singleton<ServiceLocator>::GetInstance().SetElapsedTime(float(deltaTime));
 
+
+			dae::Singleton<CollisionManager>::GetInstance().Update();
+
 			doContinue = input.ProcessInput();
 			input.HandleInput();
 

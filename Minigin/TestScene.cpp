@@ -65,9 +65,9 @@ void TestScene::SceneInitialize()
 	test->SetSize(50.f);
 	level->GetComponent<GridLevel>()->FillLevel(test);
 
-	LevelObject *test2 = new RockBlock("Resources/Textures/rock.jpg", levelcomp);
-	test2->SetSize(50.f);
-	level->GetComponent<GridLevel>()->ChangeBlock(test2,17);
+	//LevelObject *test2 = new RockBlock("Resources/Textures/rock.jpg", levelcomp,);
+	//test2->SetSize(50.f);
+	//level->GetComponent<GridLevel>()->ChangeBlock(test2,17);
 
 	Add(level);
 

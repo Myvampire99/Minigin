@@ -12,7 +12,6 @@ void dae::Scene::Add(const std::shared_ptr<dae::SceneObject>& object)
 	mObjects.push_back(object);
 }
 
-
 void dae::Scene::Update(const float elapsedTime)
 {
 

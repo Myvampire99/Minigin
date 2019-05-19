@@ -193,6 +193,11 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
   <ItemGroup>
     <ClInclude Include="BaseCharacterComponent.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BorderBlock.h" />
+    <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="CollisionObject.h" />
+    <ClInclude Include="CollsionBox.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="DaeVector2.h" />
     <ClInclude Include="DigDugLevel.h" />
@@ -230,6 +235,11 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
   <ItemGroup>
     <ClCompile Include="BaseCharacterComponent.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="BorderBlock.cpp" />
+    <ClCompile Include="CollisionComponent.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="CollisionObject.cpp" />
+    <ClCompile Include="CollsionBox.cpp" />
     <ClCompile Include="DigDugLevel.cpp" />
     <ClCompile Include="DiggerCharacterComponent.cpp" />
     <ClCompile Include="EmptyBlock.cpp" />

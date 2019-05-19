@@ -16,5 +16,8 @@ private:
 	bool m_Slide;
 
 	dae::Vector2 m_LastPos;
+	dae::Vector2 m_LastPosGO;
+	dae::Vector2 m_prevPos;
+	dae::Vector2 m_prevprevPos;
 };
 

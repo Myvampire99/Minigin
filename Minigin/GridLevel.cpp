@@ -15,9 +15,56 @@ GridLevel::~GridLevel()
 
 //const LevelObject* GetType
 
+void GridLevel::SetWalkable(int ID, bool IsWalkable) {
+	m_Objects[ID]->SetWalkable(IsWalkable);
+}
+
+bool  GridLevel::IsWalkable(int ID) {
+	return m_Objects[ID]->IsWalkable();
+}
+
 void GridLevel::ChangeBlock(LevelObject* object, dae::Vector2 posInGrid) {
 	int id = int(posInGrid.x+posInGrid.y*m_Width);
 	ChangeBlock(object, id);
+}
+
+void GridLevel::FillRow(int row, LevelObject* object) {
+	for (int i{ row*m_Width}; i < row*m_Width + m_Width; ++i) {
+		//TODO: delete old ones
+		///m_Objects[i] = object;
+		AddBlock(object, i);
+	}
+}
+
+void GridLevel::FillCollumn(int col, LevelObject* object) {
+	for (int i{ col }; i < m_Height; i += col) {
+		//TODO: delete old ones
+		///m_Objects[i] = object;
+		AddBlock(object, i);
+	}
+}
+
+std::pair<bool, dae::Vector2>  GridLevel::IsInNotWalkable(dae::Vector2 pos, dae::Vector2 WH) {
+	//TODO: pos not over all objects
+	int ID = GetClosestIDViaPos(pos);
+
+	/*if (WH.x == 0.f && WH.y == 0.f)
+		return std::make_pair<bool, dae::Vector2>(!m_Objects[ID]->IsWalkable(), {});*/
+
+	UNREFERENCED_PARAMETER(WH);
+	UNREFERENCED_PARAMETER(ID);
+
+	//if (!m_Objects[GetClosestIDViaPos(pos)]->IsWalkable())
+	//	return std::make_pair<bool, dae::Vector2>(true, );
+	//if (!m_Objects[GetClosestIDViaPos({pos .x + WH.x,pos.y})]->IsWalkable())//&& GetClosestIDViaPos({ pos.x + WH.x,pos.y }) == ID
+	//	return true;
+	//if (!m_Objects[GetClosestIDViaPos({ pos.x + WH.x,pos.y + WH.y })]->IsWalkable() )
+	//	return true;
+	//if (!m_Objects[GetClosestIDViaPos({ pos.x ,pos.y + WH.y })]->IsWalkable())
+	//	return true;
+
+	return std::make_pair<bool, dae::Vector2>(false, {0.f,0.f});
+
 }
 
 void GridLevel::ChangeBlock(LevelObject* object, int id) {
@@ -43,19 +90,33 @@ void  GridLevel::Update(const float elapsedTime) {
 	for (auto object : m_Objects) {
 		object->Update(elapsedTime);
 	}
-}
 
+	for (auto object : m_FreeBlocks) {
+		object.first->Update(elapsedTime);
+	}
+
+}
 
 void GridLevel::Draw() {
 	for (auto object : m_Objects) {
 		object->Draw();
 	}
+
+	for (auto object : m_FreeBlocks) {
+		object.first->Draw();
+	}
+	
 }
 
 void GridLevel::Initialize() {
 	for (auto object : m_Objects) {
 		object->Initialize();
 	}
+
+	for (auto object : m_FreeBlocks) {
+		object.first->Initialize();
+	}
+
 }
 
 dae::Vector2 GridLevel::GetPosFromID(int ID) {
@@ -68,6 +129,31 @@ dae::Vector2 GridLevel::GetPosFromID(int ID) {
 void GridLevel::SetOffset(dae::Vector2 offset) {
 	m_Offset = offset;
 }
+
+
+
+void GridLevel::FreeBlock(LevelObject* freedBlock, LevelObject* replacment) {
+	m_FreeBlocks[freedBlock] = m_Objects[GetID(freedBlock)]->GetPos();
+	m_Objects[GetID(freedBlock)] = replacment;
+}
+
+void GridLevel::LockBlock(LevelObject* lockBlock,int ID) {
+	//m_FreeBlocks[lockBlock] = m_Objects[GetID(freedBlock)]->GetPos();
+	//TODO: delete freeblocks lockblock inside map
+	m_Objects[ID] = lockBlock;
+	lockBlock->SetPos(GetPosFromID(ID));
+}
+
+void GridLevel::SetPositionFreeBlock(LevelObject* freedBlock,dae::Vector2 pos) {
+	m_FreeBlocks[freedBlock] = pos;
+	freedBlock->SetPos(pos);
+}
+
+dae::Vector2 GridLevel::GetPositionFreeBlock(LevelObject* freedBlock) {
+	return m_FreeBlocks[freedBlock];
+}
+
+
 
 dae::Vector2 GridLevel::GetClosestPosOnLine(const dae::Vector2 &currentPos) {
 
@@ -168,17 +254,21 @@ LevelObject* GridLevel::GetObjectWithID(int ID, Dir dir) {
 		//else //TODO: Execption or something
 		break;
 	case Up:
-		if (InsideBounds(ID + m_Width))
-			return m_Objects[ID + m_Width];
-		//else //TODO: Execption or something
-		break;
-	case Down:
 		if (InsideBounds(ID - m_Width))
 			return m_Objects[ID - m_Width];
 		//else //TODO: Execption or something
 		break;
+	case Down:
+		if (InsideBounds(ID + m_Width))
+			return m_Objects[ID + m_Width];
+		//else //TODO: Execption or something
+		break;
 	}
 	return nullptr;
+}
+
+float GridLevel::GetBlockSize() {
+	return m_BlockSize;
 }
 
 LevelObject* GridLevel::GetObjectWithPos(dae::Vector2 pos) {

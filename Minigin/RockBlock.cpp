@@ -2,10 +2,17 @@
 #include "RockBlock.h"
 
 
-RockBlock::RockBlock(std::string path, GridLevel* m_Level)
+RockBlock::RockBlock(std::string path, GridLevel* m_Level, CollisionObject* collision)
 	:LevelObject(path)
 	, m_Level{ m_Level }
+	, m_FallSpeed{50}
+	, m_Falling{false}
+	,CurrentZone{0}
+	, m_TimeBeforeFall{1}
+	, m_CurrentFall{0}
 {
+	dae::Singleton<CollisionManager>::GetInstance().AddCollision(collision);
+	m_Collision = collision;
 }
 
 
@@ -15,16 +22,57 @@ RockBlock::~RockBlock()
 
 void RockBlock::Update(float elapsedTime) {
 
-	if ((m_Level->GetID(this) + m_Level->GetWidth()) <= m_Level->GetHeight()*m_Level->GetWidth())
+	float Beginzone = 0.5f;
+	float Latezone = 1.1f;
+	CurrentZone = Latezone;
+
+	if (dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos(this->GetPos()), GridLevel::Dir::Down)) && !m_Falling)
 	{
-		if (dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetID(this) + m_Level->GetWidth()))) {
-			m_Level->ChangeBlock(this, m_Level->GetID(this) + m_Level->GetWidth());
-			m_Level->ChangeBlock(new EmptyBlock(), m_Level->GetID(this));
+		m_Level->FreeBlock(this, new EmptyBlock);
+		m_Falling = true;
+		CurrentZone = Beginzone;
+	}
+
+	if (m_Falling)
+	{
+		if (m_CurrentFall > m_TimeBeforeFall) {
+
+			if ((!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ this->GetPos().x, this->GetPos().y - m_Level->GetBlockSize() }), GridLevel::Dir::Up))))
+				CurrentZone = Latezone;
+			else
+				CurrentZone = Beginzone;
+
+			if ((!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ this->GetPos().x, this->GetPos().y - m_Level->GetBlockSize()*CurrentZone }), GridLevel::Dir::Down)))) {
+				m_Falling = false;
+				m_Level->LockBlock(this, m_Level->GetClosestIDViaPos(this->GetPos()));
+				m_CurrentFall = 0;
+			}
+			else {
+				dae::Vector2 position = this->GetPos();
+				position.y += m_FallSpeed * elapsedTime;
+				this->SetPos(position);
+			}
+
+			
+		}
+		else {
+			m_CurrentFall += elapsedTime;
 		}
 	}
-	UNREFERENCED_PARAMETER(elapsedTime);
+
+	m_Collision->SetPosition(this->GetPos());
+
+	int count = (int)m_Collision->GetCurrentCollisions().size();
+	if (count != 0) {
+		for (auto coll : m_Collision->GetCurrentCollisions()) {
+			if (!coll->IsTrigger()) {
+				//Things must die
+			}
+		}
+	}
 
 }
+
 
 
 void RockBlock::Initialize() {

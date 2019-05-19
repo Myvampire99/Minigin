@@ -19,6 +19,9 @@ namespace dae {
 			return false;
 		}
 
+		Vector2 operator+(const Vector2& lhs) {
+			return { lhs.x + this->x,lhs.y + this->y };
+		}
 
 		float x, y;
 	};

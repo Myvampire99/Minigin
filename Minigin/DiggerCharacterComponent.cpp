@@ -1,22 +1,21 @@
 #include "MiniginPCH.h"
 #include "DiggerCharacterComponent.h"
 
-DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)
-	:BaseCharacterComponent()
-	,m_Level(level)
+DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)//, CollisionComponent* collision)
+	: BaseCharacterComponent()
+	, m_Level(level)
 	, m_LastID(0)
-	, m_FireState{Idle}
-	, m_ThrowingSpeed{100}
-	,m_CurrentThrowPos{}
-	, m_DistanceThrow{150}
-	, fire{4}
-	, m_IsDigging{false}
+	, m_FireState{ Idle }
+	, m_ThrowingSpeed{ 100 }
+	, m_CurrentThrowPos{}
+	, m_DistanceThrow{ 150 }
+	, fire{ 4 }
+	, m_IsDigging{ false }
 	, m_WidthSprite{}
 {
+	//m_Collision = collision->GetCollisions()[0];
 	m_Sling = dae::ResourceManager::GetInstance().LoadTexture("Resources/Textures/sling.png");
-	
 }
-
 
 DiggerCharacterComponent::~DiggerCharacterComponent()
 {
@@ -92,11 +91,11 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 				m_IsDigging = true;
 			break;
 		case Down:
-			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y - m_WidthSprite }), GridLevel::Dir::Down)))//TODO: wtf up and down are switched
+			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y }), GridLevel::Dir::Up)))//TODO: wtf up and down are switched
 				m_IsDigging = true;
 			break;
 		case Up:
-			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y + m_WidthSprite }), GridLevel::Dir::Up)))//TODO: wtf up and down are switched
+			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y}), GridLevel::Dir::Down)))//TODO: wtf up and down are switched
 				m_IsDigging = true;
 			break;
 		default:;

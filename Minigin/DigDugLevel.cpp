@@ -33,7 +33,7 @@ void DigDugLevel::SceneInitialize() {
 	float SizeBlockGrid = 30;
 
 	//Grid
-	m_GridLevel = new GridLevel(widthGrid, HeightGrid, SizeBlockGrid, { SizeBlockGrid,SizeBlockGrid });
+	m_GridLevel = new GridLevel(widthGrid+1, HeightGrid+1, SizeBlockGrid, { SizeBlockGrid,SizeBlockGrid });
 	auto levelGameObject = std::make_shared<dae::GameObject>();
 	levelGameObject->AddComponent(m_GridLevel);
 	Add(levelGameObject);
@@ -44,12 +44,20 @@ void DigDugLevel::SceneInitialize() {
 	lvlObj->SetSize(SizeBlockGrid);
 	levelGameObject->GetComponent<GridLevel>()->FillLevel(lvlObj);
 
-	auto *Rock = new RockBlock("Resources/Textures/Rock.png", m_GridLevel);
+	auto *Rock = new RockBlock("Resources/Textures/Rock.png", m_GridLevel, new CollisionBox({ 0.f ,0.f }, SizeBlockGrid, SizeBlockGrid));
 	Rock->SetSize(SizeBlockGrid);
 	levelGameObject->GetComponent<GridLevel>()->ChangeBlock(Rock, 17);
+	levelGameObject->GetComponent<GridLevel>()->SetWalkable(17,false);
+
+	m_GridLevel->FillRow(HeightGrid, new BorderBlock(new CollisionBox({ 50,50 }, SizeBlockGrid, SizeBlockGrid)));
 	//
 
-
+	//Collision
+	auto collisionComponent = new CollisionComponent();
+	auto collisionBox = new CollisionBox({},25, 25);
+	collisionBox->SetIsTrigger(false);
+	collisionComponent->AddCollision(collisionBox);
+	//
 
 	//Input
 	m_Inputcomponent = new InputComponent;
@@ -75,8 +83,10 @@ void DigDugLevel::SceneInitialize() {
 	m_Player->AddComponent(new GridComponent(m_GridLevel, true));//, { SizeBlockGrid / 2.f,SizeBlockGrid / 2.f }
 	m_Player->AddComponent(m_Inputcomponent);
 	m_Player->AddComponent(m_PlayerCharacter);
+	m_Player->AddComponent(collisionComponent);
 
 	m_Player->GetTransform()->SetScale(2);
+	m_Player->SetPosition(100.f, 100.f);
 
 	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player);
 	Add(m_Player);

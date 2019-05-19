@@ -27,6 +27,9 @@ private:
 	dae::Vector2 GetClosestPosOnLineInSquare(dae::Vector2 pos, int ID);
 
 	dae::Vector2 m_Offset;//TODO: make offfset
+	std::map<LevelObject*, dae::Vector2> m_FreeBlocks;
+
+	
 public:
 	int GetClosestIDViaPos(dae::Vector2 pos) const;
 	void ChangeBlock(LevelObject* object, dae::Vector2 posInGrid);
@@ -35,6 +38,17 @@ public:
 	void FillLevel(LevelObject* object);
 
 	dae::Vector2 GetClosestPosOnLine(const dae::Vector2 &currentPos);
+
+	void FreeBlock(LevelObject* freedBlock, LevelObject* replacment);
+	void LockBlock(LevelObject* lockBlock, int ID);
+	void SetPositionFreeBlock(LevelObject* freedBlock, dae::Vector2 pos);
+	dae::Vector2 GetPositionFreeBlock(LevelObject* freedBlock);
+
+	float GetBlockSize();
+
+	void SetWalkable(int ID,bool IsWalkable);
+	bool IsWalkable(int ID);
+	std::pair<bool,dae::Vector2> IsInNotWalkable(dae::Vector2 pos, dae::Vector2 WH = {0,0});
 
 	enum Dir {
 		Center = 0,
@@ -57,5 +71,9 @@ public:
 	void SetOffset(dae::Vector2 offset);
 
 	bool InsideBounds(int ID);
+
+	void FillRow(int row, LevelObject* object);
+	void FillCollumn(int col, LevelObject* object);
+
 };
 
