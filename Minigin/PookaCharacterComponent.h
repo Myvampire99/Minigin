@@ -4,7 +4,7 @@ class PookaCharacterComponent :
 	public BaseCharacterComponent
 {
 public:
-	PookaCharacterComponent();
+	PookaCharacterComponent(GridLevel *level);
 	~PookaCharacterComponent();
 
 	int GetInflateState();
@@ -13,6 +13,28 @@ public:
 private:
 	int m_InflatesBeforeDeath;
 	int m_CurrentInflation;
+
+	GridLevel *m_Level;
+	void LocalUpdate(const float elapsedTime) override;
+
+	dae::Vector2 m_PrevPos;
+public:
+	struct EmptyDir {
+		bool up = false;
+		bool down = false;
+		bool left = false;
+		bool right = false;
+		void rem() {
+			up = down = left = right = false;
+		}
+	};
+private:
+	EmptyDir emptyDir;
+	float ScoreIfDead;
+public:
+	EmptyDir GetEmptyDir();
+
+	int GetScore();
 
 };
 

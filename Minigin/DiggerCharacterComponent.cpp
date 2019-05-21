@@ -12,9 +12,15 @@ DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)//, Collisio
 	, fire{ 4 }
 	, m_IsDigging{ false }
 	, m_WidthSprite{}
+	, m_CurrentElapsedAttached{}
+	, m_InflationTime{2}
+	, m_PressedInflationButton{false}
+	, m_Lives{3}
 {
 	//m_Collision = collision->GetCollisions()[0];
 	m_Sling = dae::ResourceManager::GetInstance().LoadTexture("Resources/Textures/sling.png");
+	m_PumpColl = new CollisionBox{ {m_CurrentThrowPos.GetPosition2D()},5,5 };
+	dae::Singleton<CollisionManager>::GetInstance().AddCollision(m_PumpColl);
 }
 
 DiggerCharacterComponent::~DiggerCharacterComponent()
@@ -23,6 +29,14 @@ DiggerCharacterComponent::~DiggerCharacterComponent()
 
 void DiggerCharacterComponent::SetWidth(float width) {
 	m_WidthSprite = width;
+}
+
+int DiggerCharacterComponent::GetLives() {
+	return m_Lives;
+}
+
+void DiggerCharacterComponent::SetLives(int lives) {
+	m_Lives = lives;
 }
 
 void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
@@ -38,6 +52,7 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 	
 	m_LastID = currentID;
 
+	LevelObject* object = nullptr;
 
 	//fire
 	switch (m_FireState)
@@ -57,9 +72,7 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 		//m_CurrentThrowPos.SetPosition({ m_CurrentThrowPos.GetPosition().x + elapsedTime * m_ThrowingSpeed , m_CurrentThrowPos.GetPosition().y });
 		m_CurrentThrowPos.Translate({ elapsedTime * m_ThrowingSpeed ,0});
 
-		auto debug = m_GameObject->GetPos().DistanceTo(m_CurrentThrowPos.GetPosition2D());
-		UNREFERENCED_PARAMETER(debug);
-		auto object = m_Level->GetObjectWithPos(m_CurrentThrowPos.GetPosition2D());
+		object = m_Level->GetObjectWithPos(m_CurrentThrowPos.GetPosition2D());
 		//if (typeid(object) != typeid(EmptyBlock))
 		if(!dynamic_cast<EmptyBlock*>(object))
 			m_FireState = FireStates::Idle;
@@ -68,14 +81,48 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 			m_FireState = FireStates::Idle;
 		}
 
+		m_PumpColl->SetPosition(m_CurrentThrowPos.GetPosition2D());
+
+		if (m_PumpColl->GetCurrentCollisions().size() != 0)
+		{
+			for (std::shared_ptr<dae::GameObject> player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
+				if (player.get() != m_GameObject) {
+					if (dynamic_cast<PookaCharacterComponent*>(player->GetComponent<PookaCharacterComponent>())) {
+						for (auto collision : player->GetComponent<CollisionComponent>()->GetCollisions()) {
+							for (auto cc : collision->GetCurrentCollisions()) {
+								if (m_PumpColl == cc) {
+									m_FireState = FireStates::Attached;
+									m_AttachedEnemy = player;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
 		break;
-		//case FireStates::Attached:
-		//break;
+	case FireStates::Attached:
+			m_CurrentElapsedAttached += elapsedTime;
+			if (m_InflationTime < m_CurrentElapsedAttached) {
+				if (m_PressedInflationButton) {
+					m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->SetInflationState(m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->GetInflateState() + 1);
+					m_CurrentElapsedAttached = 0;
+				}
+			}
+			if (m_InflationTime * 2 < m_CurrentElapsedAttached) {
+				m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->SetInflationState(m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->GetInflateState() - 1);
+				if (m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->GetInflateState() <= 0) {
+					m_AttachedEnemy = nullptr;
+					m_FireState = FireStates::Idle;
+				}
+			}
+			
+		break;
 	}
 	//
 	m_IsDigging = false;
-
+	m_PressedInflationButton = false;
 	
 
 	if (m_WidthSprite != 0) {
@@ -162,9 +209,12 @@ void DiggerCharacterComponent::Draw() {
 
 void DiggerCharacterComponent::Fire() {
 	
-	if(!ForceStop)//TODO: Maybe other var
+	if (!ForceStop) {//TODO: Maybe other var
 		m_FireState = FireStates::Throwing;
-
+	}
+	else {
+		m_PressedInflationButton = true;
+	}
 }
 
 void DiggerCharacterComponent::localIni() {

@@ -20,6 +20,11 @@ RockBlock::~RockBlock()
 {
 }
 
+void RockBlock::SetSubject(Subject *subject) {
+	m_Subject = subject;
+}
+
+
 void RockBlock::Update(float elapsedTime) {
 
 	float Beginzone = 0.5f;
@@ -62,11 +67,20 @@ void RockBlock::Update(float elapsedTime) {
 
 	m_Collision->SetPosition(this->GetPos());
 
-	int count = (int)m_Collision->GetCurrentCollisions().size();
-	if (count != 0) {
-		for (auto coll : m_Collision->GetCurrentCollisions()) {
-			if (!coll->IsTrigger()) {
-				//Things must die
+	if (m_Falling) {
+		int count = (int)m_Collision->GetCurrentCollisions().size();
+		if (count != 0) {
+			for (auto coll : m_Collision->GetCurrentCollisions()) {
+				if (!coll->IsTrigger()) {
+					//Things must die
+					for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
+						if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
+						{
+							m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+						}
+					}
+
+				}
 			}
 		}
 	}

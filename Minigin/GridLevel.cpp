@@ -28,21 +28,6 @@ void GridLevel::ChangeBlock(LevelObject* object, dae::Vector2 posInGrid) {
 	ChangeBlock(object, id);
 }
 
-void GridLevel::FillRow(int row, LevelObject* object) {
-	for (int i{ row*m_Width}; i < row*m_Width + m_Width; ++i) {
-		//TODO: delete old ones
-		///m_Objects[i] = object;
-		AddBlock(object, i);
-	}
-}
-
-void GridLevel::FillCollumn(int col, LevelObject* object) {
-	for (int i{ col }; i < m_Height; i += col) {
-		//TODO: delete old ones
-		///m_Objects[i] = object;
-		AddBlock(object, i);
-	}
-}
 
 std::pair<bool, dae::Vector2>  GridLevel::IsInNotWalkable(dae::Vector2 pos, dae::Vector2 WH) {
 	//TODO: pos not over all objects

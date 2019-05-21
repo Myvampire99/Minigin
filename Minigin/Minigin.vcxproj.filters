@@ -37,6 +37,9 @@
     <Filter Include="Collision">
       <UniqueIdentifier>{b26ba4a5-2bb6-4fe3-a9ef-f6db52347b07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Observer">
+      <UniqueIdentifier>{0f521186-dcc6-43cf-b42d-b06b1139d254}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -156,7 +159,22 @@
     <ClInclude Include="CollisionComponent.h">
       <Filter>Collision</Filter>
     </ClInclude>
+    <ClInclude Include="PookaState.h">
+      <Filter>DigDug</Filter>
+    </ClInclude>
     <ClInclude Include="BorderBlock.h">
+      <Filter>DigDug</Filter>
+    </ClInclude>
+    <ClInclude Include="AIComponent.h">
+      <Filter>DigDug</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -212,9 +230,6 @@
     <ClCompile Include="EmptyBlock.cpp">
       <Filter>DigDug</Filter>
     </ClCompile>
-    <ClCompile Include="PookaCharacterComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GridComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -266,7 +281,25 @@
     <ClCompile Include="CollisionComponent.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="PookaCharacterComponent.cpp">
+      <Filter>DigDug</Filter>
+    </ClCompile>
+    <ClCompile Include="AIComponent.cpp">
+      <Filter>DigDug</Filter>
+    </ClCompile>
     <ClCompile Include="BorderBlock.cpp">
+      <Filter>DigDug</Filter>
+    </ClCompile>
+    <ClCompile Include="PookaState.cpp">
+      <Filter>DigDug</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

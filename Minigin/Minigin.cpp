@@ -78,7 +78,7 @@ void dae::Minigin::Run()
 			dae::Singleton<ServiceLocator>::GetInstance().SetElapsedTime(float(deltaTime));
 
 
-			dae::Singleton<CollisionManager>::GetInstance().Update();
+			
 
 			doContinue = input.ProcessInput();
 			input.HandleInput();
@@ -93,7 +93,9 @@ void dae::Minigin::Run()
 
 			
 			renderer.Render();
-		
+
+			//TODO: Before everything maybe
+			dae::Singleton<CollisionManager>::GetInstance().Update();
 		}
 	}
 

@@ -15,7 +15,8 @@ public:
 	void SetWidth(float width);
 
 	bool IsDigging();
-
+	int GetLives();
+	void SetLives(int lives);
 
 private:
 	GridLevel* m_Level;
@@ -39,5 +40,13 @@ private:
 
 	bool m_IsDigging;
 	float m_WidthSprite;
+
+	CollisionObject* m_PumpColl;
+	std::shared_ptr<dae::GameObject> m_AttachedEnemy;
+	float m_CurrentElapsedAttached;
+	float m_InflationTime;
+	bool m_PressedInflationButton;
+
+	int m_Lives;
 };
 

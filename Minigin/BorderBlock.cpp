@@ -6,7 +6,7 @@ BorderBlock::BorderBlock(CollisionBox* coll)
 	:LevelObject("Resources/Textures/point.jpg")//TODO: NOTHING AT ALL
 	, m_Coll{ coll }
 {
-	dae::Singleton<CollisionManager>::GetInstance().AddCollision(new CollisionBox{ *m_Coll });
+	dae::Singleton<CollisionManager>::GetInstance().AddCollision( m_Coll );
 }
 
 BorderBlock::~BorderBlock()
@@ -15,6 +15,6 @@ BorderBlock::~BorderBlock()
 
 void BorderBlock::Update(float elapsedTime) {
 	UNREFERENCED_PARAMETER(elapsedTime);
-	m_Coll->SetPosition(this->GetPos());
+	m_Coll->SetPosition(this->GetPos());//TODO: in the initialize actually
 }
 void BorderBlock::Initialize() {}

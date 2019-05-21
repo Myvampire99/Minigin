@@ -9,17 +9,22 @@ InputManager::InputManager()
 bool InputManager::ProcessInput()
 {
 
-	//	for (DWORD i = 0; i < XUSER_MAX_COUNT; ++i)
-	//{ //For multiple controllers
-	// todo: read the input
+	for (DWORD i = 0; i < XUSER_MAX_COUNT; ++i)
+	{ 
+		if (!m_SkipPlayer[i]) {
+			m_ControllerConected = true;
 
-	m_ControllerConected = true;
-	ZeroMemory(&m_States, sizeof(XINPUT_STATE));
-	DWORD dwResult;
-	dwResult = XInputGetState(0, &m_States);
-	if (dwResult != ERROR_SUCCESS)
-		m_ControllerConected = false;
+			XINPUT_STATE state;
+			ZeroMemory(&state, sizeof(XINPUT_STATE));
+			m_States[i] = state;
 
+			DWORD dwResult;
+			dwResult = XInputGetState((DWORD)i, &m_States[i]);
+			if (dwResult != ERROR_SUCCESS)
+				m_ControllerConected = false;
+		}
+		m_SkipPlayer[i] = false;
+	}
 
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -37,29 +42,35 @@ bool InputManager::ProcessInput()
 	return true;
 }
 
-bool InputManager::IsPressed(ControllerButton button) const
+std::pair<bool, int> InputManager::IsPressed(ControllerButton button) const
 {
-	if ((m_States.Gamepad.wButtons & (WORD)button) == (WORD)button)
-		return true;
+	for (int i{}; i < XUSER_MAX_COUNT; ++i) {
+		if ((m_States[i].Gamepad.wButtons & (WORD)button) == (WORD)button)
+			return { true, i };
+	}
 
-	if(GetKeyboardState((PBYTE)button))
-		return true;
+	if (GetKeyboardState((PBYTE)button))
+		return { true, 0 };
 
-	return false;
+	return { false,0 };
 }
 
 void InputManager::HandleInput()
 {
 	for (auto& button : m_Buttons)
 	{
-		if (IsPressed(button.first))
-			button.second->Execute();
+		if (IsPressed(button.first).first)
+			button.second->Execute(IsPressed(button.first).second);
 			
 	}
 }
 
-
 void InputManager::AssignButton(ControllerButton button, Command *pointer)
 {
 	m_Buttons[button] = pointer;
+}
+
+void InputManager::ForceButton(ControllerButton button, int player) {
+	m_States[player].Gamepad.wButtons = (WORD)button;
+	m_SkipPlayer[player] = true;
 }

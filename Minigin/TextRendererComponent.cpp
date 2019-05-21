@@ -21,9 +21,10 @@ void TextRendererComponent::Update(const float elapsedTime)
 
 	if (m_TextObject != nullptr) {
 		m_TextObject->Update(elapsedTime);
+		m_TextObject->SetPosition(m_GameObject->GetPos().x, m_GameObject->GetPos().y);
 	}
 
-
+	
 	
 	
 }
@@ -36,6 +37,6 @@ void TextRendererComponent::Draw()
 void TextRendererComponent::Initialize()
 {
 	m_TextObject = new dae::TextObject(m_Text, m_Font);
-	m_TextObject->SetPosition(20, 20);//own position <-
+	m_TextObject->SetPosition(m_GameObject->GetPos().x, m_GameObject->GetPos().y);
 }
 

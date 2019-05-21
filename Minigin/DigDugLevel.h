@@ -12,6 +12,8 @@ private:
 	GridLevel* m_GridLevel;
 	InputComponent* m_Inputcomponent;
 	DiggerCharacterComponent* m_PlayerCharacter;
+	Subject *m_Subject;
+	ScoreDisplay *m_ScoreDisplay;
 
 	enum Actions
 	{

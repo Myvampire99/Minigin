@@ -41,8 +41,8 @@ protected:
 	bool ForceStop;
 private:
 
-
 	float m_Speed;
+public:
 	int	Xleft, Xright, Yup, Ydown;
 
 

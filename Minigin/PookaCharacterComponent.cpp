@@ -2,10 +2,13 @@
 #include "PookaCharacterComponent.h"
 
 
-PookaCharacterComponent::PookaCharacterComponent()
+PookaCharacterComponent::PookaCharacterComponent(GridLevel *level)
 	:BaseCharacterComponent()
 	, m_InflatesBeforeDeath{3}
 	, m_CurrentInflation{}
+	, m_Level{ level }
+	, m_PrevPos{}
+	, ScoreIfDead{200}
 {
 }
 
@@ -14,6 +17,14 @@ PookaCharacterComponent::~PookaCharacterComponent()
 {
 }
 
+int PookaCharacterComponent::GetScore() {
+	if (m_GameObject->GetPos().y < m_Level->GetPosFromID(0).y + m_Level->GetHeight() / 2.f*m_Level->GetBlockSize()) {
+		return int(ScoreIfDead * 2.f);
+	}
+	return (int)ScoreIfDead;
+}
+
+
 
 int PookaCharacterComponent::GetInflateState() {
 	return m_CurrentInflation;
@@ -21,4 +32,37 @@ int PookaCharacterComponent::GetInflateState() {
 
 void PookaCharacterComponent::SetInflationState(int inf) {
 	m_CurrentInflation = inf;
+}
+
+void PookaCharacterComponent::LocalUpdate(const float elapsedTime) {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
+	if (dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithPos(m_GameObject->GetPos()))) {
+
+		m_PrevPos = m_GameObject->GetPos();
+	}
+	else
+	{
+		m_GameObject->SetPosition(m_PrevPos.x, m_PrevPos.y);
+	}
+
+	emptyDir.rem();
+
+	int ID = m_Level->GetClosestIDViaPos(m_GameObject->GetPos());
+
+	if (dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(ID, GridLevel::Dir::Up)))
+		emptyDir.up = true;
+	if (dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(ID, GridLevel::Dir::Down)))
+		emptyDir.down = true;
+	if (dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(ID, GridLevel::Dir::Left)))
+		emptyDir.left = true;
+	if (dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(ID, GridLevel::Dir::Right)))
+		emptyDir.right = true;
+
+
+}
+
+
+PookaCharacterComponent::EmptyDir PookaCharacterComponent::GetEmptyDir() {
+	return emptyDir;
 }

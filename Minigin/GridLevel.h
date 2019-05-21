@@ -72,8 +72,31 @@ public:
 
 	bool InsideBounds(int ID);
 
-	void FillRow(int row, LevelObject* object);
-	void FillCollumn(int col, LevelObject* object);
+//	void FillRow(int row, LevelObject* object);
+//	void FillCollumn(int col, LevelObject* object);
+//
+//
+//public:
+//
+//
+//	template <class T>
+//	void FillRow(int row, T* object) {
+//		for (int i{ row*m_Width }; i < row*m_Width + m_Width; ++i) {
+//			//TODO: delete old ones
+//			if(dynamic_cast<LevelObject*>(object))
+//				ChangeBlock(new T* (object), i);
+//		}
+//		//TODO: Delete object maybe
+//	}
+//
+//	template <class T>
+//	void FillCollumn(int col, T* object) {
+//		for (int i{ col }; i < m_Height; i += col) {
+//			//TODO: delete old ones 
+//			if (dynamic_cast<LevelObject*>(object))
+//				ChangeBlock(object, i);
+//		}
+//	}
 
 };
 
