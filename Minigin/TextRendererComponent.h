@@ -6,7 +6,7 @@ class TextRendererComponent : public BaseComponent
 {
 public:
 	TextRendererComponent(const std::string& text, std::shared_ptr<dae::Font> font);
-	~TextRendererComponent() = default;
+	~TextRendererComponent();
 
 	void SetText(std::string txt);
 protected:

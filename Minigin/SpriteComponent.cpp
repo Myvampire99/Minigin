@@ -17,7 +17,12 @@ void dae::SpriteComponent::SetPause(bool pause) {
 
 dae::SpriteComponent::~SpriteComponent()
 {
-}//TODO: delete things
+	for (auto sprite : m_Sprites) {
+		delete sprite.second;
+		sprite.second = nullptr;
+	}
+	m_Sprites.clear();
+}
 
 void dae::SpriteComponent::Update(const float elapsedTime)
 {
@@ -45,13 +50,11 @@ void dae::SpriteComponent::Initialize()
 
 void dae::SpriteComponent::AddSprite(int ID, dae::Sprite *sprite)
 {
-	//mabye check if same id or return something if bc map
 	m_Sprites.insert({ ID, sprite });
 }
 
 void dae::SpriteComponent::AddSprite(int ID, const std::string& path, int nrCols, int nrRows, int maxActs, float framePerSec)
 {
-	//mabye check if same id or return something if bc map
 	m_Sprites.insert({ ID, new Sprite{path,nrCols,nrRows,maxActs,framePerSec} });
 }
 

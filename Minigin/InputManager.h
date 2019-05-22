@@ -26,6 +26,7 @@ public:
 	std::pair<bool, int> IsPressed(ControllerButton button) const;
 
 	InputManager();
+	~InputManager();
 
 	//template<class T>
 	void AssignButton(ControllerButton button, Command *pointer);

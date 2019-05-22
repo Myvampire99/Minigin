@@ -6,6 +6,14 @@ InputManager::InputManager()
 {
 }
 
+InputManager::~InputManager() {
+	for (auto p : m_Buttons) {
+		delete p.second;
+		p.second = nullptr;
+	}
+	m_Buttons.clear();
+}
+
 bool InputManager::ProcessInput()
 {
 

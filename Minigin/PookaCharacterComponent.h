@@ -31,10 +31,11 @@ public:
 private:
 	EmptyDir emptyDir;
 	float ScoreIfDead;
+	Subject *m_Subject;
 public:
 	EmptyDir GetEmptyDir();
 
 	int GetScore();
-
+	void SetSubject(Subject * sub);
 };
 

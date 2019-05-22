@@ -11,9 +11,25 @@ GridLevel::GridLevel(int m_Width, int m_Height,float blockSize,dae::Vector2 m_Po
 {}
 
 GridLevel::~GridLevel()
-{}
+{
+	for (auto p : m_Objects) {
+		delete p;
+		p = nullptr;
+	}
+	m_Objects.clear();
 
-//const LevelObject* GetType
+	for (auto p : m_FreeBlocks) {
+		delete p.first;
+	}
+	m_Objects.clear();
+
+	
+}
+
+void GridLevel::RemoveBlock(int ID) {
+	delete m_Objects[ID];
+	m_Objects[ID] = nullptr;
+}
 
 void GridLevel::SetWalkable(int ID, bool IsWalkable) {
 	m_Objects[ID]->SetWalkable(IsWalkable);
@@ -25,6 +41,7 @@ bool  GridLevel::IsWalkable(int ID) {
 
 void GridLevel::ChangeBlock(LevelObject* object, dae::Vector2 posInGrid) {
 	int id = int(posInGrid.x+posInGrid.y*m_Width);
+	RemoveBlock(id);
 	ChangeBlock(object, id);
 }
 
@@ -55,6 +72,7 @@ std::pair<bool, dae::Vector2>  GridLevel::IsInNotWalkable(dae::Vector2 pos, dae:
 void GridLevel::ChangeBlock(LevelObject* object, int id) {
 	//auto obj = new LevelObject(*object);
 	object->SetPos(m_Objects[id]->GetPos());
+	RemoveBlock(id);
 	m_Objects[id] = object;
 	//TODO: delete block
 }

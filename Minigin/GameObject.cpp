@@ -1,7 +1,16 @@
 #include "MiniginPCH.h"
 #include "GameObject.h"
 
-dae::GameObject::~GameObject() = default;
+dae::GameObject::~GameObject()
+{
+	for (auto p : m_pComponents) {
+		if (p) {
+			delete p;
+			p = nullptr;
+		}
+	}
+	m_pComponents.clear();
+}
 
 dae::GameObject::GameObject() {
 	mTransform = new dae::Transform();

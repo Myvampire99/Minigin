@@ -13,7 +13,6 @@ public:
 
 private:
 	bool m_Enabled;
-	//bool m_
 	PookaState *m_State;
 
 	InputComponent *m_Input;

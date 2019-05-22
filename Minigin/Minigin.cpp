@@ -1,7 +1,6 @@
 #include "MiniginPCH.h"
 #include "Minigin.h"
 #include "Scene.h"
-#include "TestScene.h"
 #include "DigDugLevel.h"
 
 void dae::Minigin::Initialize()

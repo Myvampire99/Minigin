@@ -24,7 +24,9 @@ int PookaCharacterComponent::GetScore() {
 	return (int)ScoreIfDead;
 }
 
-
+void PookaCharacterComponent::SetSubject(Subject * sub) {
+	m_Subject = sub;
+}
 
 int PookaCharacterComponent::GetInflateState() {
 	return m_CurrentInflation;
@@ -32,6 +34,8 @@ int PookaCharacterComponent::GetInflateState() {
 
 void PookaCharacterComponent::SetInflationState(int inf) {
 	m_CurrentInflation = inf;
+	if(m_CurrentInflation > m_InflatesBeforeDeath)
+		m_Subject->Notify(m_GameObject, Event::EVENT_DIED);
 }
 
 void PookaCharacterComponent::LocalUpdate(const float elapsedTime) {
@@ -59,6 +63,30 @@ void PookaCharacterComponent::LocalUpdate(const float elapsedTime) {
 	if (dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(ID, GridLevel::Dir::Right)))
 		emptyDir.right = true;
 
+	auto collision = m_GameObject->GetComponent<CollisionComponent>()->GetCollisions()[0];
+	//for (auto cc : collision->GetCurrentCollisions()) {
+	//	if (cc == collision) {
+
+	//	}
+	//}
+
+
+
+
+	int count = (int)collision->GetCurrentCollisions().size();
+	if (count != 0) {
+		for (auto coll : collision->GetCurrentCollisions()) {
+			if (!coll->IsTrigger()) {
+				for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
+					if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
+					{
+						m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+					}
+				}
+
+			}
+		}
+	}
 
 }
 

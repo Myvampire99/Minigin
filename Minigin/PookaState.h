@@ -1,7 +1,10 @@
 #pragma once
+#include "InputManager.h"
+
 class WanderingState;
 class FollowState;
 class PlayerState;
+
 class PookaState
 {
 public:
@@ -9,7 +12,7 @@ public:
 	virtual void update(InputComponent* input, PookaCharacterComponent *pooka) { UNREFERENCED_PARAMETER(input); UNREFERENCED_PARAMETER(pooka);
 	};
 
-	//static WanderingState wandering;
+	static WanderingState wandering;
 	//static FollowState follow;
 	//static PlayerState state;
 	int player = 1;
@@ -17,7 +20,7 @@ public:
 
 class WanderingState : public PookaState
 {
-	//WanderingState();
+	WanderingState() : m_CurrentDir() {};
 	~WanderingState()  {}
 	void update(InputComponent* input, PookaCharacterComponent *pooka) override
 	{

@@ -10,6 +10,19 @@ DigDugLevel::DigDugLevel()
 
 DigDugLevel::~DigDugLevel()
 {
+	//delete m_GridLevel;
+	//m_GridLevel = nullptr;
+	//delete m_Inputcomponent;
+	//m_Inputcomponent = nullptr;
+	//delete m_PlayerCharacter;
+	//m_PlayerCharacter = nullptr;
+	delete m_Subject;
+	m_Subject = nullptr;
+	//if (m_ScoreDisplay)
+	//{
+	//	delete m_ScoreDisplay;
+	//	m_ScoreDisplay = nullptr;
+	//}
 }
 
 void DigDugLevel::SceneUpdate() {
@@ -59,8 +72,8 @@ void DigDugLevel::SceneInitialize() {
 	auto *Rock = new RockBlock("Resources/Textures/Rock.png", m_GridLevel, new CollisionBox({ 0.f ,0.f }, SizeBlockGrid, SizeBlockGrid));
 	Rock->SetSize(SizeBlockGrid);
 	Rock->SetSubject(m_Subject);
-	levelGameObject->GetComponent<GridLevel>()->ChangeBlock(Rock, 17);
-	levelGameObject->GetComponent<GridLevel>()->SetWalkable(17,false);
+	levelGameObject->GetComponent<GridLevel>()->ChangeBlock(Rock, 20);
+	levelGameObject->GetComponent<GridLevel>()->SetWalkable(20,false);
 
 	//m_GridLevel->FillRow(HeightGrid, new BorderBlock(new CollisionBox({ 999,999 }, SizeBlockGrid, SizeBlockGrid)));
 
@@ -117,6 +130,7 @@ void DigDugLevel::SceneInitialize() {
 	m_Player->SetPosition(300.f, 300.f);
 
 	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player);
+	m_Player->GetComponent<DiggerCharacterComponent>()->SetSubject(m_Subject);
 	Add(m_Player);
 	//
 
@@ -160,7 +174,7 @@ void DigDugLevel::SceneInitialize() {
 	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f })+1);
 	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f })-1);
 	///
-
+	Pooka->GetComponent<PookaCharacterComponent>()->SetSubject(m_Subject);
 	Add(Pooka);
 
 	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(Pooka);
@@ -173,9 +187,9 @@ void DigDugLevel::SceneInitialize() {
 	auto score = std::make_shared<dae::GameObject>();
 	auto health = std::make_shared<dae::GameObject>();
 
-	///font
+	//font
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	///
+	
 
 	score->AddComponent(new TextRendererComponent("0", font));
 	health->AddComponent(new TextRendererComponent("0", font));

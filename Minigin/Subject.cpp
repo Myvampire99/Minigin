@@ -9,6 +9,11 @@ Subject::Subject()
 
 Subject::~Subject()
 {
+	for (auto p : m_Observer) {
+		delete p;
+		p = nullptr;
+	}
+	m_Observer.clear();
 }
 
 void Subject::AddObserver(Observer * observer)

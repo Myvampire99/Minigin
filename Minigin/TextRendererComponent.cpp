@@ -10,6 +10,11 @@ TextRendererComponent::TextRendererComponent(const std::string& text, std::share
 	, m_TextObject{nullptr}
 {}
 
+TextRendererComponent::~TextRendererComponent() {
+	delete m_TextObject;
+	m_TextObject = nullptr;
+}
+
 void TextRendererComponent::SetText(std::string txt)
 {
 	m_Text = txt;

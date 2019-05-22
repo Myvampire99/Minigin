@@ -19,7 +19,7 @@ void BaseCharacterComponent::Update(const float elapsedTime)
 	
 
 	UNREFERENCED_PARAMETER(elapsedTime);
-	//TODO: Maybe if no InputComponent, do other things
+	//Maybe if no InputComponent, do other things
 	if(m_Input->NeedUpdate())
 	{
 		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Xleft), new PlayerLeft());
@@ -94,9 +94,6 @@ void BaseCharacterComponent::Initialize()
 
 void BaseCharacterComponent::Draw() {
 
-//	if (m_DirectionState == Direction::Left || m_DirectionState == Direction::Down)
-
-//	else
 }
 
 void BaseCharacterComponent::localIni() {

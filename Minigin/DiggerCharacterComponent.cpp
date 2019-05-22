@@ -27,6 +27,10 @@ DiggerCharacterComponent::~DiggerCharacterComponent()
 {
 }
 
+void DiggerCharacterComponent::SetSubject(Subject * sub) {
+	m_Subject = sub;
+}
+
 void DiggerCharacterComponent::SetWidth(float width) {
 	m_WidthSprite = width;
 }
@@ -59,6 +63,7 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 	{
 	case FireStates::Idle:
 
+		m_PumpColl->SetPosition({0.f,0.f});
 		m_CurrentElapsedThrow = 0;
 		m_CurrentThrowPos = *m_GameObject->GetTransform();
 		ForceStop = false;

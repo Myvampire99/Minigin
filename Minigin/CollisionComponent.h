@@ -2,7 +2,6 @@
 class CollisionComponent : public BaseComponent
 {
 public:
-	//TODO: Angle from m_GameObject
 	CollisionComponent();
 	~CollisionComponent();
 

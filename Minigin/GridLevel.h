@@ -13,6 +13,8 @@ public:
 
 
 private:
+	void RemoveBlock(int ID);
+
 	int m_Width;
 	int m_Height;
 	float m_BlockSize;
@@ -26,7 +28,7 @@ private:
 	//Only values between 0 - 1
 	dae::Vector2 GetClosestPosOnLineInSquare(dae::Vector2 pos, int ID);
 
-	dae::Vector2 m_Offset;//TODO: make offfset
+	dae::Vector2 m_Offset;
 	std::map<LevelObject*, dae::Vector2> m_FreeBlocks;
 
 	
@@ -71,32 +73,5 @@ public:
 	void SetOffset(dae::Vector2 offset);
 
 	bool InsideBounds(int ID);
-
-//	void FillRow(int row, LevelObject* object);
-//	void FillCollumn(int col, LevelObject* object);
-//
-//
-//public:
-//
-//
-//	template <class T>
-//	void FillRow(int row, T* object) {
-//		for (int i{ row*m_Width }; i < row*m_Width + m_Width; ++i) {
-//			//TODO: delete old ones
-//			if(dynamic_cast<LevelObject*>(object))
-//				ChangeBlock(new T* (object), i);
-//		}
-//		//TODO: Delete object maybe
-//	}
-//
-//	template <class T>
-//	void FillCollumn(int col, T* object) {
-//		for (int i{ col }; i < m_Height; i += col) {
-//			//TODO: delete old ones 
-//			if (dynamic_cast<LevelObject*>(object))
-//				ChangeBlock(object, i);
-//		}
-//	}
-
 };
 

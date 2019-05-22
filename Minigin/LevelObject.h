@@ -10,7 +10,6 @@ public:
 	void Draw();
 	virtual void Initialize();
 
-	//void SetTexture(dae::Texture2D * texture);
 	void SetPos(dae::Vector2 pos);
 	void SetSize(float size);
 	dae::Vector2 GetPos();

@@ -3,6 +3,7 @@
 
 class CollisionObject;
 class CollisionComponent;
+class Subject;
 class DiggerCharacterComponent : public BaseCharacterComponent
 {
 public:
@@ -17,6 +18,7 @@ public:
 	bool IsDigging();
 	int GetLives();
 	void SetLives(int lives);
+	void SetSubject(Subject * sub);
 
 private:
 	GridLevel* m_Level;
@@ -48,5 +50,6 @@ private:
 	bool m_PressedInflationButton;
 
 	int m_Lives;
+	Subject *m_Subject;
 };
 

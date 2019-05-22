@@ -22,6 +22,5 @@ protected:
 private:
 	std::vector<CollisionObject*> m_CurrentCollisions;
 	bool m_IsTrigger;
-	//TODO: delete somewhere
 };
 

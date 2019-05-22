@@ -6,7 +6,7 @@ AIComponent::AIComponent(InputComponent* input, PookaCharacterComponent *pooka)
 	:m_Input{ input }
 	, m_Pooka{ pooka }
 {
-	m_State = new WanderingState;//&PookaState::wandering;
+	m_State = new PookaState;//&PookaState::wandering;
 }
 
 

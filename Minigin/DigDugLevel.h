@@ -13,7 +13,7 @@ private:
 	InputComponent* m_Inputcomponent;
 	DiggerCharacterComponent* m_PlayerCharacter;
 	Subject *m_Subject;
-	ScoreDisplay *m_ScoreDisplay;
+	ScoreDisplay *m_ScoreDisplay = nullptr;
 
 	enum Actions
 	{

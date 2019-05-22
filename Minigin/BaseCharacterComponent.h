@@ -12,7 +12,7 @@ public:
 	virtual void Draw();
 	void Initialize() override;
 
-	void SetSpeed(float speed);
+	//void SetSpeed(float speed);
 	void AssignButton(int XLEFT, int XRIGHT, int YUP, int YDOWN);
 
 	//Gets vertical flip and horizonal flip

@@ -9,6 +9,10 @@ CollisionManager::CollisionManager()
 
 CollisionManager::~CollisionManager()
 {
+	for (auto p : m_Objects)
+		delete p;
+
+	m_Objects.clear();
 }
 
 void CollisionManager::Update() {
@@ -35,7 +39,11 @@ void CollisionManager::AddCollision(CollisionObject* object) {
 
 void CollisionManager::Remove(CollisionObject* object) {
 	for (int i{}; i < m_Objects.size(); ++i) {
-		if (m_Objects[i] == object)
+		if (m_Objects[i] == object) {
+			delete m_Objects[i];
+			m_Objects[i] = nullptr;
 			m_Objects.erase(m_Objects.begin() + i);
+		}
+		
 	}
 }
