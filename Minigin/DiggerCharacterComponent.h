@@ -7,7 +7,7 @@ class Subject;
 class DiggerCharacterComponent : public BaseCharacterComponent
 {
 public:
-	DiggerCharacterComponent(GridLevel* level);//, CollisionComponent* collision);
+	DiggerCharacterComponent(GridLevel* level);
 	~DiggerCharacterComponent();
 
 	void Fire();
@@ -32,7 +32,6 @@ private:
 		Idle
 	};
 
-	//CollisionObject* m_Collision;
 	dae::Vector2 m_StartPos;
 
 	FireStates m_FireState;
@@ -41,7 +40,7 @@ private:
 	float m_DistanceThrow;
 
 	std::shared_ptr<dae::Texture2D> m_Sling;
-	int fire;//TODO: change this hardcoded thing
+	int fire;
 	void localIni() override;
 
 	bool m_IsDigging;

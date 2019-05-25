@@ -1,8 +1,6 @@
 #pragma once
 #include "SceneObject.h"
 
-//#include "Transform.h"
-//class BaseComponent;
 	class BaseComponent;
 
 namespace dae
@@ -14,9 +12,10 @@ namespace dae
 
 		void SetEnabled(bool enabled);
 		bool GetEnabled();
-		void MarkForDelete();
+		void MarkForDelete(bool marked = true);
 		bool GetMarkForDelete();
 
+		
 		void Update(const float elapsedTime) override;
 		void Render() const override;
 		void Initialize() override;
@@ -46,6 +45,20 @@ namespace dae
 		bool m_Enabled;
 		bool MarkedForDelete = false;
 	public:
+
+		template <class T>
+		void RemoveComponent()
+		{
+			for (unsigned int i{};i< m_pComponents.size();++i){
+				if (dynamic_cast<T*>(m_pComponents[i]) != nullptr) {
+					delete m_pComponents[i];
+					m_pComponents.erase(m_pComponents.begin()+i);
+					return;
+				}
+			}
+		}
+
+
 		template <class T>
 		T* GetComponent()
 		{

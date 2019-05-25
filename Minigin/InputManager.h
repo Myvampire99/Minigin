@@ -41,6 +41,3 @@ private:
 
 	bool m_SkipPlayer[4];
 };
-
-
-//template<class T>

@@ -20,7 +20,6 @@ void dae::Renderer::Render()
 {
 	SDL_RenderClear(mRenderer);
 
-//	SceneManager::GetInstanceScene().Render();
 	Singleton<SceneManager>::GetInstance().Render();
 
 	SDL_RenderPresent(mRenderer);
@@ -51,13 +50,6 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.x = static_cast<int>(x);
 	dst.y = static_cast<int>(y);
 	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-
-	//Done automaticly if nullptr
-	//SDL_Point center;
-	//center.x = dst.x + dst.w / 2.f;
-	//center.x = dst.y + dst.h / 2.f;
-
-	//SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, double(angle), nullptr, SDL_FLIP_NONE);
 }
 
@@ -89,7 +81,6 @@ void dae::Renderer::RenderTexture(const Texture2D& texture,const dae::Vector2& D
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
 	else
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst, 0, nullptr, SDL_FLIP_VERTICAL);
-	//TODO: Make Vertical and Horizontal
 }
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const dae::Vector2& DestPos, const dae::Vector2& SrcPos, const dae::Vector2& DestWH, const dae::Vector2& SrcWH, float angle, const dae::Vector2& center, bool flipVert,bool flipHor,float scale) const
@@ -115,10 +106,6 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const dae::Vector2& 
 	UNREFERENCED_PARAMETER(angle);
 	UNREFERENCED_PARAMETER(center);
 
-	//SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst);
-
-
-	//TODO: Cant do 2 flips at once
 	if(!flipVert && !flipHor)
 		SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &src, &dst, double(angle), &point, SDL_FLIP_NONE);
 	else if (flipVert) {

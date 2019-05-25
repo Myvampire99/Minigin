@@ -1,7 +1,7 @@
 #include "MiniginPCH.h"
 #include "DiggerCharacterComponent.h"
 
-DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)//, CollisionComponent* collision)
+DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)
 	: BaseCharacterComponent()
 	, m_Level(level)
 	, m_LastID(0)
@@ -17,10 +17,9 @@ DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)//, Collisio
 	, m_PressedInflationButton{false}
 	, m_Lives{3}
 {
-	//m_Collision = collision->GetCollisions()[0];
 	m_Sling = dae::ResourceManager::GetInstance().LoadTexture("Resources/Textures/sling.png");
 	m_PumpColl = new CollisionBox{ {m_CurrentThrowPos.GetPosition2D()},5,5 };
-	dae::Singleton<CollisionManager>::GetInstanceScene().AddCollision(m_PumpColl);
+	dae::Singleton<CollisionManager>::GetInstance().AddCollision(m_PumpColl);
 	
 }
 
@@ -58,8 +57,7 @@ void DiggerCharacterComponent::SetLives(int lives) {
 void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 	UNREFERENCED_PARAMETER(elapsedTime);
 	int currentID = m_Level->GetClosestIDViaPos(m_GameObject->GetPos());
-	//But is the check really enccacry?
-	if (currentID + 1 == m_LastID || currentID - 1 == m_LastID || currentID + m_Level->GetWidth() == m_LastID || currentID - m_Level->GetWidth() == m_LastID)//TODO:doesnt check if block next to it is out the level
+	if (currentID + 1 == m_LastID || currentID - 1 == m_LastID || currentID + m_Level->GetWidth() == m_LastID || currentID - m_Level->GetWidth() == m_LastID)
 	{
 		if(m_Level->GetObjectWithID(currentID))
 			m_Level->ChangeBlock(new EmptyBlock(), currentID);
@@ -102,7 +100,7 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 
 		if (m_PumpColl->GetCurrentCollisions().size() != 0)
 		{
-			for (std::shared_ptr<dae::GameObject> player : dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayers()) {
+			for (std::shared_ptr<dae::GameObject> player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
 				if (player.get() != m_GameObject) {
 					if (dynamic_cast<PookaCharacterComponent*>(player->GetComponent<PookaCharacterComponent>()) || dynamic_cast<FygarCharacterComponent*>(player->GetComponent<FygarCharacterComponent>())) {
 						for (auto collision : player->GetComponent<CollisionComponent>()->GetCollisions()) {
@@ -178,11 +176,11 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 				m_IsDigging = true;
 			break;
 		case Down:
-			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y }), GridLevel::Dir::Up)))//TODO: wtf up and down are switched
+			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y }), GridLevel::Dir::Up)))
 				m_IsDigging = true;
 			break;
 		case Up:
-			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y}), GridLevel::Dir::Down)))//TODO: wtf up and down are switched
+			if (!dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x ,m_GameObject->GetPos().y}), GridLevel::Dir::Down)))
 				m_IsDigging = true;
 			break;
 		default:;
@@ -198,58 +196,28 @@ bool DiggerCharacterComponent::IsDigging() {
 }
 
 
-//TODO: Draw in the base
 void DiggerCharacterComponent::Draw() {
 
 	float scale = m_GameObject->GetTransform()->GetScale();
 
 	int width{}, height{};
 	SDL_QueryTexture(m_Sling->GetSDLTexture(), nullptr, nullptr, &width, &height);
-	//TODO: somewhere else
-	//width *= (int)scale;
-	//height *= (int)scale;
+
 
 	m_DistanceThrow = (float)width;
-	//
-	//dae::Vector2 destWH{ m_CurrentThrowPos.GetPosition2D().x - m_GameObject->GetPos().x , (float)height};
 	dae::Vector2 destWH{ m_CurrentThrowPos.GetPosition2D().DistanceTo({m_GameObject->GetPos().x ,m_GameObject->GetPos().y}), (float)height };
 	dae::Vector2 src{ width - destWH.x,0.f };
 	
 
-	//dae::Renderer::GetInstance().RenderTexture(*m_Sling, m_GameObject->GetPos(), src, destWH, destWH);
-	
-	//TODO: not needed to draw if not action
-	
-	
-	
-
-
-
-
 	
 	dae::Renderer::GetInstance().RenderTexture(*m_Sling, { m_GameObject->GetPos().x , m_GameObject->GetPos().y }, src, destWH, destWH, m_GameObject->GetTransform()->GetAngle(), { (float)width/4.f,height / 2.f }, false, false, scale);
-	//m_Sprites[m_CurrentState]->Draw(m_GameObject->GetPos(), scale, m_FlipSpriteVert, m_FlipSpriteHor, m_GameObject->GetTransform()->GetAngle(), center);
-	
-	
-	
 
 	
-
-
-
-	
-
-
-
-	//	dae::Renderer::GetInstance().RenderTexture(*m_Sling, m_GameObject->GetPos(), src, destWH, destWH, m_GameObject->GetTransform()->GetAngle(), m_GameObject->GetPos());
-	//dae::Renderer::GetInstance().RenderTexture(*m_Sling, m_GameObject->GetPos(), src, destWH, destWH, m_GameObject->GetTransform()->GetAngle(),{0,0});	
-
-	//TODO: {0,0} or _GameObject->GetPos()
 }
 
 void DiggerCharacterComponent::Fire() {
 	
-	if (!ForceStop) {//TODO: Maybe other var
+	if (!ForceStop) {
 		m_FireState = FireStates::Throwing;
 	}
 	else {
@@ -258,5 +226,5 @@ void DiggerCharacterComponent::Fire() {
 }
 
 void DiggerCharacterComponent::localIni() {
-	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(fire), new PlayerFire(), m_Input->GetPlayerID());//TODO: harcoded for debug purp
+	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(fire), new PlayerFire(), m_Input->GetPlayerID());
 }

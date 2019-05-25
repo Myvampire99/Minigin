@@ -47,34 +47,19 @@ void GridLevel::ChangeBlock(LevelObject* object, dae::Vector2 posInGrid) {
 
 
 std::pair<bool, dae::Vector2>  GridLevel::IsInNotWalkable(dae::Vector2 pos, dae::Vector2 WH) {
-	//TODO: pos not over all objects
 	int ID = GetClosestIDViaPos(pos);
-
-	/*if (WH.x == 0.f && WH.y == 0.f)
-		return std::make_pair<bool, dae::Vector2>(!m_Objects[ID]->IsWalkable(), {});*/
 
 	UNREFERENCED_PARAMETER(WH);
 	UNREFERENCED_PARAMETER(ID);
-
-	//if (!m_Objects[GetClosestIDViaPos(pos)]->IsWalkable())
-	//	return std::make_pair<bool, dae::Vector2>(true, );
-	//if (!m_Objects[GetClosestIDViaPos({pos .x + WH.x,pos.y})]->IsWalkable())//&& GetClosestIDViaPos({ pos.x + WH.x,pos.y }) == ID
-	//	return true;
-	//if (!m_Objects[GetClosestIDViaPos({ pos.x + WH.x,pos.y + WH.y })]->IsWalkable() )
-	//	return true;
-	//if (!m_Objects[GetClosestIDViaPos({ pos.x ,pos.y + WH.y })]->IsWalkable())
-	//	return true;
 
 	return std::make_pair<bool, dae::Vector2>(false, {0.f,0.f});
 
 }
 
 void GridLevel::ChangeBlock(LevelObject* object, int id) {
-	//auto obj = new LevelObject(*object);
 	object->SetPos(m_Objects[id]->GetPos());
 	RemoveBlock(id);
 	m_Objects[id] = object;
-	//TODO: delete block
 }
 
 void GridLevel::AddBlock(LevelObject* object, int id) {
@@ -125,7 +110,6 @@ void GridLevel::Initialize() {
 dae::Vector2 GridLevel::GetPosFromID(int ID) {
 	float x = m_Position.x + (ID % m_Width)*m_BlockSize;
 	float y = m_Position.y + float(ID /int(m_Height))*m_BlockSize;
-	//TODO: ERROR WHEN OUTSIDE
 	return { x,y };
 }
 
@@ -141,8 +125,7 @@ void GridLevel::FreeBlock(LevelObject* freedBlock, LevelObject* replacment) {
 }
 
 void GridLevel::LockBlock(LevelObject* lockBlock,int ID) {
-	//m_FreeBlocks[lockBlock] = m_Objects[GetID(freedBlock)]->GetPos();
-	//TODO: delete freeblocks lockblock inside map
+	delete m_Objects[ID];
 	m_Objects[ID] = lockBlock;
 	lockBlock->SetPos(GetPosFromID(ID));
 }
@@ -181,8 +164,6 @@ dae::Vector2 GridLevel::GetClosestPosOnLine(const dae::Vector2 &currentPos) {
 	float dy = fy - floor(fy);
 	float dx = fx - floor(fx);
 
-	//dae::Vector2 finalPos = GetPosFromID(int(fy)*m_Width + int(fx));
-	//dae::Vector2 finalPos = GetClosestPosOnLineInSquare(currentPos, int(fy)*m_Width + int(fx));
 	dae::Vector2 finalPos = GetClosestPointViaPos(currentPos);
 
 	if (dy == 0 || dx == 0)
@@ -229,7 +210,7 @@ int GridLevel::GetHeight() {
 	return m_Height;
 }
 
-bool GridLevel::InsideBounds(int ID) {
+bool GridLevel::InsideBounds(unsigned int ID) {
 	if (ID < 0 || ID >= m_Objects.size())
 		return false;
 	return true;
@@ -249,22 +230,18 @@ LevelObject* GridLevel::GetObjectWithID(int ID, Dir dir) {
 	case Left:
 		if (x != 0 && InsideBounds(ID - 1))
 			return m_Objects[ID - 1];
-		//else //TODO: Execption or something
 		break;
 	case Right:
 		if (x != m_Width && InsideBounds(ID + 1))
 			return m_Objects[ID + 1];
-		//else //TODO: Execption or something
 		break;
 	case Up:
 		if (InsideBounds(ID - m_Width))
 			return m_Objects[ID - m_Width];
-		//else //TODO: Execption or something
 		break;
 	case Down:
 		if (InsideBounds(ID + m_Width))
 			return m_Objects[ID + m_Width];
-		//else //TODO: Execption or something
 		break;
 	}
 	return nullptr;
@@ -280,7 +257,7 @@ LevelObject* GridLevel::GetObjectWithPos(dae::Vector2 pos) {
 }
 
 int GridLevel::GetID(const LevelObject* object) const{
-	for (int i{}; i < m_Objects.size(); ++i) {
+	for (unsigned int i{}; i < m_Objects.size(); ++i) {
 		if (m_Objects[i] == object)
 			return i;
 	}
@@ -300,14 +277,12 @@ dae::Vector2 GridLevel::GetClosestPointViaPos(dae::Vector2 pos) {
 	}
 	return point;
 }
-//TODO: MAybe one function instead of 2
 
-//TODO: Make this pos/width to ID and not over all objects
 int GridLevel::GetClosestIDViaPos(dae::Vector2 pos) const {
 	float smallest = m_BlockSize * 2;
 	int ID = -1;
 	float temp{ 0 };
-	for (int i{};i< m_Objects.size(); ++i) {
+	for (unsigned int i{};i< m_Objects.size(); ++i) {
 		
 		temp = m_Objects[i]->GetPos().DistanceTo(pos);
 		if (smallest > temp) {
@@ -318,7 +293,6 @@ int GridLevel::GetClosestIDViaPos(dae::Vector2 pos) const {
 	return ID;
 }
 
-//TODO: is beter than GetClosestPointViaPos but need to test first
 dae::Vector2 GridLevel::GetClosestPosOnLineInSquare(dae::Vector2 pos,int ID) {
 	
 	dae::Vector2 FirstIDPos = GetPosFromID(ID);
@@ -351,7 +325,3 @@ dae::Vector2 GridLevel::GetClosestPosOnLineInSquare(dae::Vector2 pos,int ID) {
 
 	return GetPosFromID(finalID);
 }
-
-//TODO: Enum for circle round
-//TODO: get next id in line etc....
-

@@ -10,28 +10,90 @@ DigDugLevel::DigDugLevel()
 
 DigDugLevel::~DigDugLevel()
 {
-	//delete m_GridLevel;
-	//m_GridLevel = nullptr;
-	//delete m_Inputcomponent;
-	//m_Inputcomponent = nullptr;
-	//delete m_PlayerCharacter;
-	//m_PlayerCharacter = nullptr;
-///	delete m_Subject;
-///	m_Subject = nullptr;
+	delete m_Subject;
+	m_Subject = nullptr;
+}
 
-	//dae::Singleton<ServiceLocator>::GetInstanceScene().RemoveAllPlayerObjects();
-	//dae::Singleton<CollisionManager>::GetInstanceScene().RemoveAll();
-	//if (m_ScoreDisplay)
-	//{
-	//	delete m_ScoreDisplay;
-	//	m_ScoreDisplay = nullptr;
-	//}
+void DigDugLevel::LocalReset() {
+
+	int widthGrid = 12;
+	int HeightGrid = 12;
+	float SizeBlockGrid = 30;
+
+	
+	for (int i{ }; i < (HeightGrid+1)*(widthGrid +1); ++i) {
+		auto *lvlObj = new LevelObject("Resources/Textures/Ground.png");
+		lvlObj->SetSize(SizeBlockGrid);
+		m_GridLevel->ChangeBlock(lvlObj,i);
+	}
+
+	auto *Rock = new RockBlock("Resources/Textures/Rock.png", m_GridLevel, new CollisionBox({ 0.f ,0.f }, SizeBlockGrid, SizeBlockGrid));
+	Rock->SetSize(SizeBlockGrid);
+	levelGameObject->GetComponent<GridLevel>()->ChangeBlock(Rock, 20);
+	levelGameObject->GetComponent<GridLevel>()->SetWalkable(20, false);
+
+	for (int i{ (HeightGrid + 1)*widthGrid }; i < (HeightGrid + 1)*widthGrid + widthGrid + 1; ++i) {
+		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
+	}
+	for (int i{  }; i < widthGrid + 1; ++i) {
+		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
+	}
+	for (int i{ 0 }; i < HeightGrid*widthGrid; i += widthGrid + 1) {
+		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
+	}
+	for (int i{ widthGrid }; i < (HeightGrid + 1)*widthGrid; i += widthGrid + 1) {
+		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
+	}
+
+	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 150.f, 150.f }));
+	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 150.f, 150.f }) + 1);
+	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 150.f, 150.f }) - 1);
+
+
+	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f }));
+	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f }) + 1);
+	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f }) - 1);
+
+	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 300.f, 300.f }));
+
+	m_Player->GetComponent<DiggerCharacterComponent>()->SetLives(3);
+	dae::Singleton<ServiceLocator>::GetInstance().GetHealthGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(3));
+
+
+	m_Player->SetPosition(300.f, 300.f);
+
+
+	auto FcollisionComponent = new CollisionComponent();
+	auto FcollisionBox = new CollisionBox({}, 26, 26);
+	FcollisionBox->SetIsTrigger(true);
+	FcollisionComponent->AddCollision(FcollisionBox);
+
+	Fygar->SetPosition(150.f, 150.f);
+	Fygar->SetEnabled(true);
+	Fygar->RemoveComponent<CollisionComponent>();
+	Fygar->AddComponent(FcollisionComponent);
+	Fygar->RemoveComponent<GridComponent>();
+	Fygar->AddComponent(new GridComponent(m_GridLevel, true));
+
+
+	auto PcollisionComponent = new CollisionComponent();
+	auto PcollisionBox = new CollisionBox({}, 26, 26);
+	PcollisionBox->SetIsTrigger(true);
+	PcollisionComponent->AddCollision(PcollisionBox);
+
+	Pooka->SetPosition(250.f, 250.f);
+	Pooka->SetEnabled(true);
+	Pooka->RemoveComponent<CollisionComponent>();
+	Pooka->AddComponent(PcollisionComponent);
+
+	Pooka->RemoveComponent<GridComponent>();
+	Pooka->AddComponent(new GridComponent(m_GridLevel, true));
 }
 
 void DigDugLevel::SceneUpdate() {
 	std::pair<bool, bool> VH = m_Player->GetComponent<BaseCharacterComponent>()->GetFlipVertnFlipHor();
-	m_Player->GetComponent<dae::SpriteComponent>()->FlipSprite(VH.second || VH.first, false);//TODO: this prob isnt the best way to do it
-	
+	m_Player->GetComponent<dae::SpriteComponent>()->FlipSprite(VH.second || VH.first, false);
+
 	m_Player->GetComponent<dae::SpriteComponent>()->SetPause(m_Player->GetComponent<BaseCharacterComponent>()->GetDirection() == BaseCharacterComponent::Direction::Idle);
 
 
@@ -40,10 +102,6 @@ void DigDugLevel::SceneUpdate() {
 	else
 		m_Player->GetComponent<dae::SpriteComponent>()->SetCurrentSprite(0);
 
-}
-
-void DigDugLevel::SetCopyIni() {
-	m_CopyIni = std::make_shared<DigDugLevel>();
 }
 
 void DigDugLevel::SceneInitialize() {
@@ -71,7 +129,7 @@ void DigDugLevel::SceneInitialize() {
 
 	//Grid
 	m_GridLevel = new GridLevel(widthGrid+1, HeightGrid+1, SizeBlockGrid, { SizeBlockGrid,SizeBlockGrid });
-	auto levelGameObject = std::make_shared<dae::GameObject>();
+	levelGameObject = std::make_shared<dae::GameObject>();
 	levelGameObject->AddComponent(m_GridLevel);
 	Add(levelGameObject);
 	//
@@ -80,14 +138,13 @@ void DigDugLevel::SceneInitialize() {
 	auto *lvlObj = new LevelObject("Resources/Textures/Ground.png");
 	lvlObj->SetSize(SizeBlockGrid);
 	levelGameObject->GetComponent<GridLevel>()->FillLevel(lvlObj);
+	delete lvlObj;
 
 	auto *Rock = new RockBlock("Resources/Textures/Rock.png", m_GridLevel, new CollisionBox({ 0.f ,0.f }, SizeBlockGrid, SizeBlockGrid));
 	Rock->SetSize(SizeBlockGrid);
 	Rock->SetSubject(m_Subject);
 	levelGameObject->GetComponent<GridLevel>()->ChangeBlock(Rock, 20);
 	levelGameObject->GetComponent<GridLevel>()->SetWalkable(20,false);
-
-	//m_GridLevel->FillRow(HeightGrid, new BorderBlock(new CollisionBox({ 999,999 }, SizeBlockGrid, SizeBlockGrid)));
 
 	for (int i{ (HeightGrid+1)*widthGrid }; i < (HeightGrid+1)*widthGrid + widthGrid+1; ++i) {
 		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)),i);
@@ -118,17 +175,19 @@ void DigDugLevel::SceneInitialize() {
 	m_Inputcomponent->AssignButton(right, ControllerButton::Dpad_Right);
 	m_Inputcomponent->AssignButton(up, ControllerButton::Dpad_Up);
 	m_Inputcomponent->AssignButton(down, ControllerButton::Dpad_Down);
-	m_Inputcomponent->AssignButton(fire, ControllerButton::Button_A);//TODO: Still hardcoded in DiggerCharComp
+	m_Inputcomponent->AssignButton(fire, ControllerButton::Button_A);
 
 	
 	//
 
 	//Character Component
 	m_PlayerCharacter = new DiggerCharacterComponent(m_GridLevel);
-	m_PlayerCharacter->AssignButton(left, right, up, down);//TODO: Pls make this better
-	m_PlayerCharacter->SetWidth(25); //TODO: Hardcoded
+	m_PlayerCharacter->AssignButton(left, right, up, down);
+	m_PlayerCharacter->SetWidth(25); 
 	m_PlayerCharacter->SetResetPosition({ 300.f,300.f });
 	//
+
+	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 300.f, 300.f }) );
 
 	//Player
 	m_Player = std::make_shared<dae::GameObject>();
@@ -137,12 +196,12 @@ void DigDugLevel::SceneInitialize() {
 	m_Player->AddComponent(m_Inputcomponent);
 	m_Player->AddComponent(m_PlayerCharacter);
 	m_Player->AddComponent(collisionComponent);
-	m_Player->AddComponent(new GridComponent(m_GridLevel, true));//, { SizeBlockGrid / 2.f,SizeBlockGrid / 2.f }
+	m_Player->AddComponent(new GridComponent(m_GridLevel, true));
 
 	m_Player->GetTransform()->SetScale(2);
 	m_Player->SetPosition(300.f, 300.f);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(m_Player);
+	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player);
 	m_Player->GetComponent<DiggerCharacterComponent>()->SetSubject(m_Subject);
 	Add(m_Player);
 	//
@@ -174,8 +233,8 @@ void DigDugLevel::SceneInitialize() {
 	Add(score);
 	Add(health);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene().SetGOScore(score);
-	dae::Singleton<ServiceLocator>::GetInstanceScene().SetGOHealth(health);
+	dae::Singleton<ServiceLocator>::GetInstance().SetGOScore(score);
+	dae::Singleton<ServiceLocator>::GetInstance().SetGOHealth(health);
 
 	//
 
@@ -195,18 +254,17 @@ void DigDugLevel::SceneInitialize() {
 	FInput->AssignButton(right, ControllerButton::Dpad_Right);
 	FInput->AssignButton(up, ControllerButton::Dpad_Up);
 	FInput->AssignButton(down, ControllerButton::Dpad_Down);
-	FInput->AssignButton(fire, ControllerButton::Button_A);//TODO: Still hardcoded in DiggerCharComp
+	FInput->AssignButton(fire, ControllerButton::Button_A);
 
 	auto FygarCharacter = new FygarCharacterComponent(m_GridLevel);
-	FygarCharacter->AssignButton(left, right, up, down);//TODO: Pls make this better
-	//pookaCharacter->SetWidth(25); //TODO: Hardcoded
+	FygarCharacter->AssignButton(left, right, up, down);
 
 	auto FcollisionComponent = new CollisionComponent();
 	auto FcollisionBox = new CollisionBox({}, 26, 26);
 	FcollisionBox->SetIsTrigger(true);
 	FcollisionComponent->AddCollision(FcollisionBox);
 
-	auto Fygar = std::make_shared<dae::GameObject>();
+	Fygar = std::make_shared<dae::GameObject>();
 	Fygar->AddComponent(new dae::SpriteComponent(0, new dae::Sprite("Resources/Sprites/Fygar.png", 1, 2, 2, 3)));
 	Fygar->AddComponent(new GridComponent(m_GridLevel, true));
 	Fygar->AddComponent(FInput);
@@ -226,7 +284,7 @@ void DigDugLevel::SceneInitialize() {
 	Fygar->GetComponent<AIComponent>()->GetState()->player = 1;
 	Add(Fygar);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(Fygar);
+	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(Fygar);
 	//
 
 
@@ -236,18 +294,17 @@ void DigDugLevel::SceneInitialize() {
 	PInput->AssignButton(right, ControllerButton::Dpad_Right);
 	PInput->AssignButton(up, ControllerButton::Dpad_Up);
 	PInput->AssignButton(down, ControllerButton::Dpad_Down);
-	PInput->AssignButton(fire, ControllerButton::Button_A);//TODO: Still hardcoded in DiggerCharComp
+	PInput->AssignButton(fire, ControllerButton::Button_A);
 
 	auto pookaCharacter = new PookaCharacterComponent(m_GridLevel);
-	pookaCharacter->AssignButton(left, right, up, down);//TODO: Pls make this better
-	//pookaCharacter->SetWidth(25); //TODO: Hardcoded
+	pookaCharacter->AssignButton(left, right, up, down);
 
 	auto PcollisionComponent = new CollisionComponent();
 	auto PcollisionBox = new CollisionBox({}, 26, 26);
 	PcollisionBox->SetIsTrigger(true);
 	PcollisionComponent->AddCollision(PcollisionBox);
 
-	auto Pooka = std::make_shared<dae::GameObject>();
+	Pooka = std::make_shared<dae::GameObject>();
 	Pooka->AddComponent(new dae::SpriteComponent(0, new dae::Sprite("Resources/Sprites/Pooka.png", 1, 2, 2, 3)));
 	Pooka->AddComponent(new GridComponent(m_GridLevel, true));
 	Pooka->AddComponent(PInput);
@@ -267,7 +324,7 @@ void DigDugLevel::SceneInitialize() {
 	Pooka->GetComponent<PookaCharacterComponent>()->SetSubject(m_Subject);
 	Add(Pooka);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(Pooka);
+	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(Pooka);
 	//
 
 

@@ -1,14 +1,8 @@
 #include "MiniginPCH.h"
 #include "PookaState.h"
-//PookaState::~PookaState()
-//{
-//}
 
 
-WanderingState::WanderingState() : m_CurrentDir() {
-	//TODO: Hardcoded
-	//dae::Singleton<InputManager>::GetInstance().AssignButton(ControllerButton::Button_Y, new ChangeToPlayerC);
-}
+WanderingState::WanderingState() : m_CurrentDir() {}
 
 void PookaState::ChangeToPlayer() {
 	if (dynamic_cast<WanderingState*>(this))

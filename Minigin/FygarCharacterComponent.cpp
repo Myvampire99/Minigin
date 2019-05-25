@@ -12,7 +12,7 @@ FygarCharacterComponent::FygarCharacterComponent(GridLevel *level)
 	, m_IsBreathingFire{false}
 	, m_CurrentElapsedTimeFire{0}
 	, m_MaxElapsedTimeFire{1.f}
-	, fire{ 4 }//TODO: HARCODED
+	, fire{ 4 }
 {
 
 	m_2DFire = dae::ResourceManager::GetInstance().LoadTexture("Resources/Textures/fire.png");
@@ -21,7 +21,7 @@ FygarCharacterComponent::FygarCharacterComponent(GridLevel *level)
 
 	m_Fire = new CollisionBox({ 0.f,0.f }, m_WHFire.x, m_WHFire.y);
 	m_Fire->SetIsTrigger(true);
-	dae::Singleton<CollisionManager>::GetInstanceScene().AddCollision(m_Fire);
+	dae::Singleton<CollisionManager>::GetInstance().AddCollision(m_Fire);
 
 }
 
@@ -72,13 +72,13 @@ void FygarCharacterComponent::LocalUpdate(const float elapsedTime) {
 		if (count != 0) {
 			for (auto coll : m_Fire->GetCurrentCollisions()) {
 				if (!coll->IsTrigger()) {
-					for (auto &player : dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayers()) {
+					for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
 						if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 							if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 								if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
 								{
 									if (dynamic_cast<DiggerCharacterComponent*>(player->GetComponent<DiggerCharacterComponent>()))
-										m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+										m_Subject->Notify(player.get(), Event::EVENT_DIED);
 								}
 							}
 						}
@@ -128,12 +128,12 @@ void FygarCharacterComponent::LocalUpdate(const float elapsedTime) {
 	if (count != 0) {
 		for (auto coll : collision->GetCurrentCollisions()) {
 			if (!coll->IsTrigger()) {
-				for (auto &player : dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayers()) {
+				for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
 					if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 						if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
 						{
 							if (dynamic_cast<DiggerCharacterComponent*>(player->GetComponent<DiggerCharacterComponent>()))
-								m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+								m_Subject->Notify(player.get(), Event::EVENT_DIED);
 						}
 					}
 				}
@@ -163,5 +163,5 @@ void FygarCharacterComponent::Draw() {
 }
 
 void FygarCharacterComponent::localIni() {
-	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(4), new FygarFire(), m_Input->GetPlayerID());//TODO: harcoded for debug purp
+	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(4), new FygarFire(), m_Input->GetPlayerID());
 }

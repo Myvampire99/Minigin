@@ -11,7 +11,6 @@ ServiceLocator::ServiceLocator()
 ServiceLocator::~ServiceLocator()
 {
 	m_Players.clear();
-	//m_Health
 }
 
 std::shared_ptr<dae::GameObject>& ServiceLocator::GetPlayersObject(int playerID) {
@@ -28,7 +27,7 @@ void ServiceLocator::SetPlayerObject(const std::shared_ptr<dae::GameObject>& obj
 
 void ServiceLocator::RemovePlayerObject(const dae::GameObject* object) {
 
-	for (int i{}; i < m_Players.size(); ++i) {
+	for (unsigned int i{}; i < m_Players.size(); ++i) {
 		if (m_Players[i].get() == object) {
 			m_Players.erase(m_Players.begin() + i);
 		}

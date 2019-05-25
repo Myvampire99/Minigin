@@ -3,7 +3,7 @@
 
 
 EmptyBlock::EmptyBlock()
-	:LevelObject("Resources/Textures/point.jpg")//Resources/Textures/point.jpg
+	:LevelObject("Resources/Textures/point.jpg")
 {
 }
 

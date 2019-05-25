@@ -14,7 +14,7 @@ public:
 	void localIni() override;
 
 private:
-	int fire;//TODO: change this hardcoded thing
+	int fire;
 
 	CollisionBox *m_Fire;
 	bool m_IsBreathingFire;

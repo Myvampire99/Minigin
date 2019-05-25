@@ -10,7 +10,7 @@ Subject::Subject()
 
 Subject::~Subject()
 {
-	for (auto p : m_Observer) {
+	for (auto &p : m_Observer) {
 		delete p;
 		p = nullptr;
 	}
@@ -29,7 +29,7 @@ void Subject::RemoveObserver(Observer * observer)
 
 void Subject::Notify( dae::GameObject * entity, Event event)
 {
-	for (int i = 0; i < m_Observer.size(); i++)
+	for (unsigned int i = 0; i < m_Observer.size(); i++)
 	{
 		m_Observer[i]->onNotify(entity, event);
 	}

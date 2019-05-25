@@ -36,8 +36,8 @@ void dae::Minigin::LoadGame()
 	Singleton<SceneManager>::GetInstance().AddScene(scene);
 	
 
-	Scene *sceneC = new CoopLevel();
-	Singleton<SceneManager>::GetInstance().AddScene(sceneC);
+	//Scene *sceneC = new CoopLevel();
+	//Singleton<SceneManager>::GetInstance().AddScene(sceneC);
 
 	Singleton<SceneManager>::GetInstance().SetSceneActive("DigDugLevel", true);
 
@@ -62,47 +62,46 @@ void dae::Minigin::Run()
 	LoadGame();
 
 	{
-		//local Initialize
+		// Initialize
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = Singleton<SceneManager>::GetInstance();
 		auto& input = Singleton<InputManager>::GetInstance();
 		bool doContinue = true;
 		auto lastTime = std::chrono::high_resolution_clock::now();
-		double  lag = 0.0f;
+		std::chrono::seconds lag = std::chrono::seconds(0);
 		//
 
 
-		sceneManager.Initialize(); // in loop but check if new
+		sceneManager.Initialize();
 
 		while (doContinue)
 		{
 			//Calculate deltaTime and lag
 			const auto currentTime = std::chrono::high_resolution_clock::now();
-			double  deltaTime = std::chrono::duration<double>(currentTime - lastTime).count();
+			double deltaTime = std::chrono::duration<double>(currentTime - lastTime).count();
 			lastTime = currentTime;
-			lag += deltaTime;
+			lag += std::chrono::duration_cast<std::chrono::seconds>(currentTime - lastTime);
 			//
-			dae::Singleton<ServiceLocator>::GetInstanceScene().SetElapsedTime(float(deltaTime));
 
+			dae::Singleton<ServiceLocator>::GetInstance().SetElapsedTime(float(deltaTime));
 
+			
 			
 
 			doContinue = input.ProcessInput();
 			input.HandleInput();
 
-			//while (lag*10 >= msPerFrame) {
-				//
-				
-				//
-				sceneManager.Update(float(deltaTime));
-				lag -= msPerFrame;
-			//}
+			sceneManager.Update(float(deltaTime));
+			dae::Singleton<CollisionManager>::GetInstance().Update();
 
+			while (lag >= msPerFrame) {
+				sceneManager.Update(float(deltaTime));
+				dae::Singleton<CollisionManager>::GetInstance().Update();
+				lag -= msPerFrame;
+			}
 			
 			renderer.Render();
 
-			//TODO: Before everything maybe
-			dae::Singleton<CollisionManager>::GetInstanceScene().Update();
 		}
 	}
 

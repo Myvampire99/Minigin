@@ -7,15 +7,13 @@ class PlayerState;
 class PookaState
 {
 public:
-	//virtual ~PookaState();
 	virtual PookaState* update(InputComponent* input, BaseCharacterComponent *pooka) {
 		UNREFERENCED_PARAMETER(input); UNREFERENCED_PARAMETER(pooka);
 		return nullptr;
 	};
 
-	//static WanderingState *wandering;
+
 	PookaState *Wandering;
-//	FollowState follow;
 	PookaState *m_PlayerState;
 	int player = 1;
 	PookaState *Changed;
@@ -40,7 +38,7 @@ public:
 
 			int r = std::rand() % 100;
 			if (r == 0) {
-				dae::Singleton<InputManager>::GetInstance().ForceButton(input->GetButton(4), player);//TODO: harcoded
+				dae::Singleton<InputManager>::GetInstance().ForceButton(input->GetButton(4), player);
 			}
 		}
 		
@@ -50,7 +48,6 @@ public:
 		if (Changed != nullptr) {
 			Changed->Changed = nullptr;
 			return Changed;
-			//Changed = nullptr;
 		}
 			
 		bool m_Skip = false;
@@ -62,7 +59,6 @@ public:
 		m_LastPos = currentPos;
 
 		if (!m_Skip) {
-			//TODO: Ugly Code
 			if (dir.left && m_CurrentDir.left) {
 				dae::Singleton<InputManager>::GetInstance().ForceButton(input->GetButton(pooka->Xleft), player);
 				m_CurrentDir.rem();
@@ -91,7 +87,6 @@ public:
 				return nullptr;
 			}
 		}
-		//TODO: Still ugly but loop with m_CurrentDir = true	or something
 		int fallback = 100;
 		int randomint;
 		for (int i{}; i < fallback; ++i){
@@ -142,7 +137,6 @@ private:
 
 class FollowState : public PookaState
 {
-	//~FollowState() override;
 	PookaState* update(InputComponent* input, BaseCharacterComponent *pooka) override;
 
 };
@@ -158,7 +152,6 @@ public:
 		if (Changed != nullptr) {
 			Changed->Changed = nullptr;
 			return Changed;
-			//Changed = nullptr;
 		}
 
 		return nullptr;

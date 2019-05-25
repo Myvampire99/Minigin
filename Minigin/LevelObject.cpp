@@ -10,10 +10,6 @@ LevelObject::LevelObject(std::string path)
 }
 
 
-LevelObject::~LevelObject()
-{
-}
-
 void LevelObject::Update(float elapsedTime) {
 	UNREFERENCED_PARAMETER(elapsedTime);
 }

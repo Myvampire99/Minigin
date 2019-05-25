@@ -11,3 +11,4 @@ public:
 private:
 	std::vector<Observer*> m_Observer;
 };
+

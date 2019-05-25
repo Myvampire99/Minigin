@@ -178,7 +178,7 @@
       <Filter>DigDug\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="FygarCharacterComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>DigDug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -306,7 +306,7 @@
       <Filter>DigDug\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="FygarCharacterComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>DigDug</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

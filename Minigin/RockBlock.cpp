@@ -11,13 +11,15 @@ RockBlock::RockBlock(std::string path, GridLevel* m_Level, CollisionObject* coll
 	, m_TimeBeforeFall{1}
 	, m_CurrentFall{0}
 {
-	dae::Singleton<CollisionManager>::GetInstanceScene().AddCollision(collision);
+	dae::Singleton<CollisionManager>::GetInstance().AddCollision(collision);
 	m_Collision = collision;
 }
 
 
 RockBlock::~RockBlock()
 {
+	dae::Singleton<CollisionManager>::GetInstance().Remove(m_Collision);
+	
 }
 
 void RockBlock::SetSubject(Subject *subject) {
@@ -72,11 +74,11 @@ void RockBlock::Update(float elapsedTime) {
 		if (count != 0) {
 			for (auto coll : m_Collision->GetCurrentCollisions()) {
 				//because he deletes the second one, there will  be no third
-					for (auto &player : dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayers()) {
+					for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
 							if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 								if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
 								{
-									m_Subject->Notify(player.get(), Event::EVENT_DIEDROCK);//TODO: Smart to Raw Pointer, chagne this
+									m_Subject->Notify(player.get(), Event::EVENT_DIEDROCK);
 									break;
 								}
 							}

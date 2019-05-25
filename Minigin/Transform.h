@@ -1,8 +1,4 @@
 #pragma once
-//#pragma warning(push)
-//#pragma warning (disable:4201)
-//#include <glm/vec3.hpp>
-//#pragma warning(pop)
 
 namespace dae
 {
@@ -23,7 +19,7 @@ namespace dae
 		void SetPosition(float x, float y, float z);
 		void SetPosition(float x, float y);
 		void SetPosition(const dae::Vector2 &pos);
-		void Translate(const dae::Vector2 &forward);//TODO: Z?
+		void Translate(const dae::Vector2 &forward);
 		void SetAngle(float angle);
 		float GetAngle() const;
 	};

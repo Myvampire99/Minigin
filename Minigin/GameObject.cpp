@@ -10,14 +10,17 @@ dae::GameObject::~GameObject()
 		}
 	}
 	m_pComponents.clear();
+
+	delete mTransform;
 }
 
-void dae::GameObject::MarkForDelete() {
-	MarkedForDelete = true;
+void dae::GameObject::MarkForDelete(bool marked) {
+	MarkedForDelete = marked;
 }
 bool dae::GameObject::GetMarkForDelete() {
 	return MarkedForDelete;
 }
+
 
 dae::GameObject::GameObject()
 	:m_Enabled{true}
@@ -36,9 +39,7 @@ bool dae::GameObject::GetEnabled() {
 
 void dae::GameObject::AddComponent(BaseComponent * cmp)
 {
-	//TODO:
-	//logger for all errors!
-	//Check if not attached to something else already
+
 	if (cmp) {
 		cmp->m_GameObject = this;
 		m_pComponents.push_back(cmp);
@@ -79,7 +80,6 @@ dae::Transform* dae::GameObject::GetTransform() {
 
 void dae::GameObject::SetTexture(const std::string& filename)
 {
-	//TODO: NEED TO CHANGE THIS!!!
 	mTexture = nullptr;
 	if(filename != "")
 		mTexture = ResourceManager::GetInstance().LoadTexture(filename);

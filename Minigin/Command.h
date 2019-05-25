@@ -12,48 +12,48 @@ public:
 class PlayerUp : public Command
 {
 public:
-	virtual void Execute(int player) override {//TODO: multiple players
-		dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>()->Yforward(-1);
+	virtual void Execute(int player) override {
+		dae::Singleton<ServiceLocator>::GetInstance().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>()->Yforward(-1);
 	}
 };
 
 class PlayerDown : public Command
 {
 public:
-	virtual void Execute(int player) override {//TODO: multiple players
-		dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>()->Yforward(1);
+	virtual void Execute(int player) override {
+		dae::Singleton<ServiceLocator>::GetInstance().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>()->Yforward(1);
 	}
 };
 
 class PlayerLeft : public Command
 {
 public:
-	virtual void Execute(int player) override {//TODO: multiple players
-		dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>()->Xforward(-1);
+	virtual void Execute(int player) override {
+		dae::Singleton<ServiceLocator>::GetInstance().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>()->Xforward(-1);
 	}
 };
 
 class PlayerRight : public Command
 {
 public:
-	virtual void Execute(int player) override {//TODO: multiple players
-		dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>()->Xforward(1);
+	virtual void Execute(int player) override {
+		dae::Singleton<ServiceLocator>::GetInstance().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>()->Xforward(1);
 	}
 };
 
 class PlayerFire : public Command
 {
 public:
-	virtual void Execute(int player) override {//TODO: multiple players
-		dynamic_cast<DiggerCharacterComponent*>(dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>())->Fire();
+	virtual void Execute(int player) override {
+		dynamic_cast<DiggerCharacterComponent*>(dae::Singleton<ServiceLocator>::GetInstance().GetPlayersObject(player)->GetComponent<BaseCharacterComponent>())->Fire();
 	}
 };
 
 class FygarFire : public Command
 {
 public:
-	virtual void Execute(int player) override {//TODO: multiple players
-		dynamic_cast<FygarCharacterComponent*>(dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayersObject(player)->GetComponent<FygarCharacterComponent>())->BreathFire();
+	virtual void Execute(int player) override {
+		dynamic_cast<FygarCharacterComponent*>(dae::Singleton<ServiceLocator>::GetInstance().GetPlayersObject(player)->GetComponent<FygarCharacterComponent>())->BreathFire();
 	}
 };
 
@@ -61,9 +61,9 @@ public:
 class ChangeToPlayerC : public Command
 {
 public:
-	virtual void Execute(int player) override {//TODO: multiple players
+	virtual void Execute(int player) override {
 		UNREFERENCED_PARAMETER(player);
-		dynamic_cast<PookaState*>(dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayersObject(1)->GetComponent<AIComponent>()->GetState())->ChangeToPlayer();
+		dynamic_cast<PookaState*>(dae::Singleton<ServiceLocator>::GetInstance().GetPlayersObject(1)->GetComponent<AIComponent>()->GetState())->ChangeToPlayer();
 
 	}
 };
@@ -73,7 +73,7 @@ class ChangeLevelCOOP : public Command
 {
 public:
 
-	virtual void Execute(int player) override {//TODO: multiple players
+	virtual void Execute(int player) override {
 		UNREFERENCED_PARAMETER(player);
 
 		dae::Singleton<dae::SceneManager>::GetInstance().SetSceneActive("CoopLevel", true);
@@ -85,7 +85,7 @@ class ChangeLevelCLASSIC : public Command
 {
 public:
 
-	virtual void Execute(int player) override {//TODO: multiple players
+	virtual void Execute(int player) override {
 		UNREFERENCED_PARAMETER(player);
 
 		dae::Singleton<dae::SceneManager>::GetInstance().SetSceneActive("CoopLevel", false);

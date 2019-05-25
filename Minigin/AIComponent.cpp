@@ -22,21 +22,13 @@ PookaState* AIComponent::GetState() {
 
 AIComponent::~AIComponent()
 {
-	delete m_State;
-	m_State = nullptr;
-
-	/*delete m_Wandering;
+	delete m_Wandering;
 	m_Wandering = nullptr;
 
 	delete m_PlayerState;
 	m_PlayerState = nullptr;
 
-	delete m_ChangedState;
-	m_ChangedState = nullptr;*/
 }
-
-
-
 
 void AIComponent::Update(float elapsedTime) {
 	

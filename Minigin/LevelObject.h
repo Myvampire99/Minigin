@@ -4,7 +4,7 @@ class LevelObject
 {
 public:
 	LevelObject(std::string path);
-	~LevelObject();
+	virtual ~LevelObject() = default;
 
 	virtual void Update(float elapsedTime);
 	void Draw();

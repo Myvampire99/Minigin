@@ -19,6 +19,7 @@ dae::Sprite::Sprite(const std::string& path, int nrCols, int nrRows,int maxActs,
 
 dae::Sprite::~Sprite()
 {
+	m_pTexture;
 }
 
 float dae::Sprite::GetWidth() const {
@@ -45,7 +46,7 @@ void dae::Sprite::Update(float elapsedSec)
 void dae::Sprite::Draw(const dae::Vector2& pos, float scale,bool flipV,bool flipH,float angle,dae::Vector2 center)
 {
 
-	UNREFERENCED_PARAMETER(scale);//TODO: make scale
+	UNREFERENCED_PARAMETER(scale);
 
 	int currentRow, currentCollumn;
 	currentCollumn = m_ActFrame / m_Rows;
@@ -58,7 +59,7 @@ void dae::Sprite::Draw(const dae::Vector2& pos, float scale,bool flipV,bool flip
 
 	if (m_pTexture != nullptr) {
 		if(!flipV && !flipH)
-			Renderer::GetInstance().RenderTexture(*m_pTexture, pos, srcPos, { actWidth,actHeight }, { actWidth ,actHeight }, angle, center,false,false ,scale);//Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x,pos.y);
+			Renderer::GetInstance().RenderTexture(*m_pTexture, pos, srcPos, { actWidth,actHeight }, { actWidth ,actHeight }, angle, center,false,false ,scale);
 		else if (flipV)
 			Renderer::GetInstance().RenderTexture(*m_pTexture, pos, srcPos, { actWidth,actHeight }, { actWidth ,actHeight }, angle, center, flipV, flipH, scale);
 		else {

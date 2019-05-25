@@ -72,6 +72,6 @@ public:
 
 	void SetOffset(dae::Vector2 offset);
 
-	bool InsideBounds(int ID);
+	bool InsideBounds(unsigned int ID);
 };
 

@@ -29,7 +29,6 @@ public:
 
 	Direction GetDirection();
 	
-//private:
 	void Xforward( int direction);
 	void Yforward( int direction);
 protected:

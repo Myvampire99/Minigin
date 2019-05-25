@@ -1,7 +1,6 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 
-unsigned int dae::Scene::idCounter = 0;
 
 dae::Scene::Scene(const std::string& name) : mName(name), m_IsActive(false) {
 
@@ -10,7 +9,6 @@ dae::Scene::Scene(const std::string& name) : mName(name), m_IsActive(false) {
 
 dae::Scene::~Scene() {
 
-	mObjects.clear();
 }
 
 void dae::Scene::Add(const std::shared_ptr<dae::GameObject>& object)
@@ -35,8 +33,8 @@ void dae::Scene::Update(const float elapsedTime)
 			gameObject->SetEnabled(false);
 			if (dynamic_cast<CollisionComponent*>(gameObject->GetComponent<CollisionComponent>())) {
 				gameObject->GetComponent<CollisionComponent>()->Remove(gameObject->GetComponent<CollisionComponent>()->GetCollisions()[0]);
-				//TODO: remove player from service
 			}
+			gameObject->MarkForDelete(false);
 			
 		}
 
@@ -66,11 +64,10 @@ void dae::Scene::Initialize()
 		gameObject->Initialize();
 	}
 
-	SetCopyIni();
 }
-
-std::shared_ptr<dae::Scene> dae::Scene::GetCoppyIni() {
-	return m_CopyIni;
+void  dae::Scene::Reset() {
+	//mObjects.clear();
+	LocalReset();
 }
 
 bool dae::Scene::IsActive() const

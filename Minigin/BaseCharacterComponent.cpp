@@ -23,7 +23,7 @@ void BaseCharacterComponent::Update(const float elapsedTime)
 	
 
 	UNREFERENCED_PARAMETER(elapsedTime);
-	//Maybe if no InputComponent, do other things
+
 	if(m_Input->NeedUpdate())
 	{
 		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Xleft), new PlayerLeft(), m_Input->GetPlayerID());
@@ -44,7 +44,7 @@ void BaseCharacterComponent::LocalUpdate(const float elapsedTime) {
 void BaseCharacterComponent::Xforward(int direction)
 {
 	if (!ForceStop) {
-		float speedX = m_Speed * dae::Singleton<ServiceLocator>::GetInstanceScene().GetElapsedTime()*direction;
+		float speedX = m_Speed * dae::Singleton<ServiceLocator>::GetInstance().GetElapsedTime()*direction;
 		auto pos2 = m_GameObject->GetPos();
 		pos2.x += speedX;
 		m_GameObject->SetPosition(pos2.x, pos2.y);
@@ -64,7 +64,7 @@ void BaseCharacterComponent::Xforward(int direction)
 void BaseCharacterComponent::Yforward(int direction)
 {
 	if (!ForceStop) {
-		float speedY = m_Speed * dae::Singleton<ServiceLocator>::GetInstanceScene().GetElapsedTime()*direction;
+		float speedY = m_Speed * dae::Singleton<ServiceLocator>::GetInstance().GetElapsedTime()*direction;
 		auto pos2 = m_GameObject->GetPos();
 		pos2.y += speedY;
 		m_GameObject->SetPosition(pos2.x, pos2.y);

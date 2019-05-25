@@ -44,7 +44,7 @@ void CollisionManager::AddCollision(CollisionObject* object) {
 }
 
 void CollisionManager::Remove(CollisionObject* object) {
-	for (int i{}; i < m_Objects.size(); ++i) {
+	for (unsigned int i{}; i < m_Objects.size(); ++i) {
 		if (m_Objects[i] == object) {
 			delete m_Objects[i];
 			m_Objects[i] = nullptr;

@@ -7,6 +7,5 @@ public:
 	ScoreDisplay();
 	~ScoreDisplay();
 	void onNotify(dae::GameObject* entity, Event event) override;
-private:
 };
 

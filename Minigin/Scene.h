@@ -8,7 +8,6 @@ namespace dae
 	class SceneManager;
 	class Scene
 	{
-		//friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
 		void Add(const std::shared_ptr<GameObject>& object);
 
@@ -16,7 +15,6 @@ namespace dae
 		void Render() const;
 		void Initialize();
 
-		std::shared_ptr<Scene> GetCoppyIni();
 		
 
 		virtual ~Scene();
@@ -33,23 +31,20 @@ namespace dae
 		void SetActive(bool active);
 
 		std::string GetName() const;
+		void Reset();
 
 	protected: 
-
-		std::shared_ptr<Scene> m_CopyIni;
-		void virtual SetCopyIni() = 0;
 		void virtual SceneUpdate() = 0;
 		void virtual SceneInitialize() = 0;
-
+		void virtual LocalReset() = 0;
 	private:
+
+		std::vector <std::shared_ptr<GameObject>> mObjects{};
 		float m_ElapsedTime;
 
 		bool m_IsActive;
 
 		std::string mName{};
-		std::vector <std::shared_ptr<GameObject>> mObjects{};
-
-		static unsigned int idCounter; //TODO: Check if used
 	};
 
 }

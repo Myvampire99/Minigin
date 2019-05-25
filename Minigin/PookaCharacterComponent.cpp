@@ -18,9 +18,6 @@ PookaCharacterComponent::~PookaCharacterComponent()
 }
 
 int PookaCharacterComponent::GetScore() {
-	//if (m_GameObject->GetPos().y > m_Level->GetPosFromID(0).y + m_Level->GetHeight() / 2.f*m_Level->GetBlockSize()) {
-	//	return int(ScoreIfDead * 2.f);
-	//}
 	int layers = 4;
 	for (int i{ 1 }; i < layers + 1; ++i) {
 		if (m_GameObject->GetPos().y > m_Level->GetPosFromID(0).y + m_Level->GetHeight() / i * m_Level->GetBlockSize()) {
@@ -73,12 +70,6 @@ void PookaCharacterComponent::LocalUpdate(const float elapsedTime) {
 		emptyDir.right = true;
 
 	auto collision = m_GameObject->GetComponent<CollisionComponent>()->GetCollisions()[0];
-	//for (auto cc : collision->GetCurrentCollisions()) {
-	//	if (cc == collision) {
-
-	//	}
-	//}
-
 
 
 
@@ -86,13 +77,13 @@ void PookaCharacterComponent::LocalUpdate(const float elapsedTime) {
 	if (count != 0) {
 		for (auto coll : collision->GetCurrentCollisions()) {
 			if (!coll->IsTrigger()) {
-				for (auto &player : dae::Singleton<ServiceLocator>::GetInstanceScene().GetPlayers()) {
+				for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
 					if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 						if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
 						{
 							if (dynamic_cast<DiggerCharacterComponent*>(player->GetComponent<DiggerCharacterComponent>()))
 							{
-								m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+								m_Subject->Notify(player.get(), Event::EVENT_DIED);
 							}
 						}
 					}

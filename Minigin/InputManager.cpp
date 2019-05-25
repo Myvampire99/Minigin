@@ -9,14 +9,12 @@ InputManager::InputManager()
 }
 
 InputManager::~InputManager() {
-	//for (auto p : m_Buttons) {
-	//	delete p.second;
-	//	p.second = nullptr;
-	//}
-	//TODO: DELETE
-/*
-	delete KeyState;
-	m_Buttons.clear();*/
+	for (auto players : m_Buttons){
+		for (auto p : players) {
+			delete p.second;
+		}
+	}
+
 }
 
 bool InputManager::ProcessInput()
@@ -77,10 +75,9 @@ void InputManager::HandleInput()
 	{
 		for (auto& button : players)
 		{
-			//for (int i{}; i < XUSER_MAX_COUNT; ++i) {
-				if (IsPressed(button.first, i, false).first)//TODO: Keyboard
+				if (IsPressed(button.first, i, false).first)
 					button.second->Execute(IsPressed(button.first, i, false).second);
-			//}
+		
 
 				if (IsPressed(button.first, i, true).first)
 					button.second->Execute(IsPressed(button.first, i, false).second);
