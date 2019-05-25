@@ -24,29 +24,29 @@ void ScoreDisplay::onNotify(dae::GameObject *entity, Event event)
 			lv--;
 			if (lv >= 0) {
 				entity->GetComponent<DiggerCharacterComponent>()->SetLives(lv);
-				dae::Singleton<ServiceLocator>::GetInstance().GetHealthGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(lv));
+				dae::Singleton<ServiceLocator>::GetInstanceScene()->GetHealthGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(lv));
 			
 				entity->GetComponent<DiggerCharacterComponent>()->ResetPosition();
 			}
 			else {
 				entity->MarkForDelete();
-				//dae::Singleton<dae::SceneManager>::GetInstance().ResetActiveScene();
+				dae::Singleton<dae::SceneManager>::GetInstance().ResetActiveScene();
 			}
 		}
 
 		if (dynamic_cast<PookaCharacterComponent*>(entity->GetComponent<PookaCharacterComponent>()))
 		{
-			dae::Singleton<ServiceLocator>::GetInstance().AddCurrentScore(entity->GetComponent<PookaCharacterComponent>()->GetScore());
-			dae::Singleton<ServiceLocator>::GetInstance().GetScoreGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(dae::Singleton<ServiceLocator>::GetInstance().GetCurrentScore()));
-			dae::Singleton<ServiceLocator>::GetInstance().RemovePlayerObject(entity);
+			dae::Singleton<ServiceLocator>::GetInstanceScene()->AddCurrentScore(entity->GetComponent<PookaCharacterComponent>()->GetScore());
+			dae::Singleton<ServiceLocator>::GetInstanceScene()->GetScoreGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(dae::Singleton<ServiceLocator>::GetInstanceScene()->GetCurrentScore()));
+			//dae::Singleton<ServiceLocator>::GetInstanceScene()->RemovePlayerObject(entity);
 			entity->MarkForDelete();
 		}
 
 		if (dynamic_cast<FygarCharacterComponent*>(entity->GetComponent<FygarCharacterComponent>()))
 		{
-			dae::Singleton<ServiceLocator>::GetInstance().AddCurrentScore(entity->GetComponent<FygarCharacterComponent>()->GetScore());
-			dae::Singleton<ServiceLocator>::GetInstance().GetScoreGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(dae::Singleton<ServiceLocator>::GetInstance().GetCurrentScore()));
-			dae::Singleton<ServiceLocator>::GetInstance().RemovePlayerObject(entity);
+			dae::Singleton<ServiceLocator>::GetInstanceScene()->AddCurrentScore(entity->GetComponent<FygarCharacterComponent>()->GetScore());
+			dae::Singleton<ServiceLocator>::GetInstanceScene()->GetScoreGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(dae::Singleton<ServiceLocator>::GetInstanceScene()->GetCurrentScore()));
+			//dae::Singleton<ServiceLocator>::GetInstanceScene()->RemovePlayerObject(entity);
 			entity->MarkForDelete();
 		}
 

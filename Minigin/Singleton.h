@@ -1,24 +1,34 @@
 #pragma once
+
+#include "Scene.h"
+
 namespace dae
 {
-	class Scene;
-
+	//class dae::Scene;
+	//class SceneManager;
 	template <typename T>
 	class Singleton
 	{
 	public:
-		static T& GetInstanceOOOOO()
+		static T& GetInstance()
 		{
 			static T instance{};
 			return instance;
 		}
 
-		static T& GetInstanceScene()
+		static T* GetInstanceScene()
 		{
-			if (m_Instances[dae::Singleton<dae::SceneManager>::GetInstanceOOOOO().GetActiveScene()] == nullptr)
-				m_Instances[dae::Singleton<dae::SceneManager>::GetInstanceOOOOO().GetActiveScene()] = new T;
+			
+			static std::map<std::shared_ptr<dae::Scene>, T*> m_Instances;
 
-			return m_Instances[dae::Singleton<dae::SceneManager>::GetInstanceOOOOO().GetActiveScene()];
+			if (m_Instances[dae::Singleton<dae::SceneManager>::GetInstance().GetActiveScene()] == nullptr)
+				m_Instances[dae::Singleton<dae::SceneManager>::GetInstance().GetActiveScene()] = new T;
+
+			//std::shared_ptr<dae::Scene> test =dae::Singleton<dae::SceneManager>::GetInstance().GetActiveScene();
+			//UNREFERENCED_PARAMETER(test);
+			//m_Instances[0];
+			return m_Instances[dae::Singleton<dae::SceneManager>::GetInstance().GetActiveScene()];
+			//return nullptr;
 		}
 
 		virtual ~Singleton() = default;
@@ -27,9 +37,10 @@ namespace dae
 		Singleton& operator=(const Singleton& other) = delete;
 		Singleton& operator=(Singleton&& other) = delete;
 
+	
 	protected:
 		Singleton() = default;
 	private:
-		static std::map<std::shared_ptr<Scene>, T*> m_Instances;
+		
 	};
 }

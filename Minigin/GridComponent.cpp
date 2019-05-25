@@ -45,7 +45,7 @@ void GridComponent::Update(const float elapsedTime) {
 		}
 		else {
 			for (auto collis : collision->GetCurrentCollisions()) {
-				if (collis->IsTrigger() == false) {
+				if (collis->IsTrigger() == false && !(m_LastPosGO == m_prevprevPos)) {
 					m_GameObject->SetPosition(m_prevprevPos.x, m_prevprevPos.y);
 					dae::Vector2 temp = { m_prevprevPos.x - m_LastPosGO.x,m_prevprevPos.y - m_LastPosGO.y };
 					m_GameObject->GetTransform()->Translate(temp);

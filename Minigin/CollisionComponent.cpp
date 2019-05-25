@@ -9,12 +9,12 @@ CollisionComponent::CollisionComponent()
 CollisionComponent::~CollisionComponent()
 {
 	for (auto coll : m_Collisions) {
-		dae::Singleton<CollisionManager>::GetInstance().Remove(coll);
+		dae::Singleton<CollisionManager>::GetInstanceScene()->Remove(coll);
 	}
 }
 
 void CollisionComponent::AddCollision(CollisionObject* object) {
-	dae::Singleton<CollisionManager>::GetInstance().AddCollision(object);
+	dae::Singleton<CollisionManager>::GetInstanceScene()->AddCollision(object);
 	m_Collisions.push_back(object);
 }
 
@@ -27,12 +27,12 @@ void CollisionComponent::Remove(CollisionObject* object) {
 	
 	for (int i{}; i < m_Collisions.size(); ++i) {
 		if (m_Collisions[i] == object) {
-			dae::Singleton<CollisionManager>::GetInstance().Remove(m_Collisions[i]);
+			dae::Singleton<CollisionManager>::GetInstanceScene()->Remove(m_Collisions[i]);
 			m_Collisions.erase(m_Collisions.begin() + i);
 		}
 	}
 
-	dae::Singleton<CollisionManager>::GetInstance().Remove(object);
+	dae::Singleton<CollisionManager>::GetInstanceScene()->Remove(object);
 }
 
 

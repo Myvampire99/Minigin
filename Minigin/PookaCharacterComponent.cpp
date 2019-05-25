@@ -80,7 +80,7 @@ void PookaCharacterComponent::LocalUpdate(const float elapsedTime) {
 	if (count != 0) {
 		for (auto coll : collision->GetCurrentCollisions()) {
 			if (!coll->IsTrigger()) {
-				for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
+				for (auto &player : dae::Singleton<ServiceLocator>::GetInstanceScene()->GetPlayers()) {
 					if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 						if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
 						{

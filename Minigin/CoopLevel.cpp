@@ -135,7 +135,7 @@ void CoopLevel::SceneInitialize() {
 	//m_Player->GetTransform()->SetScale(2);
 	//m_Player->SetPosition(300.f, 300.f);
 
-	//dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player);
+	//dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(m_Player);
 	//m_Player->GetComponent<DiggerCharacterComponent>()->SetSubject(m_Subject);
 	//Add(m_Player);
 	////
@@ -183,7 +183,7 @@ void CoopLevel::SceneInitialize() {
 	//Pooka->GetComponent<PookaCharacterComponent>()->SetSubject(m_Subject);
 	//Add(Pooka);
 
-	//dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(Pooka);
+	//dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(Pooka);
 
 
 	////
@@ -206,8 +206,8 @@ void CoopLevel::SceneInitialize() {
 	//Add(score);
 	//Add(health);
 
-	//dae::Singleton<ServiceLocator>::GetInstance().SetGOScore(score);
-	//dae::Singleton<ServiceLocator>::GetInstance().SetGOHealth(health);
+	//dae::Singleton<ServiceLocator>::GetInstanceScene()->SetGOScore(score);
+	//dae::Singleton<ServiceLocator>::GetInstanceScene()->SetGOHealth(health);
 
 	////
 

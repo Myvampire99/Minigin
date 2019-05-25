@@ -40,7 +40,7 @@ public:
 
 			int r = std::rand() % 100;
 			if (r == 0) {
-				dae::Singleton<InputManager>::GetInstanceScene().ForceButton(input->GetButton(4), player);//TODO: harcoded
+				dae::Singleton<InputManager>::GetInstance().ForceButton(input->GetButton(4), player);//TODO: harcoded
 			}
 		}
 		

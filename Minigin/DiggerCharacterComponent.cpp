@@ -20,7 +20,7 @@ DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)//, Collisio
 	//m_Collision = collision->GetCollisions()[0];
 	m_Sling = dae::ResourceManager::GetInstance().LoadTexture("Resources/Textures/sling.png");
 	m_PumpColl = new CollisionBox{ {m_CurrentThrowPos.GetPosition2D()},5,5 };
-	dae::Singleton<CollisionManager>::GetInstance().AddCollision(m_PumpColl);
+	dae::Singleton<CollisionManager>::GetInstanceScene()->AddCollision(m_PumpColl);
 	
 }
 
@@ -102,7 +102,7 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 
 		if (m_PumpColl->GetCurrentCollisions().size() != 0)
 		{
-			for (std::shared_ptr<dae::GameObject> player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
+			for (std::shared_ptr<dae::GameObject> player : dae::Singleton<ServiceLocator>::GetInstanceScene()->GetPlayers()) {
 				if (player.get() != m_GameObject) {
 					if (dynamic_cast<PookaCharacterComponent*>(player->GetComponent<PookaCharacterComponent>()) || dynamic_cast<FygarCharacterComponent*>(player->GetComponent<FygarCharacterComponent>())) {
 						for (auto collision : player->GetComponent<CollisionComponent>()->GetCollisions()) {

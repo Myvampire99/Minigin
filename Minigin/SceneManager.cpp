@@ -8,6 +8,24 @@ void dae::SceneManager::Update(const float elapsedTime)
 		if(scene.first->IsActive())
 			scene.first->Update(elapsedTime);
 	}
+
+	if (ActiveDelete) {
+		for (const auto scene : mScenes)
+		{
+			if (scene.first->IsActive()) {
+				auto copyIni = scene.first->GetCoppyIni();
+
+				mScenes.erase(scene.first);
+				scene.first.~shared_ptr();
+				mScenes.insert(std::pair<std::shared_ptr<Scene>, bool>(copyIni, true));
+				copyIni->SetActive(true);
+				copyIni->Initialize();
+				ActiveDelete = false;
+				break;
+			}
+
+		}
+	}
 }
 
 void dae::SceneManager::Render()
@@ -38,21 +56,9 @@ void dae::SceneManager::Initialize()
 }
 
 void dae::SceneManager::ResetActiveScene() {
-	for (const auto scene : mScenes)
-	{
-		if (scene.first->IsActive()) {
-			auto copyIni = scene.first->GetCoppyIni();
-			
-			mScenes.erase(scene.first);
-			scene.first.~shared_ptr();
-			mScenes.insert(std::pair<std::shared_ptr<Scene>, bool>(copyIni, copyIni->IsActive()));
-			//copyIni->Initialize();
-			//copyIni->SetActive(true);
-			break;
-		}
-			
-	}
-	Initialize();
+
+	ActiveDelete = true;
+
 }
 
 void dae::SceneManager::AddScene(Scene *pScene)

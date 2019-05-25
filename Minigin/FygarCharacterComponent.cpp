@@ -21,7 +21,7 @@ FygarCharacterComponent::FygarCharacterComponent(GridLevel *level)
 
 	m_Fire = new CollisionBox({ 0.f,0.f }, m_WHFire.x, m_WHFire.y);
 	m_Fire->SetIsTrigger(true);
-	dae::Singleton<CollisionManager>::GetInstance().AddCollision(m_Fire);
+	dae::Singleton<CollisionManager>::GetInstanceScene()->AddCollision(m_Fire);
 
 }
 
@@ -68,7 +68,7 @@ void FygarCharacterComponent::LocalUpdate(const float elapsedTime) {
 		if (count != 0) {
 			for (auto coll : m_Fire->GetCurrentCollisions()) {
 				if (!coll->IsTrigger()) {
-					for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
+					for (auto &player : dae::Singleton<ServiceLocator>::GetInstanceScene()->GetPlayers()) {
 						if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 							if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 								if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
@@ -124,7 +124,7 @@ void FygarCharacterComponent::LocalUpdate(const float elapsedTime) {
 	if (count != 0) {
 		for (auto coll : collision->GetCurrentCollisions()) {
 			if (!coll->IsTrigger()) {
-				for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
+				for (auto &player : dae::Singleton<ServiceLocator>::GetInstanceScene()->GetPlayers()) {
 					if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 						if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
 						{

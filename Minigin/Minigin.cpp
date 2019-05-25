@@ -33,11 +33,11 @@ void dae::Minigin::Initialize()
 void dae::Minigin::LoadGame() 
 {
 	Scene *scene = new DigDugLevel();
-	SceneManager::GetInstance().AddScene(scene);
-	SceneManager::GetInstance().SetSceneActive("DigDugLevel", true);
+	Singleton<SceneManager>::GetInstance().AddScene(scene);
+	Singleton<SceneManager>::GetInstance().SetSceneActive("DigDugLevel", true);
 
 	Scene *sceneC = new CoopLevel();
-	SceneManager::GetInstance().AddScene(sceneC);
+	Singleton<SceneManager>::GetInstance().AddScene(sceneC);
 }
 
 void dae::Minigin::Cleanup()
@@ -61,7 +61,7 @@ void dae::Minigin::Run()
 	{
 		//local Initialize
 		auto& renderer = Renderer::GetInstance();
-		auto& sceneManager = SceneManager::GetInstance();
+		auto& sceneManager = Singleton<SceneManager>::GetInstance();
 		auto& input = Singleton<InputManager>::GetInstance();
 		bool doContinue = true;
 		auto lastTime = std::chrono::high_resolution_clock::now();
@@ -79,7 +79,7 @@ void dae::Minigin::Run()
 			lastTime = currentTime;
 			lag += deltaTime;
 			//
-			dae::Singleton<ServiceLocator>::GetInstance().SetElapsedTime(float(deltaTime));
+			dae::Singleton<ServiceLocator>::GetInstanceScene()->SetElapsedTime(float(deltaTime));
 
 
 			
@@ -99,7 +99,7 @@ void dae::Minigin::Run()
 			renderer.Render();
 
 			//TODO: Before everything maybe
-			dae::Singleton<CollisionManager>::GetInstance().Update();
+			dae::Singleton<CollisionManager>::GetInstanceScene()->Update();
 		}
 	}
 

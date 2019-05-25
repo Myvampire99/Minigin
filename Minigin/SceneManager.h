@@ -3,7 +3,7 @@
 namespace dae
 {
 	class Scene;
-	class SceneManager final : public Singleton<SceneManager>
+	class SceneManager final// : public Singleton<SceneManager>
 	{
 	public:
 		void AddScene(Scene *pScene);
@@ -15,6 +15,8 @@ namespace dae
 		void SetSceneActive(std::string name, bool active);
 		void ResetActiveScene();
 		std::shared_ptr<Scene> GetActiveScene();
+
+		bool ActiveDelete;
 	private:
 		std::unordered_map<std::shared_ptr<Scene>,bool> mScenes;
 	};
