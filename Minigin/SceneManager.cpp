@@ -48,11 +48,11 @@ std::shared_ptr<dae::Scene> dae::SceneManager::GetActiveScene() {
 
 void dae::SceneManager::Initialize()
 {
-	for (const auto scene : mScenes)
-	{
-		//if (scene.first->IsActive())
-			scene.first->Initialize();
-	}
+	//for (const auto scene : mScenes)
+	//{
+	//	if (scene.first->IsActive())
+	//		scene.first->Initialize();
+	//}
 }
 
 void dae::SceneManager::ResetActiveScene() {
@@ -69,7 +69,7 @@ void dae::SceneManager::AddScene(Scene *pScene)
 
 void dae::SceneManager::SetSceneActive(std::string name,bool active)
 {
-	for(auto scene : mScenes)
+	for(auto &scene : mScenes)
 	{
 		if(scene.first->GetName() == name)
 		{
@@ -78,8 +78,11 @@ void dae::SceneManager::SetSceneActive(std::string name,bool active)
 			//	scene.first->SetActive(false);
 			//}
 				
-			scene.second = active;
 			scene.first->SetActive(active);
+			if (scene.second == false ) {
+				scene.first->Initialize();
+				scene.second = true;
+			}
 		}
 	}
 

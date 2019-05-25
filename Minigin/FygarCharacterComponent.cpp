@@ -34,9 +34,13 @@ FygarCharacterComponent::~FygarCharacterComponent()
 }
 
 int FygarCharacterComponent::GetScore() {
-	if (m_GameObject->GetPos().y < m_Level->GetPosFromID(0).y + m_Level->GetHeight() / 2.f*m_Level->GetBlockSize()) {
-		return int(ScoreIfDead * 2.f);
+	int layers = 4;
+	for (int i{1}; i < layers+1; ++i) {
+		if (m_GameObject->GetPos().y > m_Level->GetPosFromID(0).y + m_Level->GetHeight() / i*m_Level->GetBlockSize()) {
+			return int(ScoreIfDead * i);
+		}
 	}
+
 	return (int)ScoreIfDead;
 }
 
@@ -159,5 +163,5 @@ void FygarCharacterComponent::Draw() {
 }
 
 void FygarCharacterComponent::localIni() {
-	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(4), new FygarFire(),1);//TODO: harcoded for debug purp
+	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(4), new FygarFire(), m_Input->GetPlayerID());//TODO: harcoded for debug purp
 }

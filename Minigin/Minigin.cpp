@@ -34,10 +34,13 @@ void dae::Minigin::LoadGame()
 {
 	Scene *scene = new DigDugLevel();
 	Singleton<SceneManager>::GetInstance().AddScene(scene);
-	Singleton<SceneManager>::GetInstance().SetSceneActive("DigDugLevel", true);
+	
 
 	Scene *sceneC = new CoopLevel();
 	Singleton<SceneManager>::GetInstance().AddScene(sceneC);
+
+	Singleton<SceneManager>::GetInstance().SetSceneActive("DigDugLevel", true);
+
 }
 
 void dae::Minigin::Cleanup()

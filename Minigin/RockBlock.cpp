@@ -76,7 +76,7 @@ void RockBlock::Update(float elapsedTime) {
 							if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
 								if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
 								{
-									m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+									m_Subject->Notify(player.get(), Event::EVENT_DIEDROCK);//TODO: Smart to Raw Pointer, chagne this
 									break;
 								}
 							}

@@ -14,8 +14,12 @@ ScoreDisplay::~ScoreDisplay()
 
 void ScoreDisplay::onNotify(dae::GameObject *entity, Event event)
 {
+	int mul = 1;
+
 	switch (event)
 	{
+	case Event::EVENT_DIEDROCK:
+		mul = 2;
 	case Event::EVENT_DIED:
 		
 		if (dynamic_cast<DiggerCharacterComponent*>(entity->GetComponent<DiggerCharacterComponent>()))
@@ -30,13 +34,13 @@ void ScoreDisplay::onNotify(dae::GameObject *entity, Event event)
 			}
 			else {
 				entity->MarkForDelete();
-				dae::Singleton<dae::SceneManager>::GetInstance().ResetActiveScene();
+				//dae::Singleton<dae::SceneManager>::GetInstance().ResetActiveScene();
 			}
 		}
 
 		if (dynamic_cast<PookaCharacterComponent*>(entity->GetComponent<PookaCharacterComponent>()))
 		{
-			dae::Singleton<ServiceLocator>::GetInstanceScene()->AddCurrentScore(entity->GetComponent<PookaCharacterComponent>()->GetScore());
+			dae::Singleton<ServiceLocator>::GetInstanceScene()->AddCurrentScore(entity->GetComponent<PookaCharacterComponent>()->GetScore()*mul);
 			dae::Singleton<ServiceLocator>::GetInstanceScene()->GetScoreGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(dae::Singleton<ServiceLocator>::GetInstanceScene()->GetCurrentScore()));
 			//dae::Singleton<ServiceLocator>::GetInstanceScene()->RemovePlayerObject(entity);
 			entity->MarkForDelete();
@@ -44,7 +48,7 @@ void ScoreDisplay::onNotify(dae::GameObject *entity, Event event)
 
 		if (dynamic_cast<FygarCharacterComponent*>(entity->GetComponent<FygarCharacterComponent>()))
 		{
-			dae::Singleton<ServiceLocator>::GetInstanceScene()->AddCurrentScore(entity->GetComponent<FygarCharacterComponent>()->GetScore());
+			dae::Singleton<ServiceLocator>::GetInstanceScene()->AddCurrentScore(entity->GetComponent<FygarCharacterComponent>()->GetScore()*mul);
 			dae::Singleton<ServiceLocator>::GetInstanceScene()->GetScoreGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(dae::Singleton<ServiceLocator>::GetInstanceScene()->GetCurrentScore()));
 			//dae::Singleton<ServiceLocator>::GetInstanceScene()->RemovePlayerObject(entity);
 			entity->MarkForDelete();

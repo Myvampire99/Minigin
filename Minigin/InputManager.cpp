@@ -14,8 +14,9 @@ InputManager::~InputManager() {
 	//	p.second = nullptr;
 	//}
 	//TODO: DELETE
-	m_Buttons.clear();
+/*
 	delete KeyState;
+	m_Buttons.clear();*/
 }
 
 bool InputManager::ProcessInput()

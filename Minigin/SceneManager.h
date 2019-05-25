@@ -19,6 +19,7 @@ namespace dae
 		bool ActiveDelete;
 	private:
 		std::unordered_map<std::shared_ptr<Scene>,bool> mScenes;
+		
 	};
 
 }

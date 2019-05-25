@@ -65,8 +65,32 @@ public:
 		UNREFERENCED_PARAMETER(player);
 		dynamic_cast<PookaState*>(dae::Singleton<ServiceLocator>::GetInstanceScene()->GetPlayersObject(1)->GetComponent<AIComponent>()->GetState())->ChangeToPlayer();
 
-		//dae::SceneManager::GetInstanceScene()->SetSceneActive("CoopLevel", true);
-		//dae::SceneManager::GetInstanceScene()->SetSceneActive("DigDugLevel", false);
 	}
 };
+
+
+class ChangeLevelCOOP : public Command
+{
+public:
+
+	virtual void Execute(int player) override {//TODO: multiple players
+		UNREFERENCED_PARAMETER(player);
+
+		dae::Singleton<dae::SceneManager>::GetInstance().SetSceneActive("CoopLevel", true);
+		dae::Singleton<dae::SceneManager>::GetInstance().SetSceneActive("DigDugLevel", !true);
+	}
+};
+
+class ChangeLevelCLASSIC : public Command
+{
+public:
+
+	virtual void Execute(int player) override {//TODO: multiple players
+		UNREFERENCED_PARAMETER(player);
+
+		dae::Singleton<dae::SceneManager>::GetInstance().SetSceneActive("CoopLevel", false);
+		dae::Singleton<dae::SceneManager>::GetInstance().SetSceneActive("DigDugLevel", !false);
+	}
+};
+
 //======

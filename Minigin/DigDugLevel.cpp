@@ -16,11 +16,11 @@ DigDugLevel::~DigDugLevel()
 	//m_Inputcomponent = nullptr;
 	//delete m_PlayerCharacter;
 	//m_PlayerCharacter = nullptr;
-	delete m_Subject;
-	m_Subject = nullptr;
+///	delete m_Subject;
+///	m_Subject = nullptr;
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->RemoveAllPlayerObjects();
-	dae::Singleton<CollisionManager>::GetInstanceScene()->RemoveAll();
+	//dae::Singleton<ServiceLocator>::GetInstanceScene()->RemoveAllPlayerObjects();
+	//dae::Singleton<CollisionManager>::GetInstanceScene()->RemoveAll();
 	//if (m_ScoreDisplay)
 	//{
 	//	delete m_ScoreDisplay;
@@ -40,9 +40,6 @@ void DigDugLevel::SceneUpdate() {
 	else
 		m_Player->GetComponent<dae::SpriteComponent>()->SetCurrentSprite(0);
 
-
-	
-
 }
 
 void DigDugLevel::SetCopyIni() {
@@ -52,6 +49,8 @@ void DigDugLevel::SetCopyIni() {
 void DigDugLevel::SceneInitialize() {
 
 	dae::Singleton<InputManager>::GetInstance().AssignButton(ControllerButton::Button_B, new ChangeToPlayerC(), 0);
+	dae::Singleton<InputManager>::GetInstance().AssignButton(ControllerButton::Button_Y, new ChangeLevelCOOP(), 0);
+	dae::Singleton<InputManager>::GetInstance().AssignButton(ControllerButton::Button_X, new ChangeLevelCLASSIC(), 0);
 
 
 	int widthGrid = 12;
@@ -271,5 +270,7 @@ void DigDugLevel::SceneInitialize() {
 	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(Pooka);
 	//
 
-	
+
+
+
 }

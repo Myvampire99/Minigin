@@ -1,6 +1,7 @@
 #pragma once
 enum class Event {
 	EVENT_DIED
+	, EVENT_DIEDROCK
 };
 
 
