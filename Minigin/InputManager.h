@@ -23,18 +23,19 @@ class InputManager
 {
 public:
 	bool ProcessInput();
-	std::pair<bool, int> IsPressed(ControllerButton button) const;
+	std::pair<bool, int> IsPressed(ControllerButton button,int player,bool Keyboard) const;
 
 	InputManager();
 	~InputManager();
 
 	//template<class T>
-	void AssignButton(ControllerButton button, Command *pointer);
+	void AssignButton(ControllerButton button, Command *pointer, int player);
 	void HandleInput();
 	void ForceButton(ControllerButton button,int player);
 
+	const Uint8* KeyState = nullptr;
 private:
-	std::unordered_map<ControllerButton, Command*> m_Buttons;
+	std::vector<std::unordered_map<ControllerButton, Command*>> m_Buttons;
 	XINPUT_STATE m_States[XUSER_MAX_COUNT];
 	bool m_ControllerConected;
 

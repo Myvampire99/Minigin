@@ -24,14 +24,15 @@ const std::vector<CollisionObject*>& CollisionComponent::GetCollisions() {
 
 void CollisionComponent::Remove(CollisionObject* object) {
 
-	dae::Singleton<CollisionManager>::GetInstance().Remove(object);
-
+	
 	for (int i{}; i < m_Collisions.size(); ++i) {
 		if (m_Collisions[i] == object) {
 			dae::Singleton<CollisionManager>::GetInstance().Remove(m_Collisions[i]);
 			m_Collisions.erase(m_Collisions.begin() + i);
 		}
 	}
+
+	dae::Singleton<CollisionManager>::GetInstance().Remove(object);
 }
 
 

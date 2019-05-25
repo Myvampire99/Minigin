@@ -1,14 +1,24 @@
 #pragma once
 namespace dae
 {
+	class Scene;
+
 	template <typename T>
 	class Singleton
 	{
 	public:
-		static T& GetInstance()
+		static T& GetInstanceOOOOO()
 		{
 			static T instance{};
 			return instance;
+		}
+
+		static T& GetInstanceScene()
+		{
+			if (m_Instances[dae::Singleton<dae::SceneManager>::GetInstanceOOOOO().GetActiveScene()] == nullptr)
+				m_Instances[dae::Singleton<dae::SceneManager>::GetInstanceOOOOO().GetActiveScene()] = new T;
+
+			return m_Instances[dae::Singleton<dae::SceneManager>::GetInstanceOOOOO().GetActiveScene()];
 		}
 
 		virtual ~Singleton() = default;
@@ -19,5 +29,7 @@ namespace dae
 
 	protected:
 		Singleton() = default;
+	private:
+		static std::map<std::shared_ptr<Scene>, T*> m_Instances;
 	};
 }

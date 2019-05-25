@@ -15,7 +15,7 @@ TextRendererComponent::~TextRendererComponent() {
 	m_TextObject = nullptr;
 }
 
-void TextRendererComponent::SetText(std::string txt)
+void TextRendererComponent::SetText(const std::string& txt)
 {
 	m_Text = txt;
 	m_TextObject->SetText(m_Text);
@@ -27,6 +27,7 @@ void TextRendererComponent::Update(const float elapsedTime)
 	if (m_TextObject != nullptr) {
 		m_TextObject->Update(elapsedTime);
 		m_TextObject->SetPosition(m_GameObject->GetPos().x, m_GameObject->GetPos().y);
+	
 	}
 
 	
@@ -35,7 +36,7 @@ void TextRendererComponent::Update(const float elapsedTime)
 }
 
 void TextRendererComponent::Draw()
-{//maybe in the render() ??
+{
 	m_TextObject->Render();
 }
 

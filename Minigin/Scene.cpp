@@ -3,11 +3,14 @@
 
 unsigned int dae::Scene::idCounter = 0;
 
-dae::Scene::Scene(const std::string& name) : mName(name), m_IsActive(false) {}
+dae::Scene::Scene(const std::string& name) : mName(name), m_IsActive(false) {
+
+
+}
 
 dae::Scene::~Scene() = default;
 
-void dae::Scene::Add(const std::shared_ptr<dae::SceneObject>& object)
+void dae::Scene::Add(const std::shared_ptr<dae::GameObject>& object)
 {
 	mObjects.push_back(object);
 }
@@ -20,10 +23,23 @@ void dae::Scene::Update(const float elapsedTime)
 
 	SceneUpdate();
 
+	
+
 
 	for(auto gameObject : mObjects)
 	{
-		gameObject->Update(elapsedTime);
+		if (gameObject->GetMarkForDelete() && gameObject->GetEnabled()) {
+			gameObject->SetEnabled(false);
+			if (dynamic_cast<CollisionComponent*>(gameObject->GetComponent<CollisionComponent>())) {
+				gameObject->GetComponent<CollisionComponent>()->Remove(gameObject->GetComponent<CollisionComponent>()->GetCollisions()[0]);
+				//TODO: remove player from service
+			}
+			
+		}
+
+		if(gameObject != nullptr)
+			if(gameObject->GetEnabled())
+				gameObject->Update(elapsedTime);
 	}
 
 }
@@ -32,6 +48,7 @@ void dae::Scene::Render() const
 {
 	for (const auto gameObject : mObjects)
 	{
+		if (gameObject->GetEnabled())
 		gameObject->Render();
 	}
 }
@@ -46,6 +63,11 @@ void dae::Scene::Initialize()
 		gameObject->Initialize();
 	}
 
+	SetCopyIni();
+}
+
+std::shared_ptr<dae::Scene> dae::Scene::GetCoppyIni() {
+	return m_CopyIni;
 }
 
 bool dae::Scene::IsActive() const

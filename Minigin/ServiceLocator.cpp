@@ -24,6 +24,23 @@ void ServiceLocator::SetPlayerObject(const std::shared_ptr<dae::GameObject>& obj
 	m_Players.push_back(object);
 }
 
+void ServiceLocator::RemovePlayerObject(const dae::GameObject* object) {
+
+	for (int i{}; i < m_Players.size(); ++i) {
+		if (m_Players[i].get() == object) {
+			m_Players.erase(m_Players.begin() + i);
+		}
+
+	}
+
+}
+
+void ServiceLocator::RemoveAllPlayerObjects() {
+
+	m_Players.clear();
+
+}
+
 float ServiceLocator::GetElapsedTime() {
 	return ElapsedTime;
 }

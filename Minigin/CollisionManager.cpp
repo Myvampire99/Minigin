@@ -32,6 +32,12 @@ void CollisionManager::Update() {
 		}
 	}
 }
+void CollisionManager::RemoveAll() {
+	for (auto object : m_Objects) {
+		delete object;
+	}
+	m_Objects.clear();
+}
 
 void CollisionManager::AddCollision(CollisionObject* object) {
 	m_Objects.push_back(object);

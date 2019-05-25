@@ -50,9 +50,12 @@ void PookaCharacterComponent::LocalUpdate(const float elapsedTime) {
 		m_GameObject->SetPosition(m_PrevPos.x, m_PrevPos.y);
 	}
 
+	if (m_CurrentInflation > 3)
+		m_GameObject->MarkForDelete();
+
 	emptyDir.rem();
 
-	int ID = m_Level->GetClosestIDViaPos(m_GameObject->GetPos());
+	int ID = m_Level->GetClosestIDViaPos({ m_GameObject->GetPos().x+10, m_GameObject->GetPos().y });
 
 	if (dynamic_cast<EmptyBlock*>(m_Level->GetObjectWithID(ID, GridLevel::Dir::Up)))
 		emptyDir.up = true;
@@ -78,9 +81,14 @@ void PookaCharacterComponent::LocalUpdate(const float elapsedTime) {
 		for (auto coll : collision->GetCurrentCollisions()) {
 			if (!coll->IsTrigger()) {
 				for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
-					if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
-					{
-						m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+					if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
+						if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
+						{
+							if (dynamic_cast<DiggerCharacterComponent*>(player->GetComponent<DiggerCharacterComponent>()))
+							{
+								m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+							}
+						}
 					}
 				}
 

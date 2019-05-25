@@ -2,6 +2,7 @@
 #include "Minigin.h"
 #include "Scene.h"
 #include "DigDugLevel.h"
+#include "CoopLevel.h"
 
 void dae::Minigin::Initialize()
 {
@@ -34,6 +35,9 @@ void dae::Minigin::LoadGame()
 	Scene *scene = new DigDugLevel();
 	SceneManager::GetInstance().AddScene(scene);
 	SceneManager::GetInstance().SetSceneActive("DigDugLevel", true);
+
+	Scene *sceneC = new CoopLevel();
+	SceneManager::GetInstance().AddScene(sceneC);
 }
 
 void dae::Minigin::Cleanup()
@@ -42,6 +46,7 @@ void dae::Minigin::Cleanup()
 	SDL_DestroyWindow(window);
 	window = nullptr;
 	SDL_Quit();
+
 }
 
 void dae::Minigin::Run()

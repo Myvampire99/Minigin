@@ -1,13 +1,14 @@
 #pragma once
-class DigDugLevel :public dae::Scene
+class CoopLevel :public dae::Scene
 {
 public:
+	CoopLevel();
+	~CoopLevel();
 
-	DigDugLevel();
-	~DigDugLevel();
 
 	void SceneUpdate() override;
 	void SceneInitialize() override;
+
 private:
 	std::shared_ptr<dae::GameObject> m_Player;
 	GridLevel* m_GridLevel;
@@ -18,7 +19,7 @@ private:
 	void SetCopyIni();
 	enum Actions
 	{
-		left, right, up, down,fire
+		left, right, up, down, fire
 	};
 };
 

@@ -8,7 +8,7 @@ public:
 	TextRendererComponent(const std::string& text, std::shared_ptr<dae::Font> font);
 	~TextRendererComponent();
 
-	void SetText(std::string txt);
+	void SetText(const std::string& txt);
 protected:
 	virtual void Update(const float elapsedTime) override;
 	virtual void Draw() override;

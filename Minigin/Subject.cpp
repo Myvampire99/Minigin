@@ -3,6 +3,7 @@
 
 
 Subject::Subject()
+:m_Observer {}
 {
 }
 

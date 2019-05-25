@@ -71,16 +71,17 @@ void RockBlock::Update(float elapsedTime) {
 		int count = (int)m_Collision->GetCurrentCollisions().size();
 		if (count != 0) {
 			for (auto coll : m_Collision->GetCurrentCollisions()) {
-				if (!coll->IsTrigger()) {
-					//Things must die
+				
 					for (auto &player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
-						if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
-						{
-							m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+						if (player->GetComponent<CollisionComponent>()->GetCollisions().size() > 0) {
+							if (player->GetComponent<CollisionComponent>()->GetCollisions()[0] == coll)
+							{
+								m_Subject->Notify(player.get(), Event::EVENT_DIED);//TODO: Smart to Raw Pointer, chagne this
+							}
 						}
 					}
 
-				}
+				
 			}
 		}
 	}

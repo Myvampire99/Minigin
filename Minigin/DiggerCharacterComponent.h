@@ -20,6 +20,9 @@ public:
 	void SetLives(int lives);
 	void SetSubject(Subject * sub);
 
+	void ResetPosition();
+	void SetResetPosition(dae::Vector2 pos);
+
 private:
 	GridLevel* m_Level;
 	int m_LastID;
@@ -30,6 +33,7 @@ private:
 	};
 
 	//CollisionObject* m_Collision;
+	dae::Vector2 m_StartPos;
 
 	FireStates m_FireState;
 	float m_ThrowingSpeed,m_CurrentElapsedThrow;

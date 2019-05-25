@@ -12,8 +12,26 @@ dae::GameObject::~GameObject()
 	m_pComponents.clear();
 }
 
-dae::GameObject::GameObject() {
+void dae::GameObject::MarkForDelete() {
+	MarkedForDelete = true;
+}
+bool dae::GameObject::GetMarkForDelete() {
+	return MarkedForDelete;
+}
+
+dae::GameObject::GameObject()
+	:m_Enabled{true}
+	, MarkedForDelete{false}
+{
 	mTransform = new dae::Transform();
+}
+
+void dae::GameObject::SetEnabled(bool enabled) {
+	m_Enabled = enabled;
+}
+
+bool dae::GameObject::GetEnabled() {
+	return m_Enabled;
 }
 
 void dae::GameObject::AddComponent(BaseComponent * cmp)

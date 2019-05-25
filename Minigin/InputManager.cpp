@@ -4,18 +4,23 @@
 InputManager::InputManager()
 	:m_ControllerConected{false}
 {
+	for (int i{};i< XUSER_MAX_COUNT;++i)
+		m_Buttons.push_back({});
 }
 
 InputManager::~InputManager() {
-	for (auto p : m_Buttons) {
-		delete p.second;
-		p.second = nullptr;
-	}
+	//for (auto p : m_Buttons) {
+	//	delete p.second;
+	//	p.second = nullptr;
+	//}
+	//TODO: DELETE
 	m_Buttons.clear();
+	delete KeyState;
 }
 
 bool InputManager::ProcessInput()
 {
+	KeyState = SDL_GetKeyboardState(NULL);
 
 	for (DWORD i = 0; i < XUSER_MAX_COUNT; ++i)
 	{ 
@@ -50,35 +55,52 @@ bool InputManager::ProcessInput()
 	return true;
 }
 
-std::pair<bool, int> InputManager::IsPressed(ControllerButton button) const
+std::pair<bool, int> InputManager::IsPressed(ControllerButton button, int player, bool Keyboard) const
 {
-	for (int i{}; i < XUSER_MAX_COUNT; ++i) {
-		if ((m_States[i].Gamepad.wButtons & (WORD)button) == (WORD)button)
-			return { true, i };
+	if (!Keyboard) {
+		if ((m_States[player].Gamepad.wButtons & (WORD)button) == (WORD)button)
+			return { true, player };
 	}
-
-	if (GetKeyboardState((PBYTE)button))
-		return { true, 0 };
-
+	else {
+		if (GetKeyboardState((PBYTE)button))
+			return { true, 0 };
+	}
 	return { false,0 };
+
 }
 
 void InputManager::HandleInput()
 {
-	for (auto& button : m_Buttons)
+	int i{0};
+	for (auto& players : m_Buttons)
 	{
-		if (IsPressed(button.first).first)
-			button.second->Execute(IsPressed(button.first).second);
-			
+		for (auto& button : players)
+		{
+			//for (int i{}; i < XUSER_MAX_COUNT; ++i) {
+				if (IsPressed(button.first, i, false).first)//TODO: Keyboard
+					button.second->Execute(IsPressed(button.first, i, false).second);
+			//}
+
+				if (IsPressed(button.first, i, true).first)
+					button.second->Execute(IsPressed(button.first, i, false).second);
+		}
+		i++;
 	}
+
+	for (DWORD j = 0; j < XUSER_MAX_COUNT; ++j)
+	{
+		m_States[j].Gamepad.wButtons = 0;
+		m_SkipPlayer[j] = false;
+	}
+
 }
 
-void InputManager::AssignButton(ControllerButton button, Command *pointer)
+void InputManager::AssignButton(ControllerButton button, Command *pointer,int player)
 {
-	m_Buttons[button] = pointer;
+	m_Buttons[player][button] = pointer;
 }
 
 void InputManager::ForceButton(ControllerButton button, int player) {
-	m_States[player].Gamepad.wButtons = (WORD)button;
+	m_States[player].Gamepad.wButtons |= (WORD)button;
 	m_SkipPlayer[player] = true;
 }

@@ -2,14 +2,19 @@
 #include "InputComponent.h"
 
 
-InputComponent::InputComponent()
+InputComponent::InputComponent(int playerid)
 	: m_NeedUpdate{false}
+	, playerID{playerid}
 {
 }
 
 
 InputComponent::~InputComponent()
 {
+}
+
+int InputComponent::GetPlayerID() {
+	return playerID;
 }
 
 void InputComponent::AssignButton(int ID, ControllerButton button)

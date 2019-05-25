@@ -13,7 +13,8 @@ namespace dae
 		void Initialize();
 
 		void SetSceneActive(std::string name, bool active);
-
+		void ResetActiveScene();
+		std::shared_ptr<Scene> GetActiveScene();
 	private:
 		std::unordered_map<std::shared_ptr<Scene>,bool> mScenes;
 	};

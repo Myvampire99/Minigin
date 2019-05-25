@@ -22,6 +22,9 @@ public:
 	void AddCurrentScore(int score);
 	void SetCurrentScore(int score);
 
+	void RemovePlayerObject(const dae::GameObject* object);
+	void RemoveAllPlayerObjects();
+
 private:
 	std::vector<std::shared_ptr<dae::GameObject>> m_Players;
 	float ElapsedTime;

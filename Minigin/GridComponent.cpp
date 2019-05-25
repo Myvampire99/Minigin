@@ -44,9 +44,14 @@ void GridComponent::Update(const float elapsedTime) {
 			
 		}
 		else {
-				m_GameObject->SetPosition(m_prevprevPos.x, m_prevprevPos.y );
-				dae::Vector2 temp = { m_prevprevPos .x - m_LastPosGO.x,m_prevprevPos.y - m_LastPosGO.y };
-				m_GameObject->GetTransform()->Translate(temp);
+			for (auto collis : collision->GetCurrentCollisions()) {
+				if (collis->IsTrigger() == false) {
+					m_GameObject->SetPosition(m_prevprevPos.x, m_prevprevPos.y);
+					dae::Vector2 temp = { m_prevprevPos.x - m_LastPosGO.x,m_prevprevPos.y - m_LastPosGO.y };
+					m_GameObject->GetTransform()->Translate(temp);
+					break;
+				}
+			}
 		}
 	}
 	

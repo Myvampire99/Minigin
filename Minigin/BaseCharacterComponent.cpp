@@ -14,6 +14,10 @@ BaseCharacterComponent::~BaseCharacterComponent()
 {
 }
 
+dae::GameObject* BaseCharacterComponent::GetGameObject() {
+	return m_GameObject;
+}
+
 void BaseCharacterComponent::Update(const float elapsedTime)
 {
 	
@@ -22,10 +26,10 @@ void BaseCharacterComponent::Update(const float elapsedTime)
 	//Maybe if no InputComponent, do other things
 	if(m_Input->NeedUpdate())
 	{
-		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Xleft), new PlayerLeft());
-		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Xright), new PlayerRight());
-		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Yup), new PlayerUp());
-		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Ydown), new PlayerDown());
+		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Xleft), new PlayerLeft(), m_Input->GetPlayerID());
+		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Xright), new PlayerRight(), m_Input->GetPlayerID());
+		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Yup), new PlayerUp(), m_Input->GetPlayerID());
+		dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(Ydown), new PlayerDown(), m_Input->GetPlayerID());
 	}
 	LocalUpdate(elapsedTime);
 

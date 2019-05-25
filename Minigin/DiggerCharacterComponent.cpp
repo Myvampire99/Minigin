@@ -13,7 +13,7 @@ DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)//, Collisio
 	, m_IsDigging{ false }
 	, m_WidthSprite{}
 	, m_CurrentElapsedAttached{}
-	, m_InflationTime{2}
+	, m_InflationTime{0.5f}
 	, m_PressedInflationButton{false}
 	, m_Lives{3}
 {
@@ -21,6 +21,18 @@ DiggerCharacterComponent::DiggerCharacterComponent(GridLevel* level)//, Collisio
 	m_Sling = dae::ResourceManager::GetInstance().LoadTexture("Resources/Textures/sling.png");
 	m_PumpColl = new CollisionBox{ {m_CurrentThrowPos.GetPosition2D()},5,5 };
 	dae::Singleton<CollisionManager>::GetInstance().AddCollision(m_PumpColl);
+	
+}
+
+
+void DiggerCharacterComponent::SetResetPosition(dae::Vector2 pos) {
+	m_StartPos = pos;
+}
+
+void DiggerCharacterComponent::ResetPosition() {
+	m_GameObject->SetPosition(m_StartPos.x, m_StartPos.y);
+	m_GameObject->GetComponent<CollisionComponent>()->GetCollisions()[0]->SetPosition({ m_StartPos.x, m_StartPos.y });
+	m_GameObject->GetComponent<CollisionComponent>()->GetCollisions()[0]->ClearAllCollisions();
 }
 
 DiggerCharacterComponent::~DiggerCharacterComponent()
@@ -92,7 +104,7 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 		{
 			for (std::shared_ptr<dae::GameObject> player : dae::Singleton<ServiceLocator>::GetInstance().GetPlayers()) {
 				if (player.get() != m_GameObject) {
-					if (dynamic_cast<PookaCharacterComponent*>(player->GetComponent<PookaCharacterComponent>())) {
+					if (dynamic_cast<PookaCharacterComponent*>(player->GetComponent<PookaCharacterComponent>()) || dynamic_cast<FygarCharacterComponent*>(player->GetComponent<FygarCharacterComponent>())) {
 						for (auto collision : player->GetComponent<CollisionComponent>()->GetCollisions()) {
 							for (auto cc : collision->GetCurrentCollisions()) {
 								if (m_PumpColl == cc) {
@@ -108,18 +120,41 @@ void DiggerCharacterComponent::LocalUpdate(float elapsedTime) {
 
 		break;
 	case FireStates::Attached:
+
+		if (m_AttachedEnemy == nullptr) {
+			m_FireState = FireStates::Idle;
+			break;
+			}
+				
+
 			m_CurrentElapsedAttached += elapsedTime;
 			if (m_InflationTime < m_CurrentElapsedAttached) {
 				if (m_PressedInflationButton) {
-					m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->SetInflationState(m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->GetInflateState() + 1);
+					if (dynamic_cast<PookaCharacterComponent*>(m_AttachedEnemy->GetComponent<PookaCharacterComponent>()))
+						m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->SetInflationState(m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->GetInflateState() + 1);
+					if (dynamic_cast<FygarCharacterComponent*>(m_AttachedEnemy->GetComponent<FygarCharacterComponent>()))
+						m_AttachedEnemy->GetComponent<FygarCharacterComponent>()->SetInflationState(m_AttachedEnemy->GetComponent<FygarCharacterComponent>()->GetInflateState() + 1);
+
 					m_CurrentElapsedAttached = 0;
 				}
 			}
 			if (m_InflationTime * 2 < m_CurrentElapsedAttached) {
-				m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->SetInflationState(m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->GetInflateState() - 1);
-				if (m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->GetInflateState() <= 0) {
-					m_AttachedEnemy = nullptr;
-					m_FireState = FireStates::Idle;
+				if (dynamic_cast<PookaCharacterComponent*>(m_AttachedEnemy->GetComponent<PookaCharacterComponent>())) {
+					m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->SetInflationState(m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->GetInflateState() - 1);
+					if (m_AttachedEnemy->GetComponent<PookaCharacterComponent>()->GetInflateState() <= 0) {
+						m_AttachedEnemy = nullptr;
+						m_FireState = FireStates::Idle;
+						break;
+					}
+				}
+
+				if (dynamic_cast<FygarCharacterComponent*>(m_AttachedEnemy->GetComponent<FygarCharacterComponent>())) {
+					m_AttachedEnemy->GetComponent<FygarCharacterComponent>()->SetInflationState(m_AttachedEnemy->GetComponent<FygarCharacterComponent>()->GetInflateState() - 1);
+					if (m_AttachedEnemy->GetComponent<FygarCharacterComponent>()->GetInflateState() <= 0) {
+						m_AttachedEnemy = nullptr;
+						m_FireState = FireStates::Idle;
+						break;
+					}
 				}
 			}
 			
@@ -223,5 +258,5 @@ void DiggerCharacterComponent::Fire() {
 }
 
 void DiggerCharacterComponent::localIni() {
-	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(fire), new PlayerFire());//TODO: harcoded for debug purp
+	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(fire), new PlayerFire(), m_Input->GetPlayerID());//TODO: harcoded for debug purp
 }

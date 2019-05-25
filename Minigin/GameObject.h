@@ -12,6 +12,10 @@ namespace dae
 	{
 	public:
 
+		void SetEnabled(bool enabled);
+		bool GetEnabled();
+		void MarkForDelete();
+		bool GetMarkForDelete();
 
 		void Update(const float elapsedTime) override;
 		void Render() const override;
@@ -23,7 +27,7 @@ namespace dae
 
 		dae::Vector2 GetPos() const;
 
-		GameObject();// = default;
+		GameObject();
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -39,25 +43,17 @@ namespace dae
 		std::shared_ptr<Texture2D> mTexture;
 
 		std::vector<BaseComponent*> m_pComponents;
-		//TODO: + Children 
-
-
+		bool m_Enabled;
+		bool MarkedForDelete = false;
 	public:
 		template <class T>
-		T* GetComponent()//search in children ?
+		T* GetComponent()
 		{
-
-			//const type_info& ti = typeid(T); 
+		
 			for (auto* comp : m_pComponents) {
-
-				
 				if (dynamic_cast<T*>(comp) != nullptr) {
 						return static_cast<T*>(comp);
 				}
-
-				//if (typeid(*comp) == ti) { // does it really need to check for nullptr ??
-				//	return static_cast<T*>(comp);
-				//}
 			}
 			return nullptr;
 		}
