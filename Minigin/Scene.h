@@ -47,9 +47,9 @@ namespace dae
 		bool m_IsActive;
 
 		std::string mName{};
-		std::vector < std::shared_ptr<GameObject>> mObjects{};
+		std::vector <std::shared_ptr<GameObject>> mObjects{};
 
-		static unsigned int idCounter; 
+		static unsigned int idCounter; //TODO: Check if used
 	};
 
 }

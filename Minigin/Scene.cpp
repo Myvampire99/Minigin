@@ -8,7 +8,10 @@ dae::Scene::Scene(const std::string& name) : mName(name), m_IsActive(false) {
 
 }
 
-dae::Scene::~Scene() = default;
+dae::Scene::~Scene() {
+
+	mObjects.clear();
+}
 
 void dae::Scene::Add(const std::shared_ptr<dae::GameObject>& object)
 {

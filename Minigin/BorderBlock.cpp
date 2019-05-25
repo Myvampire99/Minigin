@@ -6,7 +6,7 @@ BorderBlock::BorderBlock(CollisionBox* coll)
 	:LevelObject("Resources/Textures/point.jpg")//TODO: NOTHING AT ALL
 	, m_Coll{ coll }
 {
-	dae::Singleton<CollisionManager>::GetInstanceScene()->AddCollision( m_Coll );
+	dae::Singleton<CollisionManager>::GetInstanceScene().AddCollision( m_Coll );
 }
 
 BorderBlock::~BorderBlock()

@@ -19,8 +19,8 @@ DigDugLevel::~DigDugLevel()
 ///	delete m_Subject;
 ///	m_Subject = nullptr;
 
-	//dae::Singleton<ServiceLocator>::GetInstanceScene()->RemoveAllPlayerObjects();
-	//dae::Singleton<CollisionManager>::GetInstanceScene()->RemoveAll();
+	//dae::Singleton<ServiceLocator>::GetInstanceScene().RemoveAllPlayerObjects();
+	//dae::Singleton<CollisionManager>::GetInstanceScene().RemoveAll();
 	//if (m_ScoreDisplay)
 	//{
 	//	delete m_ScoreDisplay;
@@ -142,7 +142,7 @@ void DigDugLevel::SceneInitialize() {
 	m_Player->GetTransform()->SetScale(2);
 	m_Player->SetPosition(300.f, 300.f);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(m_Player);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(m_Player);
 	m_Player->GetComponent<DiggerCharacterComponent>()->SetSubject(m_Subject);
 	Add(m_Player);
 	//
@@ -174,8 +174,8 @@ void DigDugLevel::SceneInitialize() {
 	Add(score);
 	Add(health);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetGOScore(score);
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetGOHealth(health);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetGOScore(score);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetGOHealth(health);
 
 	//
 
@@ -226,7 +226,7 @@ void DigDugLevel::SceneInitialize() {
 	Fygar->GetComponent<AIComponent>()->GetState()->player = 1;
 	Add(Fygar);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(Fygar);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(Fygar);
 	//
 
 
@@ -267,7 +267,7 @@ void DigDugLevel::SceneInitialize() {
 	Pooka->GetComponent<PookaCharacterComponent>()->SetSubject(m_Subject);
 	Add(Pooka);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(Pooka);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(Pooka);
 	//
 
 

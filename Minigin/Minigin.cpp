@@ -82,7 +82,7 @@ void dae::Minigin::Run()
 			lastTime = currentTime;
 			lag += deltaTime;
 			//
-			dae::Singleton<ServiceLocator>::GetInstanceScene()->SetElapsedTime(float(deltaTime));
+			dae::Singleton<ServiceLocator>::GetInstanceScene().SetElapsedTime(float(deltaTime));
 
 
 			
@@ -102,7 +102,7 @@ void dae::Minigin::Run()
 			renderer.Render();
 
 			//TODO: Before everything maybe
-			dae::Singleton<CollisionManager>::GetInstanceScene()->Update();
+			dae::Singleton<CollisionManager>::GetInstanceScene().Update();
 		}
 	}
 

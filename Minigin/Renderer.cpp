@@ -20,7 +20,7 @@ void dae::Renderer::Render()
 {
 	SDL_RenderClear(mRenderer);
 
-//	SceneManager::GetInstanceScene()->Render();
+//	SceneManager::GetInstanceScene().Render();
 	Singleton<SceneManager>::GetInstance().Render();
 
 	SDL_RenderPresent(mRenderer);

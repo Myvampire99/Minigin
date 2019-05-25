@@ -138,7 +138,7 @@ void CoopLevel::SceneInitialize() {
 	m_Player->GetTransform()->SetScale(2);
 	m_Player->SetPosition(300.f, 300.f);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(m_Player);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(m_Player);
 	m_Player->GetComponent<DiggerCharacterComponent>()->SetSubject(m_Subject);
 	Add(m_Player);
 	//
@@ -170,8 +170,8 @@ void CoopLevel::SceneInitialize() {
 	Add(score);
 	Add(health);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetGOScore(score);
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetGOHealth(health);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetGOScore(score);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetGOHealth(health);
 
 	//
 
@@ -222,7 +222,7 @@ void CoopLevel::SceneInitialize() {
 	m_Player2->GetTransform()->SetScale(2);
 	m_Player2->SetPosition(300.f, 300.f);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(m_Player2);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(m_Player2);
 	m_Player2->GetComponent<DiggerCharacterComponent>()->SetSubject(m_Subject);
 	Add(m_Player2);
 	//
@@ -269,7 +269,7 @@ void CoopLevel::SceneInitialize() {
 	Pooka->GetComponent<PookaCharacterComponent>()->SetSubject(m_Subject);
 	Add(Pooka);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(Pooka);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(Pooka);
 	//
 
 
@@ -316,6 +316,6 @@ void CoopLevel::SceneInitialize() {
 	Fygar->GetComponent<AIComponent>()->GetState()->player = 3;
 	Add(Fygar);
 
-	dae::Singleton<ServiceLocator>::GetInstanceScene()->SetPlayerObject(Fygar);
+	dae::Singleton<ServiceLocator>::GetInstanceScene().SetPlayerObject(Fygar);
 	//
 }

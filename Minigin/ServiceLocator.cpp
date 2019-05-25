@@ -10,6 +10,8 @@ ServiceLocator::ServiceLocator()
 
 ServiceLocator::~ServiceLocator()
 {
+	m_Players.clear();
+	//m_Health
 }
 
 std::shared_ptr<dae::GameObject>& ServiceLocator::GetPlayersObject(int playerID) {
