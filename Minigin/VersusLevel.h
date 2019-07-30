@@ -1,9 +1,9 @@
 #pragma once
-class ClassicLevel : public dae::Scene
+class VersusLevel : public dae::Scene
 {
 public:
-	ClassicLevel(std::string name);
-	~ClassicLevel();
+	VersusLevel(std::string name);
+	~VersusLevel();
 
 	void SceneUpdate() override;
 	void SceneInitialize() override;
@@ -27,7 +27,7 @@ private:
 	void CreateAnIceBlockEgg(int ID);
 	void CreateSnoBee(dae::Vector2 pos, int p);
 	void CreatePlayer();
-	void CreateWall(int start,int max,int inc);
+	void CreateWall(int start, int max, int inc);
 
 	const int number = 12;
 	const int margin = 32;

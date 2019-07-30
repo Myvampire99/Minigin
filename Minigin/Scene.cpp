@@ -66,7 +66,7 @@ void dae::Scene::Initialize()
 
 }
 void  dae::Scene::Reset() {
-	//mObjects.clear();
+	mObjects.clear();
 	LocalReset();
 }
 

@@ -12,8 +12,13 @@ namespace dae
 		void Cleanup();
 		void Run();
 
-		bool SwitchScene = false;//TODO: gone
+		enum Level {
+		Classic,Coop,Versus
+		};
+		Level m_CurrentLevel;
 		Subject *m_Subject;
+
+		//void SwitchLevel();
 
 	};
 }

@@ -14,7 +14,12 @@ void dae::SceneManager::Update(const float elapsedTime)
 		{
 			if (scene.first->IsActive()) {
 
+				
+				scene.first->SwitchSceneDec();
 				scene.first->Reset();
+				dae::Singleton<CollisionManager>::GetInstance().ResetSceneCol(scene.first->ID);
+				scene.first->Initialize();
+
 				ActiveDelete = false;
 				break;
 			}

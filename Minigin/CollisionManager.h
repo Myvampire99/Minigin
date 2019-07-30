@@ -9,6 +9,7 @@ public:
 	void AddCollision(CollisionObject* object);
 	void Remove(CollisionObject* object);
 	void RemoveAll();
+	void ResetSceneCol(int IDs);
 
 	void onNotify( Event event) override;
 

@@ -2,6 +2,9 @@
 #include "Minigin.h"
 #include "Scene.h"
 #include "DebugScene.h"
+#include "ClassicLevel.h"
+#include "CoopLevel.h"
+#include "VersusLevel.h"
 
 void dae::Minigin::Initialize()
 {
@@ -25,7 +28,7 @@ void dae::Minigin::Initialize()
 
 	Renderer::GetInstance().Init(window);
 
-
+	m_CurrentLevel = Level::Classic;
 }
 
 
@@ -35,14 +38,16 @@ void dae::Minigin::LoadGame()
 	Singleton<SceneManager>::GetInstance().AddSubject(m_Subject);
 	m_Subject->AddObserver(&dae::Singleton<CollisionManager>::GetInstance());
 
-	Scene *scene = new DebugScene();
+	Scene *scene = new CoopLevel("CoopLevel");
 	Singleton<SceneManager>::GetInstance().AddScene(scene);
 	
-
-	Scene *sceneC = new DebugScene("OtherScene");
+	Scene *sceneC = new ClassicLevel("ClassicLevel");
 	Singleton<SceneManager>::GetInstance().AddScene(sceneC);
 
-	Singleton<SceneManager>::GetInstance().SetSceneActive("DebugScene", true);
+	Scene *sceneD = new VersusLevel("VersusLevel");
+	Singleton<SceneManager>::GetInstance().AddScene(sceneD);
+
+	Singleton<SceneManager>::GetInstance().SetSceneActive("ClassicLevel", true);
 
 }
 
@@ -93,16 +98,27 @@ void dae::Minigin::Run()
 
 			doContinue = input.ProcessInput();
 			if (!doContinue) {
-				SwitchScene = !SwitchScene;
-				if (SwitchScene) {
-					Singleton<SceneManager>::GetInstance().SetSceneActive("DebugScene", !SwitchScene);
-					Singleton<SceneManager>::GetInstance().SetSceneActive("OtherScene", SwitchScene);
-				}
-				if (!SwitchScene) {
-					Singleton<SceneManager>::GetInstance().SetSceneActive("OtherScene", SwitchScene);
-					Singleton<SceneManager>::GetInstance().SetSceneActive("DebugScene", !SwitchScene);
-				}
 				
+				switch (m_CurrentLevel)
+				{
+				case dae::Minigin::Classic:
+					Singleton<SceneManager>::GetInstance().SetSceneActive("ClassicLevel", false);
+					Singleton<SceneManager>::GetInstance().SetSceneActive("CoopLevel", true);
+					m_CurrentLevel = dae::Minigin::Coop;
+					break;
+				case dae::Minigin::Coop:
+					Singleton<SceneManager>::GetInstance().SetSceneActive("CoopLevel", false);
+					Singleton<SceneManager>::GetInstance().SetSceneActive("VersusLevel", true);
+					m_CurrentLevel = dae::Minigin::Versus;
+					break;
+				case dae::Minigin::Versus:
+					Singleton<SceneManager>::GetInstance().SetSceneActive("VersusLevel", false);
+					Singleton<SceneManager>::GetInstance().SetSceneActive("ClassicLevel", true);
+					m_CurrentLevel = dae::Minigin::Classic;
+					break;
+				default:
+					break;
+				}
 			}
 
 			input.HandleInput();

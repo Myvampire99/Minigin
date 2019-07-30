@@ -1,5 +1,5 @@
 #pragma once
-class AIStateComponent : public BaseComponent
+class AIStateComponent : public BaseComponent,public Observer
 {
 public:
 	AIStateComponent(GridManager* grid,int player);
@@ -9,8 +9,10 @@ public:
 	void Draw() override;
 	void Initialize() override;
 
-private:
+	bool IsHarmless();
 
+	void SetPlayer(bool isplayer = true);
+private:
 	enum AIState {
 		SpawnState,
 		WalkingState,
@@ -19,6 +21,7 @@ private:
 		DecidingDirectionState
 	};
 	AIState m_AIState;
+
 	GridManager* m_GridManager;
 
 	void CheckIfHit();
@@ -38,5 +41,8 @@ private:
 	int m_Direction;
 	int m_PrevDirection;
 	int m_Score;
+
+
+	void onNotify(Event event) override;
 };
 

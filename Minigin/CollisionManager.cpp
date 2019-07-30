@@ -15,6 +15,16 @@ CollisionManager::~CollisionManager()
 	m_Objects.clear();
 }
 
+void CollisionManager::ResetSceneCol(int IDs) {
+	m_Objects.clear();
+	if (m_OtherObjects.size() != 0) {
+		for (auto obj : m_OtherObjects) {
+			if (obj.first == IDs)
+				obj.second.clear();
+		}
+	}
+}
+
 void CollisionManager::Update() {
 
 	for (auto object : m_Objects) {

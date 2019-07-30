@@ -2,397 +2,324 @@
 #include "CoopLevel.h"
 
 
-CoopLevel::CoopLevel()
-	:Scene("CoopLevel")
+CoopLevel::CoopLevel(std::string name)
+	:Scene(name)
+	, m_IntHealth{ 3 }
 {
+	m_GridManager = new GridManager();
 }
-
 
 CoopLevel::~CoopLevel()
 {
+}
+
+void CoopLevel::SwitchSceneIni() {
+
+	dae::Singleton<ServiceLocator>::GetInstance().SetHealth(m_IntHealth);
+	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player);
+	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player2);
 	
-}
+	for (auto snoBee : m_SnoBee) {
+		if (!snoBee->GetMarkForDelete())
+			dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(snoBee);
+	}
 
-void CoopLevel::SceneUpdate() {
-	std::pair<bool, bool> VH = m_Player->GetComponent<BaseCharacterComponent>()->GetFlipVertnFlipHor();
-	m_Player->GetComponent<dae::SpriteComponent>()->FlipSprite(VH.second || VH.first, false);
-
-	m_Player->GetComponent<dae::SpriteComponent>()->SetPause(m_Player->GetComponent<BaseCharacterComponent>()->GetDirection() == BaseCharacterComponent::Direction::Idle);
-
-
-	if (m_PlayerCharacter->IsDigging())
-		m_Player->GetComponent<dae::SpriteComponent>()->SetCurrentSprite(1);
-	else
-		m_Player->GetComponent<dae::SpriteComponent>()->SetCurrentSprite(0);
-
+	dae::Singleton<ServiceLocator>::GetInstance().SetSnoBeeRemaining(m_IntSnoBeeRemaining);
 
 }
 
-void CoopLevel::LocalReset() {
-	
-	int widthGrid = 12;
-	int HeightGrid = 12;
-	float SizeBlockGrid = 30;
+void CoopLevel::SwitchSceneDec() {
 
+	dae::Singleton<ServiceLocator>::GetInstance().RemoveAllPlayerObjects();
 
-	for (int i{ }; i < (HeightGrid + 1)*(widthGrid + 1); ++i) {
-		auto *lvlObj = new LevelObject("Resources/Textures/Ground.png");
-		lvlObj->SetSize(SizeBlockGrid);
-		m_GridLevel->ChangeBlock(lvlObj, i);
-	}
-
-	auto *Rock = new RockBlock("Resources/Textures/Rock.png", m_GridLevel, new CollisionBox({ 0.f ,0.f }, SizeBlockGrid, SizeBlockGrid));
-	Rock->SetSize(SizeBlockGrid);
-	levelGameObject->GetComponent<GridLevel>()->ChangeBlock(Rock, 20);
-	levelGameObject->GetComponent<GridLevel>()->SetWalkable(20, false);
-
-	for (int i{ (HeightGrid + 1)*widthGrid }; i < (HeightGrid + 1)*widthGrid + widthGrid + 1; ++i) {
-		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
-	}
-	for (int i{  }; i < widthGrid + 1; ++i) {
-		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
-	}
-	for (int i{ 0 }; i < HeightGrid*widthGrid; i += widthGrid + 1) {
-		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
-	}
-	for (int i{ widthGrid }; i < (HeightGrid + 1)*widthGrid; i += widthGrid + 1) {
-		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
-	}
-
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 150.f, 150.f }));
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 150.f, 150.f }) + 1);
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 150.f, 150.f }) - 1);
-
-
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f }));
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f }) + 1);
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f }) - 1);
-
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 300.f, 300.f }));
-
-	m_Player->GetComponent<DiggerCharacterComponent>()->SetLives(3);
-	dae::Singleton<ServiceLocator>::GetInstance().GetHealthGO()->GetComponent<TextRendererComponent>()->SetText(std::to_string(3));
-
-
-	m_Player->SetPosition(300.f, 300.f);
-	m_Player2->SetPosition(300.f, 300.f);
-
-	auto FcollisionComponent = new CollisionComponent();
-	auto FcollisionBox = new CollisionBox({}, 26, 26);
-	FcollisionBox->SetIsTrigger(true);
-	FcollisionComponent->AddCollision(FcollisionBox);
-
-	Fygar->SetPosition(150.f, 150.f);
-	Fygar->SetEnabled(true);
-	Fygar->RemoveComponent<CollisionComponent>();
-	Fygar->AddComponent(FcollisionComponent);
-	Fygar->RemoveComponent<GridComponent>();
-	Fygar->AddComponent(new GridComponent(m_GridLevel, true));
-
-
-	auto PcollisionComponent = new CollisionComponent();
-	auto PcollisionBox = new CollisionBox({}, 26, 26);
-	PcollisionBox->SetIsTrigger(true);
-	PcollisionComponent->AddCollision(PcollisionBox);
-
-	Pooka->SetPosition(250.f, 250.f);
-	Pooka->SetEnabled(true);
-	Pooka->RemoveComponent<CollisionComponent>();
-	Pooka->AddComponent(PcollisionComponent);
-
-	Pooka->RemoveComponent<GridComponent>();
-	Pooka->AddComponent(new GridComponent(m_GridLevel, true));
-
-
-
-
+	m_IntHealth = dae::Singleton<ServiceLocator>::GetInstance().GetHealth();
+	m_IntSnoBeeRemaining = dae::Singleton<ServiceLocator>::GetInstance().GetSnoBeeRemaining();
 
 }
-
 
 void CoopLevel::SceneInitialize() {
 
+	m_Subject = new Subject();
+	dae::Singleton<ServiceLocator>::GetInstance().SetHealth(m_IntHealth);
 
+	m_GridManager->CreateRectGrid(this, number, number, (float)margin);
 
+	MazeGenerator mazegen;
+	auto vecTag = mazegen.CreateMaze(number, number);//-2
 
-	dae::Singleton<InputManager>::GetInstance().AssignButton(ControllerButton::Button_B, new ChangeToPlayerC(), 0);
-	dae::Singleton<InputManager>::GetInstance().AssignButton(ControllerButton::Button_Y, new ChangeLevelCOOP(), 0);
-	dae::Singleton<InputManager>::GetInstance().AssignButton(ControllerButton::Button_X, new ChangeLevelCLASSIC(), 0);
+	for (int i{}; i < (int)vecTag.size(); ++i) {
 
-
-	int widthGrid = 12;
-	int HeightGrid = 12;
-	float SizeBlockGrid = 30;
-
-	//Observer and subject
-	m_ScoreDisplay = new ScoreDisplay;
-	m_Subject = new Subject;
-
-	m_Subject->AddObserver(m_ScoreDisplay);
-	//
-
-
-
-
-
-
-	//Grid
-	m_GridLevel = new GridLevel(widthGrid + 1, HeightGrid + 1, SizeBlockGrid, { SizeBlockGrid,SizeBlockGrid });
-	levelGameObject = std::make_shared<dae::GameObject>();
-	levelGameObject->AddComponent(m_GridLevel);
-	Add(levelGameObject);
-	//
-
-	//Grid Blocks
-	auto *lvlObj = new LevelObject("Resources/Textures/Ground.png");
-	lvlObj->SetSize(SizeBlockGrid);
-	levelGameObject->GetComponent<GridLevel>()->FillLevel(lvlObj);
-	delete lvlObj;
-
-	auto *Rock = new RockBlock("Resources/Textures/Rock.png", m_GridLevel, new CollisionBox({ 0.f ,0.f }, SizeBlockGrid, SizeBlockGrid));
-	Rock->SetSize(SizeBlockGrid);
-	Rock->SetSubject(m_Subject);
-	levelGameObject->GetComponent<GridLevel>()->ChangeBlock(Rock, 20);
-	levelGameObject->GetComponent<GridLevel>()->SetWalkable(20, false);
-
-	for (int i{ (HeightGrid + 1)*widthGrid }; i < (HeightGrid + 1)*widthGrid + widthGrid + 1; ++i) {
-		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
-	}
-	for (int i{  }; i < widthGrid + 1; ++i) {
-		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
-	}
-	for (int i{ 0 }; i < HeightGrid*widthGrid; i += widthGrid + 1) {
-		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
-	}
-	for (int i{ widthGrid }; i < (HeightGrid + 1)*widthGrid; i += widthGrid + 1) {
-		m_GridLevel->ChangeBlock(new BorderBlock(new CollisionBox({ 0,0 }, SizeBlockGrid, SizeBlockGrid)), i);
+		if (vecTag[i] == 2)
+			CreateAnIceBlock(i);
 	}
 
+	CreateWall(0, number, 1);
+	CreateWall(number*number - number, number*number, 1);
+	CreateWall(0, number*number, number);
+	CreateWall(number - 1, number*number, number);
 
-	//
+	CreatePlayer(m_Player, 0, { margin *2.f,margin *2.f});
+	m_Player->GetComponent<PengoCharacterComponent>()->AddSubject(m_Subject);
+	CreatePlayer(m_Player2,1, { margin *3.f,margin *3.f });
+	m_Player2->GetComponent<PengoCharacterComponent>()->AddSubject(m_Subject);
 
+	CreateSnoBee({ (float)margin,(float)margin *(number - 2) }, 2);
+	CreateSnoBee({ (float)margin*(number - 2),(float)margin*(number - 2) }, 3);
+	//CreateSnoBee({ (float)margin*(number - 2),(float)margin }, 3);
+
+	//SCORE
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	TextRendererComponent* text = new TextRendererComponent("Score: ", font);
+	m_Score = std::make_shared<dae::GameObject>();
+	m_Score->AddComponent(text);
+	m_Score->SetPosition(400.f, 300.f);
+	Add(m_Score);
+
+	//HEALTH
+	TextRendererComponent* text2 = new TextRendererComponent("Health: ", font);
+	m_Health = std::make_shared<dae::GameObject>();
+	m_Health->AddComponent(text2);
+	m_Health->SetPosition(400.f, 400.f);
+	Add(m_Health);
+
+
+	CreateAnIceBlockEgg(rand() % 6 + 25);
+	CreateAnIceBlockEgg(rand() % 6 + 49);
+	CreateAnIceBlockEgg(rand() % 3 + 63);
+}
+
+void CoopLevel::CreateWall(int start, int max, int inc) {
+	for (int i{ start }; i < max; i += inc) {
+		CollisionComponent* CComponent = new CollisionComponent();
+		CollisionObject* BBoxCollision = new CollisionBox({ 200.f, 200.f }, (float)margin - 1, (float)margin - 1, false);
+		BBoxCollision->SetIsTrigger(false);
+
+		m_GridManager->AddComponents(CComponent, i);//TODO: Order based
+		CComponent->AddCollision(BBoxCollision);
+
+		dae::Sprite *SSprite = new dae::Sprite{ "Resources/Textures/Wall.png",1,1,1,0.f };
+		dae::SpriteComponent* SpriteComp = new dae::SpriteComponent{ 1,SSprite };
+		m_GridManager->AddComponents(SpriteComp, i);
+
+		m_GridManager->GetNode(i)->tag = 2;
+		m_GridManager->GetNode(i)->object->GetTransform()->SetScale(2);
+
+	}
+}
+
+void CoopLevel::CreatePlayer(std::shared_ptr<dae::GameObject> &player,int i, dae::Vector2 pos) {
+
+	player = std::make_shared<dae::GameObject>();
 	//Collision
 	auto collisionComponent = new CollisionComponent();
-	auto collisionBox = new CollisionBox({}, 25, 25);
+	auto collisionBox = new CollisionBox({ pos }, 20, 20, 10.f);
 	collisionBox->SetIsTrigger(false);
+	collisionBox->SetMargin({ 6.f,6.f });
+
+	player->AddComponent(collisionComponent);//TODO: Order based
 	collisionComponent->AddCollision(collisionBox);
 	//
 
 	//Input
-	m_Inputcomponent = new InputComponent(0);
-	m_Inputcomponent->AssignButton(left, ControllerButton::Dpad_Left);
-	m_Inputcomponent->AssignButton(right, ControllerButton::Dpad_Right);
-	m_Inputcomponent->AssignButton(up, ControllerButton::Dpad_Up);
-	m_Inputcomponent->AssignButton(down, ControllerButton::Dpad_Down);
-	m_Inputcomponent->AssignButton(fire, ControllerButton::Button_A);
-
-
-
+	auto m_Inputcomponent = new InputComponent(i);
+	m_Inputcomponent->AssignButton(0, ControllerButton::Dpad_Left);
+	m_Inputcomponent->AssignButton(1, ControllerButton::Dpad_Right);
+	m_Inputcomponent->AssignButton(2, ControllerButton::Dpad_Up);
+	m_Inputcomponent->AssignButton(3, ControllerButton::Dpad_Down);
+	m_Inputcomponent->AssignButton(4, ControllerButton::Button_A);
 	//
 
 	//Character Component
-	m_PlayerCharacter = new DiggerCharacterComponent(m_GridLevel);
-	m_PlayerCharacter->AssignButton(left, right, up, down);
-	m_PlayerCharacter->SetWidth(25); 
-	m_PlayerCharacter->SetResetPosition({ 300.f,300.f });
+	auto m_PlayerCharacter = new PengoCharacterComponent(m_GridManager);
+	m_PlayerCharacter->AssignButton(0, 1, 2, 3);
 	//
 
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 300.f, 300.f }));
+	//Player GameObject
 
-	//Player
-	m_Player = std::make_shared<dae::GameObject>();
-
-	m_Player->AddComponent(new dae::SpriteComponent(0, new dae::Sprite("Resources/Sprites/PlayerMove.png", 1, 2, 2, 3)));
-	m_Player->AddComponent(m_Inputcomponent);
-	m_Player->AddComponent(m_PlayerCharacter);
-	m_Player->AddComponent(collisionComponent);
-	m_Player->AddComponent(new GridComponent(m_GridLevel, true));//, { SizeBlockGrid / 2.f,SizeBlockGrid / 2.f }
-
-	m_Player->GetTransform()->SetScale(2);
-	m_Player->SetPosition(300.f, 300.f);
-
-	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player);
-	m_Player->GetComponent<DiggerCharacterComponent>()->SetSubject(m_Subject);
-	Add(m_Player);
-	//
-
-	//Extra Sprite
-	m_Player->GetComponent<dae::SpriteComponent>()->AddSprite(1, new dae::Sprite("Resources/Sprites/DiggingB.png", 1, 2, 2, 3));
-	//
-
-
-
-
-
-
-
-	//Score Health
-	auto score = std::make_shared<dae::GameObject>();
-	auto health = std::make_shared<dae::GameObject>();
-
-	//font
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-
-
-	score->AddComponent(new TextRendererComponent("0", font));
-	health->AddComponent(new TextRendererComponent("3", font));
-
-	score->SetPosition(450.f, 50.f);
-	health->SetPosition(450.f, 80.f);
-
-	Add(score);
-	Add(health);
-
-	dae::Singleton<ServiceLocator>::GetInstance().SetGOScore(score);
-	dae::Singleton<ServiceLocator>::GetInstance().SetGOHealth(health);
+	player->AddComponent(new dae::SpriteComponent(0, new dae::Sprite("Resources/Sprites/PlayerMove.png", 1, 2, 2, 3)));
+	player->AddComponent(m_Inputcomponent);
+	player->AddComponent(m_PlayerCharacter);
+	player->GetTransform()->SetScale(2);
+	player->SetPosition(pos);
 
 	//
+	m_GridManager->GetClosestNode({ pos })->object->MarkForDelete();
+	m_GridManager->FreeBlock(m_GridManager->GetClosestNode({ pos }), std::make_shared<dae::GameObject>());
+	//
 
+	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(player);
+	player->AddComponent(new GridComponent(m_GridManager));
+	Add(player);
+}
 
+void CoopLevel::CreateSnoBee(dae::Vector2 pos, int p) {
 
+	std::shared_ptr<dae::GameObject> oldSnoBee = nullptr;
 
+	auto m_SnoBee1 = std::make_shared<dae::GameObject>();
+	if ((int)m_SnoBee.size() < p-1)
+		m_SnoBee.push_back(m_SnoBee1);
+	else {
+		oldSnoBee = m_SnoBee[p -2];
+		m_SnoBee[p - 2] = m_SnoBee1;
+	}
 
+	//Collision
+	auto collisionComponent = new CollisionComponent();
+	auto collisionBox = new CollisionBox({pos}, 20, 20);
+	collisionBox->SetIsTrigger(true);
+	collisionBox->SetMargin({ 6.f,6.f });
 
-
-	//	//Collision
-	auto collisionComponent2 = new CollisionComponent();
-	auto collisionBox2 = new CollisionBox({}, 25, 25);
-	collisionBox2->SetIsTrigger(false);
-	collisionComponent2->AddCollision(collisionBox2);
+	m_SnoBee1->AddComponent(collisionComponent);//TODO: Order based
+	collisionComponent->AddCollision(collisionBox);
 	//
 
 	//Input
-	auto m_Inputcomponent2 = new InputComponent(1);
-	m_Inputcomponent2->AssignButton(left, ControllerButton::Dpad_Left);
-	m_Inputcomponent2->AssignButton(right, ControllerButton::Dpad_Right);
-	m_Inputcomponent2->AssignButton(up, ControllerButton::Dpad_Up);
-	m_Inputcomponent2->AssignButton(down, ControllerButton::Dpad_Down);
-	m_Inputcomponent2->AssignButton(fire, ControllerButton::Button_A);
-
-
+	auto input = new InputComponent(p);
+	input->AssignButton(0, ControllerButton::Dpad_Left);
+	input->AssignButton(1, ControllerButton::Dpad_Right);
+	input->AssignButton(2, ControllerButton::Dpad_Up);
+	input->AssignButton(3, ControllerButton::Dpad_Down);
+	input->AssignButton(4, ControllerButton::Button_A);
 	//
 
 	//Character Component
-	auto m_PlayerCharacter2 = new DiggerCharacterComponent(m_GridLevel);
-	m_PlayerCharacter2->AssignButton(left, right, up, down);
-	m_PlayerCharacter2->SetWidth(25); 
-	m_PlayerCharacter2->SetResetPosition({ 300.f,300.f });
+	auto m_SnoBee1Character = new SnoBeeComponent(m_GridManager);
+	m_SnoBee1Character->AssignButton(0, 1, 2, 3);
 	//
 
-	//Player
-	m_Player2 = std::make_shared<dae::GameObject>();
+	//Player GameObject
 
-	m_Player2->AddComponent(new dae::SpriteComponent(0, new dae::Sprite("Resources/Sprites/PlayerMove.png", 1, 2, 2, 3)));
-	m_Player2->AddComponent(m_Inputcomponent2);
-	m_Player2->AddComponent(m_PlayerCharacter2);
-	m_Player2->AddComponent(collisionComponent2);
-	m_Player2->AddComponent(new GridComponent(m_GridLevel, true));//, { SizeBlockGrid / 2.f,SizeBlockGrid / 2.f }
-
-	m_Player2->GetTransform()->SetScale(2);
-	m_Player2->SetPosition(300.f, 300.f);
-
-	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player2);
-	m_Player2->GetComponent<DiggerCharacterComponent>()->SetSubject(m_Subject);
-	Add(m_Player2);
-	//
-
-	//Extra Sprite
-	m_Player2->GetComponent<dae::SpriteComponent>()->AddSprite(1, new dae::Sprite("Resources/Sprites/DiggingB.png", 1, 2, 2, 3));
-	//
-
-
-
-
-
-
-
-
-
-
-
+	m_SnoBee1->AddComponent(input);
+	m_SnoBee1->AddComponent(m_SnoBee1Character);
+	m_SnoBee1->GetTransform()->SetScale(2);
+	m_SnoBee1->SetPosition(pos);
 
 	//
-	auto FInput = new InputComponent(2);
-	FInput->AssignButton(left, ControllerButton::Dpad_Left);
-	FInput->AssignButton(right, ControllerButton::Dpad_Right);
-	FInput->AssignButton(up, ControllerButton::Dpad_Up);
-	FInput->AssignButton(down, ControllerButton::Dpad_Down);
-	FInput->AssignButton(fire, ControllerButton::Button_A);
-
-
-	auto FygarCharacter = new FygarCharacterComponent(m_GridLevel);
-	FygarCharacter->AssignButton(left, right, up, down);
-
-
-	auto FcollisionComponent = new CollisionComponent();
-	auto FcollisionBox = new CollisionBox({}, 26, 26);
-	FcollisionBox->SetIsTrigger(true);
-	FcollisionComponent->AddCollision(FcollisionBox);
-
-	Fygar = std::make_shared<dae::GameObject>();
-	Fygar->AddComponent(new dae::SpriteComponent(0, new dae::Sprite("Resources/Sprites/Fygar.png", 1, 2, 2, 3)));
-	Fygar->AddComponent(new GridComponent(m_GridLevel, true));
-	Fygar->AddComponent(FInput);
-	Fygar->AddComponent(FygarCharacter);
-	Fygar->AddComponent(FcollisionComponent);
-
-	Fygar->GetTransform()->SetScale(2);
-	Fygar->SetPosition(150.f, 150.f);
-
-	Fygar->AddComponent(new AIComponent(FInput, FygarCharacter));
-	///
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 150.f, 150.f }));
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 150.f, 150.f }) + 1);
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 150.f, 150.f }) - 1);
-	///
-	Fygar->GetComponent<FygarCharacterComponent>()->SetSubject(m_Subject);
-	Fygar->GetComponent<AIComponent>()->GetState()->player = 2;
-	Add(Fygar);
-
-	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(Fygar);
+	m_GridManager->GetClosestNode({ pos })->object->MarkForDelete();
+	m_GridManager->FreeBlock(m_GridManager->GetClosestNode({ pos }), std::make_shared<dae::GameObject>());
 	//
 
+	if (oldSnoBee) {
+
+		dae::Singleton<ServiceLocator>::GetInstance().ChangePlayerObject(p, m_SnoBee1);
+		m_Subject->RemoveObserver(oldSnoBee->GetComponent<AIStateComponent>());
+	}
+	else {
+		dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_SnoBee1);
+	}
+
+	m_SnoBee1->AddComponent(new AIStateComponent(m_GridManager, p));
+	m_SnoBee1->AddComponent(new GridComponent(m_GridManager));
+
+	m_Subject->AddObserver(m_SnoBee1->GetComponent<AIStateComponent>());
+	Add(m_SnoBee1);
+}
+
+void CoopLevel::CreateAnIceBlockEgg(int IDs) {
+
+	CollisionComponent* tempComponent = new CollisionComponent();
+	CollisionObject* tempBoxCollision = new CollisionBox({ 200.f, 200.f }, (float)margin - 1, (float)margin - 1, false);
+	tempBoxCollision->SetIsTrigger(true);
 
 
+	m_GridManager->AddComponents(tempComponent, IDs);//TODO: Order based
+	tempComponent->AddCollision(tempBoxCollision);
 
-	//
-	auto PInput = new InputComponent(3);
-	PInput->AssignButton(left, ControllerButton::Dpad_Left);
-	PInput->AssignButton(right, ControllerButton::Dpad_Right);
-	PInput->AssignButton(up, ControllerButton::Dpad_Up);
-	PInput->AssignButton(down, ControllerButton::Dpad_Down);
-	PInput->AssignButton(fire, ControllerButton::Button_A);
+	dae::Sprite *sprite = new dae::Sprite{ "Resources/Textures/IceBlock.png",1,1,1,0.f };
+	dae::SpriteComponent* spriteComp = new dae::SpriteComponent{ 0,sprite };
+	m_GridManager->AddComponents(spriteComp, IDs);
+	m_GridManager->GetNode(IDs)->object->GetComponent<CollisionComponent>()->GetCollisions()[0]->SetIsTrigger(false);
+	m_GridManager->GetNode(IDs)->tag = 1;
+	m_GridManager->GetNode(IDs)->object->GetTransform()->SetScale(2);
 
-	auto pookaCharacter = new PookaCharacterComponent(m_GridLevel);
-	pookaCharacter->AssignButton(left, right, up, down);
+	m_GridManager->AddComponents(new SnoBeeEgg(), IDs);
 
-	auto PcollisionComponent = new CollisionComponent();
-	auto PcollisionBox = new CollisionBox({}, 26, 26);
-	PcollisionBox->SetIsTrigger(true);
-	PcollisionComponent->AddCollision(PcollisionBox);
+	m_SnoBeeEgg.push_back(m_GridManager->GetNode(IDs)->object);
+	dae::Singleton<ServiceLocator>::GetInstance().SetSnoBeeRemaining(dae::Singleton<ServiceLocator>::GetInstance().GetSnoBeeRemaining() - 1);
+}
 
-	Pooka = std::make_shared<dae::GameObject>();
-	Pooka->AddComponent(new dae::SpriteComponent(0, new dae::Sprite("Resources/Sprites/Pooka.png", 1, 2, 2, 3)));
-	Pooka->AddComponent(new GridComponent(m_GridLevel, true));
-	Pooka->AddComponent(PInput);
-	Pooka->AddComponent(pookaCharacter);
-	Pooka->AddComponent(PcollisionComponent);
-
-	Pooka->GetTransform()->SetScale(2);
-	Pooka->SetPosition(250.f, 250.f);
-
-	Pooka->AddComponent(new AIComponent(PInput, pookaCharacter));
-	Pooka->GetComponent<AIComponent>()->GetState()->player = 3;
-	///
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f }));
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f }) + 1);
-	m_GridLevel->ChangeBlock(new EmptyBlock, m_GridLevel->GetClosestIDViaPos({ 250.f, 250.f }) - 1);
-	///
-	Pooka->GetComponent<PookaCharacterComponent>()->SetSubject(m_Subject);
-	Add(Pooka);
-
-	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(Pooka);
-	//
+void CoopLevel::CreateAnIceBlock(int IDs) {
 
 
+	CollisionComponent* tempComponent = new CollisionComponent();
+	CollisionObject* tempBoxCollision = new CollisionBox({ 200.f, 200.f }, (float)margin - 1, (float)margin - 1, false);
+	tempBoxCollision->SetIsTrigger(true);
+
+
+	m_GridManager->AddComponents(tempComponent, IDs);//TODO: Order based
+	tempComponent->AddCollision(tempBoxCollision);
+
+	dae::Sprite *sprite = new dae::Sprite{ "Resources/Textures/IceBlock.png",1,1,1,0.f };
+	dae::SpriteComponent* spriteComp = new dae::SpriteComponent{ 0,sprite };
+	m_GridManager->AddComponents(spriteComp, IDs);
+	m_GridManager->GetNode(IDs)->object->GetComponent<CollisionComponent>()->GetCollisions()[0]->SetIsTrigger(false);
+	m_GridManager->GetNode(IDs)->tag = 1;
+	m_GridManager->GetNode(IDs)->object->GetTransform()->SetScale(2);
+
+}
+
+void CoopLevel::SceneUpdate() {
+
+	//TODO: on its own update
+	m_GridManager->Update(0.f);
+
+	std::string score = "Score: ";
+	score += std::to_string(dae::Singleton<ServiceLocator>::GetInstance().GetCurrentScore());
+	m_Score->GetComponent<TextRendererComponent>()->SetText(score);
+
+	std::string health = "Health: ";
+	health += std::to_string(dae::Singleton<ServiceLocator>::GetInstance().GetHealth());
+	m_Health->GetComponent<TextRendererComponent>()->SetText(health);
+
+	for (int i{}; i < (int)m_SnoBee.size(); ++i) {
+		if (m_SnoBee[i]->GetMarkForDelete()) {
+			if (m_SnoBeeEgg.size() != 0) {
+				CreateSnoBee(m_SnoBeeEgg.back()->GetPos(), i + 2);
+				m_SnoBeeEgg.pop_back();
+				m_SnoBee[i]->Initialize();
+			}
+		}
+	}
+
+	bool found = false;
+	for (auto egg : m_SnoBeeEgg) {
+		if (egg->GetMarkForDelete()) {
+
+			dae::Singleton<ServiceLocator>::GetInstance().SetSnoBeeRemaining(dae::Singleton<ServiceLocator>::GetInstance().GetSnoBeeRemaining() - 1);
+			dae::Singleton<ServiceLocator>::GetInstance().SetCurrentScore(dae::Singleton<ServiceLocator>::GetInstance().GetCurrentScore() + 400);
+			found = true;
+
+		}
+	}
+
+	if (found) {
+
+		auto temp = m_SnoBeeEgg;
+		m_SnoBeeEgg.clear();
+		for (auto egg : temp) {
+			if (!egg->GetMarkForDelete()) {
+				m_SnoBeeEgg.push_back(egg);
+			}
+		}
+	}
+}
+
+void CoopLevel::LocalReset() {
+
+	delete m_GridManager;
+	m_GridManager = new GridManager();
+	m_Player = nullptr;
+	m_Player2 = nullptr;
+	m_SnoBee.clear();
+	m_SnoBeeEgg.clear();
+
+	m_Score = nullptr;
+	m_Health = nullptr;
+
+	m_IntHealth = 3;
+	m_IntSnoBeeRemaining = 1;
+	delete m_Subject;
+
+	dae::Singleton<ServiceLocator>::GetInstance().SetCurrentScore(0);
 }

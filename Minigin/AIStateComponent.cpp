@@ -18,19 +18,33 @@ AIStateComponent::~AIStateComponent()
 {
 }
 
+void AIStateComponent::SetPlayer(bool isplayer) {
+	IsAI = !isplayer;
+}
+
+
+bool AIStateComponent::IsHarmless() {
+	if (m_AIState == SpawnState)
+		return true;
+	else
+		return false;
+}
+
 void AIStateComponent::Update(const float elapsedTime) {
 
 	switch (m_AIState) {
 	case SpawnState:
 
 		if (m_ElapsedSpawnSeconds == 0) {
-			dae::Sprite* sprite = new dae::Sprite("Resources/Sprites/SlimeSpawn.png", 1, 5, 5, 0.5f);
-			m_GameObject->AddComponent(new dae::SpriteComponent(0, sprite));
+			if (!m_GameObject->GetComponent<dae::SpriteComponent>()) {
+				dae::Sprite* sprite = new dae::Sprite("Resources/Sprites/SlimeSpawn.png", 1, 5, 5, 0.5f);
+				m_GameObject->AddComponent(new dae::SpriteComponent(0, sprite));
+			}
 		}
 	
 		m_ElapsedSpawnSeconds += elapsedTime;
 		if (m_MaxSpawnSeconds < m_ElapsedSpawnSeconds) {
-			m_AIState = DecidingDirectionState;
+			m_AIState = WalkingState;
 			m_GameObject->RemoveComponent<dae::SpriteComponent>();
 			dae::Sprite* sprite = new dae::Sprite("Resources/Sprites/WalkingSlime.png", 1,2, 2, 1.f);
 			m_GameObject->AddComponent(new dae::SpriteComponent(0, sprite));
@@ -71,6 +85,13 @@ void AIStateComponent::Update(const float elapsedTime) {
 
 
 
+
+}
+
+void AIStateComponent::onNotify(Event event) {
+
+	if(Event::EVENT_PLAYER_DEAD == event)
+		m_AIState = SpawnState;
 
 }
 

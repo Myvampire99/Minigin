@@ -1,19 +1,19 @@
 #include "MiniginPCH.h"
-#include "ClassicLevel.h"
+#include "VersusLevel.h"
 
 
-ClassicLevel::ClassicLevel(std::string name)
+VersusLevel::VersusLevel(std::string name)
 	:Scene(name)
 	, m_IntHealth{ 3 }
 {
 	m_GridManager = new GridManager();
 }
 
-ClassicLevel::~ClassicLevel()
+VersusLevel::~VersusLevel()
 {
 }
 
-void ClassicLevel::SwitchSceneIni() {
+void VersusLevel::SwitchSceneIni() {
 
 	dae::Singleton<ServiceLocator>::GetInstance().SetHealth(m_IntHealth);
 	dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_Player);
@@ -27,7 +27,7 @@ void ClassicLevel::SwitchSceneIni() {
 
 }
 
-void ClassicLevel::SwitchSceneDec() {
+void VersusLevel::SwitchSceneDec() {
 
 	dae::Singleton<ServiceLocator>::GetInstance().RemoveAllPlayerObjects();
 
@@ -36,7 +36,7 @@ void ClassicLevel::SwitchSceneDec() {
 
 }
 
-void ClassicLevel::SceneInitialize() {
+void VersusLevel::SceneInitialize() {
 
 	m_Subject = new Subject();
 	dae::Singleton<ServiceLocator>::GetInstance().SetHealth(m_IntHealth);
@@ -52,7 +52,7 @@ void ClassicLevel::SceneInitialize() {
 			CreateAnIceBlock(i);
 	}
 
-	CreateWall(0, number,1);
+	CreateWall(0, number, 1);
 	CreateWall(number*number - number, number*number, 1);
 	CreateWall(0, number*number, number);
 	CreateWall(number - 1, number*number, number);
@@ -63,6 +63,9 @@ void ClassicLevel::SceneInitialize() {
 	CreateSnoBee({ (float)margin,(float)margin *(number - 2) }, 1);
 	CreateSnoBee({ (float)margin*(number - 2),(float)margin*(number - 2) }, 2);
 	CreateSnoBee({ (float)margin*(number - 2),(float)margin }, 3);
+
+	m_SnoBee[0]->GetComponent<AIStateComponent>()->SetPlayer();
+	m_SnoBee[0]->GetComponent<CollisionComponent>()->GetCollisions()[0]->SetIsTrigger(false);
 
 	//SCORE
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
@@ -80,11 +83,11 @@ void ClassicLevel::SceneInitialize() {
 	Add(m_Health);
 
 
-	CreateAnIceBlockEgg(rand()%6+25 );
-	CreateAnIceBlockEgg(rand() % 6 + 49 );
+	CreateAnIceBlockEgg(rand() % 6 + 25);
+	CreateAnIceBlockEgg(rand() % 6 + 49);
 }
 
-void ClassicLevel::CreateWall(int start, int max, int inc) {
+void VersusLevel::CreateWall(int start, int max, int inc) {
 	for (int i{ start }; i < max; i += inc) {
 		CollisionComponent* CComponent = new CollisionComponent();
 		CollisionObject* BBoxCollision = new CollisionBox({ 200.f, 200.f }, (float)margin - 1, (float)margin - 1, false);
@@ -103,7 +106,7 @@ void ClassicLevel::CreateWall(int start, int max, int inc) {
 	}
 }
 
-void ClassicLevel::CreatePlayer() {
+void VersusLevel::CreatePlayer() {
 
 	m_Player = std::make_shared<dae::GameObject>();
 	//Collision
@@ -148,7 +151,7 @@ void ClassicLevel::CreatePlayer() {
 	Add(m_Player);
 }
 
-void ClassicLevel::CreateSnoBee(dae::Vector2 pos, int p) {
+void VersusLevel::CreateSnoBee(dae::Vector2 pos, int p) {
 
 	std::shared_ptr<dae::GameObject> oldSnoBee = nullptr;
 
@@ -204,7 +207,7 @@ void ClassicLevel::CreateSnoBee(dae::Vector2 pos, int p) {
 	else {
 		dae::Singleton<ServiceLocator>::GetInstance().SetPlayerObject(m_SnoBee1);
 	}
-	
+
 	m_SnoBee1->AddComponent(new AIStateComponent(m_GridManager, p));
 	m_SnoBee1->AddComponent(new GridComponent(m_GridManager));
 
@@ -212,10 +215,10 @@ void ClassicLevel::CreateSnoBee(dae::Vector2 pos, int p) {
 	Add(m_SnoBee1);
 }
 
-void ClassicLevel::CreateAnIceBlockEgg(int IDs) {
+void VersusLevel::CreateAnIceBlockEgg(int IDs) {
 
 	CollisionComponent* tempComponent = new CollisionComponent();
-	CollisionObject* tempBoxCollision = new CollisionBox({ 200.f, 200.f },(float) margin - 1, (float)margin - 1, false);
+	CollisionObject* tempBoxCollision = new CollisionBox({ 200.f, 200.f }, (float)margin - 1, (float)margin - 1, false);
 	tempBoxCollision->SetIsTrigger(true);
 
 
@@ -235,7 +238,7 @@ void ClassicLevel::CreateAnIceBlockEgg(int IDs) {
 	dae::Singleton<ServiceLocator>::GetInstance().SetSnoBeeRemaining(dae::Singleton<ServiceLocator>::GetInstance().GetSnoBeeRemaining() - 1);
 }
 
-void ClassicLevel::CreateAnIceBlock(int IDs) {
+void VersusLevel::CreateAnIceBlock(int IDs) {
 
 
 	CollisionComponent* tempComponent = new CollisionComponent();
@@ -255,7 +258,7 @@ void ClassicLevel::CreateAnIceBlock(int IDs) {
 
 }
 
-void ClassicLevel::SceneUpdate() {
+void VersusLevel::SceneUpdate() {
 
 	//TODO: on its own update
 	m_GridManager->Update(0.f);
@@ -301,7 +304,7 @@ void ClassicLevel::SceneUpdate() {
 	}
 }
 
-void ClassicLevel::LocalReset() {
+void VersusLevel::LocalReset() {
 
 	delete m_GridManager;
 	m_GridManager = new GridManager();
@@ -312,8 +315,8 @@ void ClassicLevel::LocalReset() {
 	m_Score = nullptr;
 	m_Health = nullptr;
 
-	m_IntHealth =3;
-	m_IntSnoBeeRemaining=1;
+	m_IntHealth = 3;
+	m_IntSnoBeeRemaining = 1;
 	delete m_Subject;
 	dae::Singleton<ServiceLocator>::GetInstance().SetCurrentScore(0);
 }

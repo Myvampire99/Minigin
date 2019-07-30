@@ -10,9 +10,6 @@ public:
 	void SwitchSceneIni() override;
 	void SwitchSceneDec() override;
 
-	std::shared_ptr<dae::GameObject> m_GameObject_01;
-	std::shared_ptr<dae::GameObject> m_GameObject_02;
-
 private:
 
 	GridManager* m_GridManager;

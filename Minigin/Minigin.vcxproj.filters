@@ -177,6 +177,15 @@
     <ClInclude Include="SnoBeeEgg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ClassicLevel.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CoopLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VersusLevel.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -298,6 +307,15 @@
     </ClCompile>
     <ClCompile Include="SnoBeeEgg.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassicLevel.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CoopLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VersusLevel.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

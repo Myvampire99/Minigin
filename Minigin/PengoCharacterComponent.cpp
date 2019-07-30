@@ -13,6 +13,10 @@ PengoCharacterComponent::~PengoCharacterComponent()
 {
 }
 
+void PengoCharacterComponent::AddSubject(Subject *sub) {
+	m_Subject = sub;
+}
+
 void PengoCharacterComponent::Push() {
 
 	GridManager::Node *CurrentNode = m_GridManager->GetClosestNode(m_GameObject->GetPos());
@@ -123,17 +127,22 @@ void PengoCharacterComponent::LocalUpdate(float elapsedTime)  {
 		for (auto col : m_GameObject->GetComponent<CollisionComponent>()->GetCollisions()[0]->GetCurrentCollisions()) {
 			if (col) {
 				if (col->GetComponent()->m_GameObject->GetComponent<SnoBeeComponent>()) {
-					if (!m_reset) {
-						m_reset = true;
-						dae::Singleton<ServiceLocator>::GetInstance().SetHealth(dae::Singleton<ServiceLocator>::GetInstance().GetHealth() - 1);
-						if (dae::Singleton<ServiceLocator>::GetInstance().GetHealth() < 0)
-							dae::Singleton<dae::SceneManager>::GetInstance().ResetActiveScene();
-						else {
-							m_GameObject->SetPosition(64.f, 64.f);
+					if (!col->GetComponent()->m_GameObject->GetComponent<AIStateComponent>()->IsHarmless()) {
+						if (!m_reset) {
+							m_reset = true;
+							m_Subject->Notify(Event::EVENT_PLAYER_DEAD);
+
+							
+							dae::Singleton<ServiceLocator>::GetInstance().SetHealth(dae::Singleton<ServiceLocator>::GetInstance().GetHealth() - 1);
+							if (dae::Singleton<ServiceLocator>::GetInstance().GetHealth() < 0)
+								dae::Singleton<dae::SceneManager>::GetInstance().ResetActiveScene();
+							else {
+								m_GameObject->SetPosition(64.f, 64.f);
+							}
 						}
-					}
-					else {
-						m_reset = false;
+						else {
+							m_reset = false;
+						}
 					}
 				}
 			}
