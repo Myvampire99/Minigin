@@ -6,7 +6,7 @@
 namespace dae
 {
 
-	class GameObject final : public SceneObject
+	class GameObject final : public SceneObject, public std::enable_shared_from_this<GameObject>
 	{
 	public:
 
@@ -23,6 +23,7 @@ namespace dae
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
+		void SetPosition(dae::Vector2 pos);
 
 		dae::Vector2 GetPos() const;
 
@@ -36,6 +37,8 @@ namespace dae
 		
 		void AddComponent(BaseComponent *cmp);
 		dae::Transform* GetTransform();
+
+		
 
 	private:
 		dae::Transform *mTransform;
@@ -58,11 +61,16 @@ namespace dae
 			}
 		}
 
+	//	template <class T>
+		//void RequestDeletionOfComponent();
+
 
 		template <class T>
 		T* GetComponent()
 		{
-		
+			if (m_pComponents.size() == 0)
+				return nullptr;
+
 			for (auto* comp : m_pComponents) {
 				if (dynamic_cast<T*>(comp) != nullptr) {
 						return static_cast<T*>(comp);

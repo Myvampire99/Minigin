@@ -1,8 +1,7 @@
 #include "MiniginPCH.h"
 #include "Minigin.h"
 #include "Scene.h"
-#include "DigDugLevel.h"
-#include "CoopLevel.h"
+#include "DebugScene.h"
 
 void dae::Minigin::Initialize()
 {
@@ -32,14 +31,18 @@ void dae::Minigin::Initialize()
 
 void dae::Minigin::LoadGame() 
 {
-	Scene *scene = new DigDugLevel();
+	m_Subject = new Subject();
+	Singleton<SceneManager>::GetInstance().AddSubject(m_Subject);
+	m_Subject->AddObserver(&dae::Singleton<CollisionManager>::GetInstance());
+
+	Scene *scene = new DebugScene();
 	Singleton<SceneManager>::GetInstance().AddScene(scene);
 	
 
-	//Scene *sceneC = new CoopLevel();
-	//Singleton<SceneManager>::GetInstance().AddScene(sceneC);
+	Scene *sceneC = new DebugScene("OtherScene");
+	Singleton<SceneManager>::GetInstance().AddScene(sceneC);
 
-	Singleton<SceneManager>::GetInstance().SetSceneActive("DigDugLevel", true);
+	Singleton<SceneManager>::GetInstance().SetSceneActive("DebugScene", true);
 
 }
 
@@ -89,6 +92,19 @@ void dae::Minigin::Run()
 			
 
 			doContinue = input.ProcessInput();
+			if (!doContinue) {
+				SwitchScene = !SwitchScene;
+				if (SwitchScene) {
+					Singleton<SceneManager>::GetInstance().SetSceneActive("DebugScene", !SwitchScene);
+					Singleton<SceneManager>::GetInstance().SetSceneActive("OtherScene", SwitchScene);
+				}
+				if (!SwitchScene) {
+					Singleton<SceneManager>::GetInstance().SetSceneActive("OtherScene", SwitchScene);
+					Singleton<SceneManager>::GetInstance().SetSceneActive("DebugScene", !SwitchScene);
+				}
+				
+			}
+
 			input.HandleInput();
 
 			sceneManager.Update(float(deltaTime));
@@ -102,6 +118,8 @@ void dae::Minigin::Run()
 			
 			renderer.Render();
 
+
+			doContinue = true;//===================
 		}
 	}
 

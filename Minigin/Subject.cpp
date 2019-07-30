@@ -27,10 +27,10 @@ void Subject::RemoveObserver(Observer * observer)
 	m_Observer.erase(std::remove(m_Observer.begin(), m_Observer.end(), observer), m_Observer.end());
 }
 
-void Subject::Notify( dae::GameObject * entity, Event event)
+void Subject::Notify(Event event)
 {
 	for (unsigned int i = 0; i < m_Observer.size(); i++)
 	{
-		m_Observer[i]->onNotify(entity, event);
+		m_Observer[i]->onNotify(event);
 	}
 }

@@ -14,7 +14,7 @@ BaseCharacterComponent::~BaseCharacterComponent()
 {
 }
 
-dae::GameObject* BaseCharacterComponent::GetGameObject() {
+std::shared_ptr<dae::GameObject> BaseCharacterComponent::GetGameObject() {
 	return m_GameObject;
 }
 
@@ -33,7 +33,8 @@ void BaseCharacterComponent::Update(const float elapsedTime)
 	}
 	LocalUpdate(elapsedTime);
 
-	m_DirectionState = Direction::Idle;
+	//TODO: this IDle Direction state
+	//m_DirectionState = Direction::Idle;
 
 }
 
@@ -70,11 +71,11 @@ void BaseCharacterComponent::Yforward(int direction)
 		m_GameObject->SetPosition(pos2.x, pos2.y);
 	
 		if (direction == 1) {
-			m_DirectionState = Direction::Up;
+			m_DirectionState = Direction::Down;
 			m_GameObject->GetTransform()->SetAngle(90.f);
 		}
 		else {
-			m_DirectionState = Direction::Down;
+			m_DirectionState = Direction::Up;
 			m_GameObject->GetTransform()->SetAngle(-90.f);
 		}
 	}

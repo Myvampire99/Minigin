@@ -1,4 +1,5 @@
 #pragma once
+class CollisionComponent;
 class CollisionObject
 {
 public:
@@ -17,10 +18,22 @@ public:
 
 	void SetPosition(dae::Vector2);
 	dae::Vector2 GetPosition();
+
+	void SetPrevPos(dae::Vector2 pos);
+	dae::Vector2 GetPrevPos();
+	
+	dae::Vector2 m_Margin;
+	void SetMargin(dae::Vector2 margin);
+
+	CollisionComponent* GetComponent();
+	void SetComponent(CollisionComponent* col);
 protected:
 	std::vector<dae::Vector2> m_Points;
 private:
 	std::vector<CollisionObject*> m_CurrentCollisions;
 	bool m_IsTrigger;
+	dae::Vector2 m_PreviousPos;
+
+	CollisionComponent *m_CollisionComponent;
 };
 

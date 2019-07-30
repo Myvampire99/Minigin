@@ -7,7 +7,7 @@ class BaseCharacterComponent : public BaseComponent
 public:
 	BaseCharacterComponent();
 	~BaseCharacterComponent();
-	dae::GameObject* GetGameObject();
+	std::shared_ptr<dae::GameObject> GetGameObject();
 
 	void Update(const float elapsedTime) override;
 	virtual void Draw();

@@ -23,13 +23,13 @@ class InputManager
 {
 public:
 	bool ProcessInput();
-	std::pair<bool, int> IsPressed(ControllerButton button,int player,bool Keyboard) const;
+	std::pair<bool, int> IsPressed(ControllerButton button,int player,bool Keyboard);
 
 	InputManager();
 	~InputManager();
 
 	//template<class T>
-	void AssignButton(ControllerButton button, Command *pointer, int player);
+	void AssignButton(ControllerButton button, Command *pointer, int player,bool release = false);
 	void HandleInput();
 	void ForceButton(ControllerButton button,int player);
 
@@ -40,4 +40,7 @@ private:
 	bool m_ControllerConected;
 
 	bool m_SkipPlayer[4];
+
+	std::vector<std::unordered_map<ControllerButton, bool>> m_Released;
+	std::vector<std::unordered_map<ControllerButton, bool>> m_NeedToRelease;
 };

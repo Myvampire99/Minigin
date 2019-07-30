@@ -11,5 +11,9 @@ namespace dae
 		void LoadGame() ;
 		void Cleanup();
 		void Run();
+
+		bool SwitchScene = false;//TODO: gone
+		Subject *m_Subject;
+
 	};
 }

@@ -40,6 +40,9 @@
     <Filter Include="Observer">
       <UniqueIdentifier>{0f521186-dcc6-43cf-b42d-b06b1139d254}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{39890b21-0bd7-4868-b01d-8d359d750a65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -87,26 +90,11 @@
     <ClInclude Include="BaseCharacterComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="DigDugLevel.h">
-      <Filter>DigDug\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="DiggerCharacterComponent.h">
-      <Filter>DigDug</Filter>
-    </ClInclude>
-    <ClInclude Include="EmptyBlock.h">
-      <Filter>DigDug</Filter>
-    </ClInclude>
     <ClInclude Include="GridComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="DaeVector2.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RockBlock.h">
-      <Filter>DigDug</Filter>
-    </ClInclude>
-    <ClInclude Include="PookaCharacterComponent.h">
-      <Filter>DigDug</Filter>
     </ClInclude>
     <ClInclude Include="Minigin.h">
       <Filter>Core</Filter>
@@ -150,23 +138,11 @@
     <ClInclude Include="CollisionComponent.h">
       <Filter>Collision</Filter>
     </ClInclude>
-    <ClInclude Include="PookaState.h">
-      <Filter>DigDug</Filter>
-    </ClInclude>
-    <ClInclude Include="BorderBlock.h">
-      <Filter>DigDug</Filter>
-    </ClInclude>
-    <ClInclude Include="AIComponent.h">
-      <Filter>DigDug</Filter>
-    </ClInclude>
     <ClInclude Include="Observer.h">
       <Filter>Observer</Filter>
     </ClInclude>
     <ClInclude Include="GridLevel.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreDisplay.h">
-      <Filter>Observer</Filter>
     </ClInclude>
     <ClInclude Include="ServiceLocator.h">
       <Filter>Observer</Filter>
@@ -174,11 +150,32 @@
     <ClInclude Include="Subject.h">
       <Filter>Observer</Filter>
     </ClInclude>
-    <ClInclude Include="CoopLevel.h">
-      <Filter>DigDug\Scenes</Filter>
+    <ClInclude Include="DebugScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="FygarCharacterComponent.h">
-      <Filter>DigDug</Filter>
+    <ClInclude Include="DD.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="PengoCharacterComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VelocityComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MazeGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AIStateComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SnoBeeComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SnoBeeEgg.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -218,20 +215,8 @@
     <ClCompile Include="BaseCharacterComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="DigDugLevel.cpp">
-      <Filter>DigDug\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="DiggerCharacterComponent.cpp">
-      <Filter>DigDug</Filter>
-    </ClCompile>
-    <ClCompile Include="EmptyBlock.cpp">
-      <Filter>DigDug</Filter>
-    </ClCompile>
     <ClCompile Include="GridComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="RockBlock.cpp">
-      <Filter>DigDug</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp">
       <Filter>Core</Filter>
@@ -278,35 +263,41 @@
     <ClCompile Include="CollisionComponent.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
-    <ClCompile Include="PookaCharacterComponent.cpp">
-      <Filter>DigDug</Filter>
-    </ClCompile>
-    <ClCompile Include="AIComponent.cpp">
-      <Filter>DigDug</Filter>
-    </ClCompile>
-    <ClCompile Include="BorderBlock.cpp">
-      <Filter>DigDug</Filter>
-    </ClCompile>
-    <ClCompile Include="PookaState.cpp">
-      <Filter>DigDug</Filter>
-    </ClCompile>
     <ClCompile Include="Observer.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
     <ClCompile Include="ServiceLocator.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreDisplay.cpp">
-      <Filter>Observer</Filter>
-    </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
-    <ClCompile Include="CoopLevel.cpp">
-      <Filter>DigDug\Scenes</Filter>
+    <ClCompile Include="DebugScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="FygarCharacterComponent.cpp">
-      <Filter>DigDug</Filter>
+    <ClCompile Include="DD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PengoCharacterComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VelocityComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MazeGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AIStateComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SnoBeeComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SnoBeeEgg.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

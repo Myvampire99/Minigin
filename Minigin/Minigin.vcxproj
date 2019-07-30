@@ -191,44 +191,41 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AIComponent.h" />
+    <ClInclude Include="AIStateComponent.h" />
     <ClInclude Include="BaseCharacterComponent.h" />
     <ClInclude Include="BaseComponent.h" />
-    <ClInclude Include="BorderBlock.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="CollsionBox.h" />
     <ClInclude Include="Command.h" />
-    <ClInclude Include="CoopLevel.h" />
     <ClInclude Include="DaeVector2.h" />
-    <ClInclude Include="DigDugLevel.h" />
-    <ClInclude Include="DiggerCharacterComponent.h" />
-    <ClInclude Include="EmptyBlock.h" />
+    <ClInclude Include="DD.h" />
+    <ClInclude Include="DebugScene.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
-    <ClInclude Include="FygarCharacterComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GridComponent.h" />
     <ClInclude Include="GridLevel.h" />
+    <ClInclude Include="GridManager.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LevelObject.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="MazeGenerator.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
     <ClInclude Include="Observer.h" />
-    <ClInclude Include="PookaCharacterComponent.h" />
-    <ClInclude Include="PookaState.h" />
-    <ClInclude Include="RockBlock.h" />
+    <ClInclude Include="PengoCharacterComponent.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="ScoreDisplay.h" />
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SnoBeeComponent.h" />
+    <ClInclude Include="SnoBeeEgg.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Subject.h" />
@@ -237,31 +234,30 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="TextRendererComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AIComponent.cpp" />
+    <ClCompile Include="AIStateComponent.cpp" />
     <ClCompile Include="BaseCharacterComponent.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
-    <ClCompile Include="BorderBlock.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="CollisionObject.cpp" />
     <ClCompile Include="CollsionBox.cpp" />
-    <ClCompile Include="CoopLevel.cpp" />
-    <ClCompile Include="DigDugLevel.cpp" />
-    <ClCompile Include="DiggerCharacterComponent.cpp" />
-    <ClCompile Include="EmptyBlock.cpp" />
+    <ClCompile Include="DD.cpp" />
+    <ClCompile Include="DebugScene.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
-    <ClCompile Include="FygarCharacterComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="GridLevel.cpp" />
+    <ClCompile Include="GridManager.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LevelObject.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MazeGenerator.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MiniginPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -271,15 +267,14 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Observer.cpp" />
-    <ClCompile Include="PookaCharacterComponent.cpp" />
-    <ClCompile Include="PookaState.cpp" />
+    <ClCompile Include="PengoCharacterComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="RockBlock.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="ScoreDisplay.cpp" />
     <ClCompile Include="ServiceLocator.cpp" />
+    <ClCompile Include="SnoBeeComponent.cpp" />
+    <ClCompile Include="SnoBeeEgg.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Subject.cpp" />
@@ -287,6 +282,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClCompile Include="TextRendererComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="VelocityComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

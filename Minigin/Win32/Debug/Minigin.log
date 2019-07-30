@@ -1,0 +1,57 @@
+﻿  MiniginPCH.cpp
+  AIStateComponent.cpp
+  BaseCharacterComponent.cpp
+  BaseComponent.cpp
+  CollisionComponent.cpp
+  CollisionManager.cpp
+  CollisionObject.cpp
+  CollsionBox.cpp
+  DD.cpp
+  DebugScene.cpp
+  Font.cpp
+  FPSComponent.cpp
+  GameObject.cpp
+  GridComponent.cpp
+  GridLevel.cpp
+  GridManager.cpp
+  InputComponent.cpp
+  InputManager.cpp
+  LevelObject.cpp
+  Log.cpp
+  Main.cpp
+  Generating Code...
+  Compiling...
+  MazeGenerator.cpp
+  Minigin.cpp
+  Observer.cpp
+  PengoCharacterComponent.cpp
+  Renderer.cpp
+  ResourceManager.cpp
+  Scene.cpp
+  SceneManager.cpp
+  ServiceLocator.cpp
+  SnoBeeComponent.cpp
+  SnoBeeEgg.cpp
+  Sprite.cpp
+  SpriteComponent.cpp
+  Subject.cpp
+  TextObject.cpp
+  TextRendererComponent.cpp
+  Texture2D.cpp
+  Transform.cpp
+  VelocityComponent.cpp
+  Generating Code...
+     Creating library Z:\Minigin\Win32\Debug\Minigin.lib and object Z:\Minigin\Win32\Debug\Minigin.exp
+  Minigin.vcxproj -> Z:\Minigin\Win32\Debug\Minigin.exe
+  Z:\Minigin\3rdParty\SDL2\lib\x86\SDL2.dll
+  1 File(s) copied
+  Z:\Minigin\3rdParty\SDL2_image\lib\x86\libjpeg-9.dll
+  Z:\Minigin\3rdParty\SDL2_image\lib\x86\libpng16-16.dll
+  Z:\Minigin\3rdParty\SDL2_image\lib\x86\libtiff-5.dll
+  Z:\Minigin\3rdParty\SDL2_image\lib\x86\libwebp-7.dll
+  Z:\Minigin\3rdParty\SDL2_image\lib\x86\SDL2_image.dll
+  Z:\Minigin\3rdParty\SDL2_image\lib\x86\zlib1.dll
+  6 File(s) copied
+  Z:\Minigin\3rdParty\SDL2_ttf\lib\x86\libfreetype-6.dll
+  Z:\Minigin\3rdParty\SDL2_ttf\lib\x86\SDL2_ttf.dll
+  2 File(s) copied

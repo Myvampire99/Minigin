@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Subject.h"
 namespace dae
 {
 	class Scene;
@@ -15,11 +16,15 @@ namespace dae
 		void SetSceneActive(std::string name, bool active);
 		void ResetActiveScene();
 		std::shared_ptr<Scene> GetActiveScene();
+		int GetActiveSceneID();
 
 		bool ActiveDelete;
+		void AddSubject(Subject * sub);
+
 	private:
 		std::unordered_map<std::shared_ptr<Scene>,bool> mScenes;
-		
+		int count;
+		Subject *m_Subject;
 	};
 
 }

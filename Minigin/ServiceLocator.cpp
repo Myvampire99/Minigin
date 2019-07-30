@@ -4,6 +4,7 @@
 
 ServiceLocator::ServiceLocator()
 	:ElapsedTime{0}
+	, m_SnoBeeRemaining{5}
 {
 }
 
@@ -21,19 +22,38 @@ const std::vector<std::shared_ptr<dae::GameObject>>& ServiceLocator::GetPlayers(
 	return m_Players;
 }
 
-void ServiceLocator::SetPlayerObject(const std::shared_ptr<dae::GameObject>& object) {
+void ServiceLocator::SetPlayerObject(std::shared_ptr<dae::GameObject> object) {
 	m_Players.push_back(object);
 }
 
-void ServiceLocator::RemovePlayerObject(const dae::GameObject* object) {
+void ServiceLocator::ChangePlayerObject(int ID, std::shared_ptr<dae::GameObject> object) {
+	m_Players[ID] = object;
+}
+
+void ServiceLocator::RemovePlayerObject(std::shared_ptr<dae::GameObject> object) {
 
 	for (unsigned int i{}; i < m_Players.size(); ++i) {
-		if (m_Players[i].get() == object) {
+		if (m_Players[i] == object) {
 			m_Players.erase(m_Players.begin() + i);
 		}
 
 	}
 
+}
+
+int ServiceLocator::GetSnoBeeRemaining() {
+	return m_SnoBeeRemaining;
+}
+void ServiceLocator::SetSnoBeeRemaining(int s) {
+	m_SnoBeeRemaining = s;
+}
+
+void ServiceLocator::SetHealth(int hp) {
+	m_CurrentHealth = hp;
+}
+
+int ServiceLocator::GetHealth() {
+	return m_CurrentHealth;
 }
 
 void ServiceLocator::RemoveAllPlayerObjects() {

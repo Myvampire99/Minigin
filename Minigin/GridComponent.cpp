@@ -2,7 +2,7 @@
 #include "GridComponent.h"
 
 
-GridComponent::GridComponent(GridLevel *level, bool slide)
+GridComponent::GridComponent(GridManager *level, bool slide)
 	:m_Level{ level }
 	, m_Slide{ slide }
 	, m_LastPos{  }
@@ -18,7 +18,66 @@ void GridComponent::Update(const float elapsedTime) {
 
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	auto prepos = m_GameObject->GetPos();
+
+	auto column = m_Level->GetAllColumnsX();
+	auto row = m_Level->GetAllRowsY();
+	float shortestX = 99999.f;
+	float shortestY = 99999.f;
+	float gridLineX = 0.f;
+	float gridLineY = 0.f;
+	bool IsOnLine = false;
+	dae::Vector2 pos = m_GameObject->GetPos();
+
+	for (int i{}; i < (int)column.size(); ++i) {
+		if (column[i] == pos.x) {
+			IsOnLine = true;
+			break;
+		}
+		else {
+			float distance = std::abs(column[i] - pos.x);
+			if (distance < shortestX) {
+				shortestX = distance;
+				gridLineX = column[i];
+			}
+				
+		}
+	}
+	
+	if (!IsOnLine) {
+		for (int i{}; i < (int)row.size(); ++i) {
+			if (row[i] == pos.y) {
+				IsOnLine = true;
+				break;
+			}
+			else {
+				float distance = std::abs(row[i] - pos.y);
+				if (distance < shortestY) {
+					shortestY = distance;
+					gridLineY = row[i];
+				}
+					
+			}
+		}
+	}
+
+	if (!IsOnLine) {
+		if (shortestY < 10.f && shortestX < 10.f) {
+			m_GameObject->SetPosition(gridLineX, gridLineY);
+		}
+		else {
+			if (shortestY < shortestX) {
+				m_GameObject->SetPosition(pos.x, gridLineY);
+			}
+			else {
+				m_GameObject->SetPosition(gridLineX, pos.y);
+			}
+		}
+	}
+
+
+
+
+	/*auto prepos = m_GameObject->GetPos();
 
 	auto offsetPosition{ m_GameObject->GetPos() };
 	auto pos = m_Level->GetClosestPosOnLine(offsetPosition);
@@ -56,7 +115,7 @@ void GridComponent::Update(const float elapsedTime) {
 	}
 	
 	
-	m_LastPos = pos;
+	m_LastPos = pos;*/
 }
 
 void GridComponent::SetSlide(bool slide) {

@@ -4,8 +4,14 @@
 InputManager::InputManager()
 	:m_ControllerConected{false}
 {
-	for (int i{};i< XUSER_MAX_COUNT;++i)
+	for (int i{}; i < XUSER_MAX_COUNT; ++i) {
 		m_Buttons.push_back({});
+		m_Released.push_back({});
+		m_NeedToRelease.push_back({});
+	}
+	
+
+
 }
 
 InputManager::~InputManager() {
@@ -44,7 +50,7 @@ bool InputManager::ProcessInput()
 			return false;
 		}
 		if (e.type == SDL_KEYDOWN) {
-
+			return false;
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 
@@ -54,11 +60,23 @@ bool InputManager::ProcessInput()
 	return true;
 }
 
-std::pair<bool, int> InputManager::IsPressed(ControllerButton button, int player, bool Keyboard) const
+std::pair<bool, int> InputManager::IsPressed(ControllerButton button, int player, bool Keyboard)//TODO: Was Constt
 {
+
 	if (!Keyboard) {
-		if ((m_States[player].Gamepad.wButtons & (WORD)button) == (WORD)button)
-			return { true, player };
+		if ((m_States[player].Gamepad.wButtons & (WORD)button) == (WORD)button) {
+			if(m_NeedToRelease[player][button])
+			     m_Released[player][button] = true;
+			else
+				return { true, player };
+		}
+		else {
+			if (m_Released[player][button] == true) {
+				m_Released[player][button] = false;
+				return { true, player };
+			}
+		}
+			
 	}
 	else {
 		if (GetKeyboardState((PBYTE)button))
@@ -75,8 +93,11 @@ void InputManager::HandleInput()
 	{
 		for (auto& button : players)
 		{
-				if (IsPressed(button.first, i, false).first)
-					button.second->Execute(IsPressed(button.first, i, false).second);
+			    if (IsPressed(button.first, i, false).first) {
+				///	std::cout << "Button" << std::endl;
+				    button.second->Execute(IsPressed(button.first, i, false).second);
+				}
+					
 		
 
 				if (IsPressed(button.first, i, true).first)
@@ -93,12 +114,16 @@ void InputManager::HandleInput()
 
 }
 
-void InputManager::AssignButton(ControllerButton button, Command *pointer,int player)
+void InputManager::AssignButton(ControllerButton button, Command *pointer,int player, bool release )
 {
+
+	m_NeedToRelease[player][button] = release;
+	m_Released[player][button] = false;
 	m_Buttons[player][button] = pointer;
 }
 
 void InputManager::ForceButton(ControllerButton button, int player) {
 	m_States[player].Gamepad.wButtons |= (WORD)button;
 	m_SkipPlayer[player] = true;
+
 }

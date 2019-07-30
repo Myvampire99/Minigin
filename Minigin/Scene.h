@@ -1,6 +1,5 @@
 #pragma once
 #include "SceneManager.h"
-
 namespace dae
 {
 	class GameObject;
@@ -9,7 +8,8 @@ namespace dae
 	class Scene
 	{
 	public:
-		void Add(const std::shared_ptr<GameObject>& object);
+		int ID = -2;
+		void Add(const std::shared_ptr<dae::GameObject>& object);
 
 		void Update(const float elapsedTime);
 		void Render() const;
@@ -33,13 +33,17 @@ namespace dae
 		std::string GetName() const;
 		void Reset();
 
+
+		void virtual SwitchSceneIni() = 0;
+		void virtual SwitchSceneDec() = 0;
+
 	protected: 
 		void virtual SceneUpdate() = 0;
 		void virtual SceneInitialize() = 0;
 		void virtual LocalReset() = 0;
 	private:
 
-		std::vector <std::shared_ptr<GameObject>> mObjects{};
+		std::vector <std::shared_ptr<dae::GameObject>> mObjects{};
 		float m_ElapsedTime;
 
 		bool m_IsActive;

@@ -39,9 +39,9 @@ bool dae::GameObject::GetEnabled() {
 
 void dae::GameObject::AddComponent(BaseComponent * cmp)
 {
-
+	
 	if (cmp) {
-		cmp->m_GameObject = this;
+		cmp->m_GameObject = shared_from_this();
 		m_pComponents.push_back(cmp);
 	}
 }
@@ -89,6 +89,11 @@ void dae::GameObject::SetTexture(const std::string& filename)
 void dae::GameObject::SetPosition(float x, float y)
 {
 	mTransform->SetPosition(x, y, 0.0f);
+}
+
+void dae::GameObject::SetPosition(dae::Vector2 pos)
+{
+	mTransform->SetPosition(pos.x, pos.y, 0.0f);
 }
 
 dae::Vector2 dae::GameObject::GetPos() const

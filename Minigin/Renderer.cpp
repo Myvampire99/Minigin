@@ -22,6 +22,7 @@ void dae::Renderer::Render()
 
 	Singleton<SceneManager>::GetInstance().Render();
 
+	SDL_SetRenderDrawColor(GetSDLRenderer(), 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderPresent(mRenderer);
 }
 
@@ -116,3 +117,29 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const dae::Vector2& 
 	}
 }
 
+void dae::Renderer::DrawLine(const dae::Vector2 &pos1,const dae::Vector2 &pos2) const {
+
+	SDL_SetRenderDrawColor(GetSDLRenderer(), 255, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderDrawLine(GetSDLRenderer(), (int)pos1.x, (int)pos1.y, (int)pos2.x, (int)pos2.y);
+
+}
+
+void dae::Renderer::DrawQuad(const dae::Vector2 &pos1, const dae::Vector2 &WH,int color) const {
+
+	if(color == 0)
+		SDL_SetRenderDrawColor(GetSDLRenderer(), 0, 255, 255, SDL_ALPHA_OPAQUE);
+	if (color == 1)
+		SDL_SetRenderDrawColor(GetSDLRenderer(), 255, 0, 255, SDL_ALPHA_OPAQUE);
+	if (color == 2)
+		SDL_SetRenderDrawColor(GetSDLRenderer(), 0, 0, 255, SDL_ALPHA_OPAQUE);
+
+
+	SDL_Rect rect;
+	rect.x = (int)pos1.x;
+	rect.y = (int)pos1.y;
+	rect.w = (int)WH.x;
+	rect.h = (int)WH.y;
+
+	SDL_RenderDrawRect(mRenderer,&rect);
+
+}

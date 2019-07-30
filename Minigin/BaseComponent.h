@@ -10,7 +10,7 @@ public:
 	BaseComponent& operator=(const BaseComponent& other) = delete;
 	BaseComponent& operator=(BaseComponent&& other) = delete;
 
-	dae::GameObject *m_GameObject;
+	std::shared_ptr<dae::GameObject> m_GameObject;
 	virtual void Update(float elapsedTime) = 0;
 	virtual void Draw() = 0;
 	virtual void Initialize() = 0;

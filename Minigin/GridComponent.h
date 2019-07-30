@@ -3,7 +3,7 @@
 class GridComponent : public BaseComponent
 {
 public:
-	GridComponent(GridLevel *level, bool slide = false);
+	GridComponent(GridManager *level, bool slide = false);
 	~GridComponent();
 
 	void Update(const float elapsedTime) override;
@@ -12,7 +12,7 @@ public:
 
 	void SetSlide(bool slide);
 private:
-	GridLevel* m_Level;
+	GridManager* m_Level;
 	bool m_Slide;
 
 	dae::Vector2 m_LastPos;
