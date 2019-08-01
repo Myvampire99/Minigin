@@ -235,6 +235,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="TextRendererComponent.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="ThreadingGameObject.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="VelocityComponent.h" />
     <ClInclude Include="VersusLevel.h" />
@@ -286,6 +287,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="TextRendererComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="ThreadingGameObject.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="VelocityComponent.cpp" />
     <ClCompile Include="VersusLevel.cpp" />

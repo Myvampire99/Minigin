@@ -1,14 +1,19 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 
+#include "ThreadingGameObject.h"
 
 dae::Scene::Scene(const std::string& name) : mName(name), m_IsActive(false) {
-
+	m_ThreadManager = new ThreadingGameObject();
 
 }
 
 dae::Scene::~Scene() {
 
+}
+
+void dae::Scene::AddThreadGameObject(std::shared_ptr<dae::GameObject>& object) {
+	m_ThreadManager->CreateThread(object);
 }
 
 void dae::Scene::Add(const std::shared_ptr<dae::GameObject>& object)
@@ -24,8 +29,9 @@ void dae::Scene::Update(const float elapsedTime)
 
 	SceneUpdate();
 
-	
 
+	//Update Objects
+	m_ThreadManager->SetElapsedTime(elapsedTime);
 
 	for(auto gameObject : mObjects)
 	{
@@ -43,15 +49,20 @@ void dae::Scene::Update(const float elapsedTime)
 				gameObject->Update(elapsedTime);
 	}
 
+	m_ThreadManager->WaitAndLock();
+	//
+
 }
 
 void dae::Scene::Render() const
 {
+	m_ThreadManager->Unlock();
 	for (const auto gameObject : mObjects)
 	{
 		if (gameObject->GetEnabled())
 		gameObject->Render();
 	}
+	m_ThreadManager->WaitAndLock();
 }
 
 void dae::Scene::Initialize()
@@ -59,6 +70,7 @@ void dae::Scene::Initialize()
 
 	SceneInitialize();
 
+	m_ThreadManager->StartThreads();
 	for (const auto gameObject : mObjects)
 	{
 		gameObject->Initialize();
@@ -66,6 +78,8 @@ void dae::Scene::Initialize()
 
 }
 void  dae::Scene::Reset() {
+
+	m_ThreadManager->DeleteThreads();
 	mObjects.clear();
 	LocalReset();
 }

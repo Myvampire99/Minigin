@@ -209,7 +209,15 @@ void ClassicLevel::CreateSnoBee(dae::Vector2 pos, int p) {
 	m_SnoBee1->AddComponent(new GridComponent(m_GridManager));
 
 	m_Subject->AddObserver(m_SnoBee1->GetComponent<AIStateComponent>());
-	Add(m_SnoBee1);
+
+
+//	Add(m_SnoBee1);
+	AddThreadGameObject(m_SnoBee1);
+
+
+
+
+
 }
 
 void ClassicLevel::CreateAnIceBlockEgg(int IDs) {

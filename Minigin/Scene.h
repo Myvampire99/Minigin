@@ -1,5 +1,7 @@
 #pragma once
 #include "SceneManager.h"
+
+class ThreadingGameObject;
 namespace dae
 {
 	class GameObject;
@@ -15,7 +17,8 @@ namespace dae
 		void Render() const;
 		void Initialize();
 
-		
+		ThreadingGameObject *m_ThreadManager;
+		void AddThreadGameObject(std::shared_ptr<dae::GameObject>& object);
 
 		virtual ~Scene();
 		Scene(const Scene& other) = delete;

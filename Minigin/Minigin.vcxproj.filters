@@ -186,6 +186,9 @@
     <ClInclude Include="VersusLevel.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadingGameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -316,6 +319,9 @@
     </ClCompile>
     <ClCompile Include="VersusLevel.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadingGameObject.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
