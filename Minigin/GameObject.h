@@ -20,6 +20,7 @@ namespace dae
 		void Render() const override;
 		void Initialize() override;
 
+		void ClearAllReferenceOfComponents();
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);

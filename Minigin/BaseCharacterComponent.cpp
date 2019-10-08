@@ -33,9 +33,6 @@ void BaseCharacterComponent::Update(const float elapsedTime)
 	}
 	LocalUpdate(elapsedTime);
 
-	//TODO: this IDle Direction state
-	//m_DirectionState = Direction::Idle;
-
 }
 
 void BaseCharacterComponent::LocalUpdate(const float elapsedTime) {

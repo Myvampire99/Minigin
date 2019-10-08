@@ -34,10 +34,11 @@ void AIStateComponent::Update(const float elapsedTime) {
 
 	switch (m_AIState) {
 	case SpawnState:
-
+		
+			
 		if (m_ElapsedSpawnSeconds == 0) {
-			if (!m_GameObject->GetComponent<dae::SpriteComponent>()) {
-				dae::Sprite* sprite = new dae::Sprite("Resources/Sprites/SlimeSpawn.png", 1, 5, 5, 0.5f);
+			if (!m_GameObject->GetComponent<dae::SpriteComponent>() && !IsOnThread) {
+				dae::Sprite* sprite = new dae::Sprite("Resources/Sprites/SlimeSpawn.png", 1, 5, 5,2.f);
 				m_GameObject->AddComponent(new dae::SpriteComponent(0, sprite));
 			}
 		}
@@ -45,9 +46,11 @@ void AIStateComponent::Update(const float elapsedTime) {
 		m_ElapsedSpawnSeconds += elapsedTime;
 		if (m_MaxSpawnSeconds < m_ElapsedSpawnSeconds) {
 			m_AIState = WalkingState;
-			m_GameObject->RemoveComponent<dae::SpriteComponent>();
-			dae::Sprite* sprite = new dae::Sprite("Resources/Sprites/WalkingSlime.png", 1,2, 2, 1.f);
-			m_GameObject->AddComponent(new dae::SpriteComponent(0, sprite));
+			if (!IsOnThread) {
+				m_GameObject->RemoveComponent<dae::SpriteComponent>();
+				dae::Sprite* sprite = new dae::Sprite("Resources/Sprites/WalkingSlime.png", 1, 2, 2, 1.f);
+				m_GameObject->AddComponent(new dae::SpriteComponent(0, sprite));
+			}
 			m_ElapsedSpawnSeconds = 0;
 		}
 

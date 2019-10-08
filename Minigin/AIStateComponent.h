@@ -12,6 +12,9 @@ public:
 	bool IsHarmless();
 
 	void SetPlayer(bool isplayer = true);
+
+	//Thread Purp
+	bool IsOnThread = false;
 private:
 	enum AIState {
 		SpawnState,
@@ -24,10 +27,10 @@ private:
 
 	GridManager* m_GridManager;
 
-	void CheckIfHit();
 
-	float m_MaxSpawnSeconds;
+	void CheckIfHit();
 	float m_ElapsedSpawnSeconds;
+	float m_MaxSpawnSeconds;
 
 	bool IsAI = true;
 

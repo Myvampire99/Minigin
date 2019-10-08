@@ -9,8 +9,8 @@ CollisionBox::CollisionBox(dae::Vector2 position, float width, float height,floa
 	, m_Margin{margin}
 {
 
-	if (margin > 0)
-		std::cout << "test";
+	//if (margin > 0)
+		//std::cout << "test";
 
 	//[0] will always be the start position
 	//anticlockwise

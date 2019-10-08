@@ -5,8 +5,12 @@
 SnoBeeComponent::SnoBeeComponent(GridManager* grid)
 	:m_GridManager{grid}
 {
+	
 }
 
+void SnoBeeComponent::localIni(){
+	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(4), new SnooBeeDestroy(), m_Input->GetPlayerID(), true);
+}
 
 SnoBeeComponent::~SnoBeeComponent()
 {
@@ -14,8 +18,7 @@ SnoBeeComponent::~SnoBeeComponent()
 
 void SnoBeeComponent::LocalUpdate(const float elapsedTime) {
 	UNREFERENCED_PARAMETER(elapsedTime);
-		//TODO: Contoll hardcoded and in update
-	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(4), new SnooBeeDestroy(), m_Input->GetPlayerID(), true);
+	
 
 }
 
@@ -26,7 +29,7 @@ void SnoBeeComponent::BreakBlock() {
 	if (CurrentNode) {
 		switch (m_DirectionState) {
 		case Left:
-			if (CurrentNode->Links->left->tag == 1) {
+ 			if (CurrentNode->Links->left->tag == 1) {
 					CurrentNode->Links->left->object->MarkForDelete();
 					//m_GridManager->GetNode()
 					m_GridManager->FreeBlock(CurrentNode->Links->left, gameobject);

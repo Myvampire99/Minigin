@@ -14,6 +14,17 @@ dae::GameObject::~GameObject()
 	delete mTransform;
 }
 
+void dae::GameObject::ClearAllReferenceOfComponents()
+{
+	for (auto &p : m_pComponents) {
+
+		if(p)
+		if(p->m_GameObject)
+			p->m_GameObject = nullptr;
+		
+	}
+}
+
 void dae::GameObject::MarkForDelete(bool marked) {
 	MarkedForDelete = marked;
 }

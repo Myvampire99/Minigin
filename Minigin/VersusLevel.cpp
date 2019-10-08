@@ -11,6 +11,8 @@ VersusLevel::VersusLevel(std::string name)
 
 VersusLevel::~VersusLevel()
 {
+	delete m_GridManager;
+	delete m_Subject;
 }
 
 void VersusLevel::SwitchSceneIni() {
@@ -93,7 +95,7 @@ void VersusLevel::CreateWall(int start, int max, int inc) {
 		CollisionObject* BBoxCollision = new CollisionBox({ 200.f, 200.f }, (float)margin - 1, (float)margin - 1, false);
 		BBoxCollision->SetIsTrigger(false);
 
-		m_GridManager->AddComponents(CComponent, i);//TODO: Order based
+		m_GridManager->AddComponents(CComponent, i);
 		CComponent->AddCollision(BBoxCollision);
 
 		dae::Sprite *SSprite = new dae::Sprite{ "Resources/Textures/Wall.png",1,1,1,0.f };
@@ -115,7 +117,7 @@ void VersusLevel::CreatePlayer() {
 	collisionBox->SetIsTrigger(false);
 	collisionBox->SetMargin({ 6.f,6.f });
 
-	m_Player->AddComponent(collisionComponent);//TODO: Order based
+	m_Player->AddComponent(collisionComponent);
 	collisionComponent->AddCollision(collisionBox);
 	//
 
@@ -169,7 +171,7 @@ void VersusLevel::CreateSnoBee(dae::Vector2 pos, int p) {
 	collisionBox->SetIsTrigger(true);
 	collisionBox->SetMargin({ 6.f,6.f });
 
-	m_SnoBee1->AddComponent(collisionComponent);//TODO: Order based
+	m_SnoBee1->AddComponent(collisionComponent);
 	collisionComponent->AddCollision(collisionBox);
 	//
 
@@ -222,7 +224,7 @@ void VersusLevel::CreateAnIceBlockEgg(int IDs) {
 	tempBoxCollision->SetIsTrigger(true);
 
 
-	m_GridManager->AddComponents(tempComponent, IDs);//TODO: Order based
+	m_GridManager->AddComponents(tempComponent, IDs);
 	tempComponent->AddCollision(tempBoxCollision);
 
 	dae::Sprite *sprite = new dae::Sprite{ "Resources/Textures/IceBlock.png",1,1,1,0.f };
@@ -234,6 +236,7 @@ void VersusLevel::CreateAnIceBlockEgg(int IDs) {
 
 	m_GridManager->AddComponents(new SnoBeeEgg(), IDs);
 
+	AddObjectForDeletion(m_GridManager->GetNode(IDs)->object);
 	m_SnoBeeEgg.push_back(m_GridManager->GetNode(IDs)->object);
 	dae::Singleton<ServiceLocator>::GetInstance().SetSnoBeeRemaining(dae::Singleton<ServiceLocator>::GetInstance().GetSnoBeeRemaining() - 1);
 }
@@ -246,7 +249,7 @@ void VersusLevel::CreateAnIceBlock(int IDs) {
 	tempBoxCollision->SetIsTrigger(true);
 
 
-	m_GridManager->AddComponents(tempComponent, IDs);//TODO: Order based
+	m_GridManager->AddComponents(tempComponent, IDs);
 	tempComponent->AddCollision(tempBoxCollision);
 
 	dae::Sprite *sprite = new dae::Sprite{ "Resources/Textures/IceBlock.png",1,1,1,0.f };
@@ -260,7 +263,7 @@ void VersusLevel::CreateAnIceBlock(int IDs) {
 
 void VersusLevel::SceneUpdate() {
 
-	//TODO: on its own update
+	
 	m_GridManager->Update(0.f);
 
 	std::string score = "Score: ";

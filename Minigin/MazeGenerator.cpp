@@ -42,7 +42,7 @@ std::vector<int> MazeGenerator::CreateMaze(int height, int width) {
 				Path[counter]->links[nr]->tag = 1;
 				Path.push_back(Path[counter]->links[nr]);
 				found = true;
-				counter = Path.size() -2;//TODO: begone!
+				counter = (int)Path.size() -2;
 			}
 			else {
 				for (int i{}; i < 4; ++i) {
@@ -53,7 +53,7 @@ std::vector<int> MazeGenerator::CreateMaze(int height, int width) {
 							Path.push_back(Path[counter]->links[i]);
 							found = true;
 							nr = i;
-							counter = Path.size() - 2;//TODO: begone!
+							counter = (int)Path.size() - 2;
 							break;
 						}
 					}
@@ -70,7 +70,7 @@ std::vector<int> MazeGenerator::CreateMaze(int height, int width) {
 						Path.push_back(Path[counter]->links[i]);
 						found = true;
 						nr = i;
-						counter = Path.size() -2;//TODO: begone!
+						counter = (int)Path.size() -2;
 						break;
 					}
 				}
@@ -97,20 +97,12 @@ std::vector<int> MazeGenerator::CreateMaze(int height, int width) {
 		returning.push_back(node->tag);
 	}
 
+	for (auto n : Nodes)
+		delete n;
+
 	return returning;
 
 }
-
-//for (int i{}; i < 4; ++i) {
-//	if (Path[i]->links[nr]) {
-//		if (Path[i]->links[nr]->tag == 0) {
-//			Path[counter]->tag = 1;
-//			Path.push_back(Path[i]->links[nr]);
-//			found = true;
-//			break;
-//		}
-//	}
-//}
 
 void MazeGenerator::CreateWall(MazeGenerator::Node *PrevNode, int previousDirection, int currentDirection) {
 
@@ -139,7 +131,7 @@ void MazeGenerator::CreateWall(MazeGenerator::Node *PrevNode, int previousDirect
 
 		}
 		else {
-			if(PrevNode->links[currentDirection])//TODO: begone!
+			if(PrevNode->links[currentDirection])
 			if (PrevNode->links[currentDirection]->links[(previousDirection + 2)%4 ])
 				if (PrevNode->links[currentDirection]->links[(previousDirection + 2) % 4]->tag == 0)
 					PrevNode->links[currentDirection]->links[(previousDirection + 2) % 4]->tag = 2;

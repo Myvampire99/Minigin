@@ -12,6 +12,7 @@ GridManager::GridManager()
 GridManager::~GridManager()
 {
 	for (int i{}; i < (int)m_Nodes.size(); i++) {
+		
 		delete m_Nodes[i]->Links;
 		delete m_Nodes[i];
 	}
@@ -68,8 +69,6 @@ void GridManager::CreateRectGrid(dae::Scene *scene,int width, int height, float 
 				right = nullptr;
 
 
-
-			//TODO: Link pointer ?
 			m_Nodes[counter]->Links = new Link();
 			m_Nodes[counter]->Links->down = down;
 			m_Nodes[counter]->Links->up = up;
@@ -170,7 +169,7 @@ void GridManager::Update(float elapsedTime) {
 
 
 
-	UNREFERENCED_PARAMETER(elapsedTime);// TODO: 0.f in debugscene
+	UNREFERENCED_PARAMETER(elapsedTime);
 	std::vector<std::shared_ptr<dae::GameObject>> markForDeletion;
 
 	if (m_LockIfStatic.size() > 0) {
@@ -188,14 +187,12 @@ void GridManager::Update(float elapsedTime) {
 					block->RemoveComponent<VelocityComponent>();
 					markForDeletion.push_back(block);
 
-					//TODO: THIS IS HARCODED
 					GetNode(block)->tag = 1;
 				}
 			}
 		}
 	}
 	else {
-		//TODO: what if no velcomp ?
 	}
 
 	if (markForDeletion.size() > 0) {

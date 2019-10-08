@@ -25,7 +25,7 @@ private:
 	int m_IntHealth;
 	int m_IntSnoBeeRemaining;
 
-	void LocalReset() override;//TODO: what is this ?
+	void LocalReset() override;
 	void CreateAnIceBlock(int ID, float margin);
 	void CreateAnIceBlockEgg(int ID, float margin);
 	void CreateSnoBee(dae::Vector2 pos, int p);

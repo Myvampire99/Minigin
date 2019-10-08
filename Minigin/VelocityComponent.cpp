@@ -22,7 +22,6 @@ void VelocityComponent::SetVelocity() {
 void VelocityComponent::Update(float elapsedTime) {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	//TODO: Make this a component Function
 	m_CollisionComponent = m_GameObject->GetComponent<CollisionComponent>();
 	if (m_CollisionComponent) {
 		for (auto col : m_CollisionComponent->GetCollisions()) {

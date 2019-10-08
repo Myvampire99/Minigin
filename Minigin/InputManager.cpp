@@ -44,13 +44,15 @@ bool InputManager::ProcessInput()
 		m_SkipPlayer[i] = false;
 	}
 
+	
+	m_KeyDown = false;
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
 		if (e.type == SDL_KEYDOWN) {
-			return false;
+			m_KeyDown = true;
 		}
 		if (e.type == SDL_MOUSEBUTTONDOWN) {
 
@@ -60,7 +62,12 @@ bool InputManager::ProcessInput()
 	return true;
 }
 
-std::pair<bool, int> InputManager::IsPressed(ControllerButton button, int player, bool Keyboard)//TODO: Was Constt
+bool InputManager::IsKeyDown()
+{
+	return m_KeyDown;
+}
+
+std::pair<bool, int> InputManager::IsPressed(ControllerButton button, int player, bool Keyboard)
 {
 
 	if (!Keyboard) {
@@ -119,6 +126,10 @@ void InputManager::AssignButton(ControllerButton button, Command *pointer,int pl
 
 	m_NeedToRelease[player][button] = release;
 	m_Released[player][button] = false;
+
+	if (m_Buttons[player][button])
+		delete m_Buttons[player][button];
+	
 	m_Buttons[player][button] = pointer;
 }
 

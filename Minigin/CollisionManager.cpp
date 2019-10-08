@@ -10,9 +10,29 @@ CollisionManager::CollisionManager()
 CollisionManager::~CollisionManager()
 {
 	for (auto p : m_Objects)
-		delete p;
+	{
+		if(p)
+		{
+			delete p;
+			p = nullptr;
+		}
+	}
+		
 
 	m_Objects.clear();
+
+	for (auto p : m_OtherObjects)
+	{
+		for (auto t : p.second)
+		{
+			if (t) {
+				delete t;
+				t = nullptr;
+			}
+		}
+	}
+	
+
 }
 
 void CollisionManager::ResetSceneCol(int IDs) {
@@ -79,10 +99,10 @@ void CollisionManager::onNotify( Event event) {
 	switch (event)
 	{
 	case Event::EVENT_SWITCH_SCENE_DEACTIVATE:
-		SwitchScenes(false);//TODO: bool or frame after this one
+		SwitchScenes(false);
 		break;
 	case Event::EVENT_SWITCH_SCENE_ACTIVATE:
-		SwitchScenes(true);//TODO: bool or frame after this one
+		SwitchScenes(true);
 		break;
 	}
 
@@ -95,28 +115,36 @@ void CollisionManager::SwitchScenes(bool activate) {
 		
 
 		if (m_OtherObjects.size() != 0) {
-			for (auto obj : m_OtherObjects) {
+			for (auto &obj : m_OtherObjects) {
 				int ID = dae::Singleton<dae::SceneManager>::GetInstance().GetActiveSceneID();
-				if (obj.first == ID)
+				if (obj.first == ID){
 					m_Objects = obj.second;
+					obj.second.clear();
+				}
+					
 			}
 		}
 		
 	}
 	else {
 
-
+		bool found = false;
+		int ID = dae::Singleton<dae::SceneManager>::GetInstance().GetActiveSceneID();
 		if (m_OtherObjects.size() != 0) {
-			for (auto obj : m_OtherObjects) {
-				int ID = dae::Singleton<dae::SceneManager>::GetInstance().GetActiveSceneID();
-				if (obj.first == ID)
+			for (auto &obj : m_OtherObjects) {
+				
+				if (obj.first == ID) {
+					found = true;
 					obj.second = m_Objects;
-				else
-					m_OtherObjects.push_back(std::pair<int, std::vector<CollisionObject*>>(ID, m_Objects));
+					break;
+				}
 			}
+			if(!found)
+				m_OtherObjects.push_back(std::pair<int, std::vector<CollisionObject*>>(ID, m_Objects));
+
+
 		}
 		else {
-			int ID = dae::Singleton<dae::SceneManager>::GetInstance().GetActiveSceneID();
 			m_OtherObjects.push_back(std::pair<int, std::vector<CollisionObject*>>(ID, m_Objects));
 		}
 		m_Objects.clear();

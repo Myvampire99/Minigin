@@ -6,7 +6,7 @@ public:
 	SnoBeeComponent(GridManager* grid);
 	~SnoBeeComponent();
 
-
+	void localIni() override;
 	void LocalUpdate(const float elapsedTime) override;
 
 	void BreakBlock();

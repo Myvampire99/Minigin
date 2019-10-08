@@ -5,6 +5,7 @@
 #include "ClassicLevel.h"
 #include "CoopLevel.h"
 #include "VersusLevel.h"
+#include "ThreadEnemyLevel.h"
 
 void dae::Minigin::Initialize()
 {
@@ -41,11 +42,14 @@ void dae::Minigin::LoadGame()
 	Scene *scene = new CoopLevel("CoopLevel");
 	Singleton<SceneManager>::GetInstance().AddScene(scene);
 	
-	Scene *sceneC = new ClassicLevel("ClassicLevel");
-	Singleton<SceneManager>::GetInstance().AddScene(sceneC);
+	scene = new ClassicLevel("ClassicLevel");
+	Singleton<SceneManager>::GetInstance().AddScene(scene);
 
-	Scene *sceneD = new VersusLevel("VersusLevel");
-	Singleton<SceneManager>::GetInstance().AddScene(sceneD);
+	scene = new VersusLevel("VersusLevel");
+	Singleton<SceneManager>::GetInstance().AddScene(scene);
+
+	scene = new ThreadEnemyLevel("ThreadLevel");
+	Singleton<SceneManager>::GetInstance().AddScene(scene);
 
 	Singleton<SceneManager>::GetInstance().SetSceneActive("ClassicLevel", true);
 
@@ -53,6 +57,7 @@ void dae::Minigin::LoadGame()
 
 void dae::Minigin::Cleanup()
 {
+	delete m_Subject;
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(window);
 	window = nullptr;
@@ -84,7 +89,7 @@ void dae::Minigin::Run()
 
 		while (doContinue)
 		{
-			//Calculate deltaTime and lag
+			//Calculate deltaTime
 			const auto currentTime = std::chrono::high_resolution_clock::now();
 			double deltaTime = std::chrono::duration<double>(currentTime - lastTime).count();
 			lastTime = currentTime;
@@ -93,51 +98,47 @@ void dae::Minigin::Run()
 
 			dae::Singleton<ServiceLocator>::GetInstance().SetElapsedTime(float(deltaTime));
 
-			
-			
-
 			doContinue = input.ProcessInput();
-			if (!doContinue) {
-				
-				switch (m_CurrentLevel)
-				{
-				case dae::Minigin::Classic:
-					Singleton<SceneManager>::GetInstance().SetSceneActive("ClassicLevel", false);
-					Singleton<SceneManager>::GetInstance().SetSceneActive("CoopLevel", true);
-					m_CurrentLevel = dae::Minigin::Coop;
-					break;
-				case dae::Minigin::Coop:
-					Singleton<SceneManager>::GetInstance().SetSceneActive("CoopLevel", false);
-					Singleton<SceneManager>::GetInstance().SetSceneActive("VersusLevel", true);
-					m_CurrentLevel = dae::Minigin::Versus;
-					break;
-				case dae::Minigin::Versus:
-					Singleton<SceneManager>::GetInstance().SetSceneActive("VersusLevel", false);
-					Singleton<SceneManager>::GetInstance().SetSceneActive("ClassicLevel", true);
-					m_CurrentLevel = dae::Minigin::Classic;
-					break;
-				default:
-					break;
-				}
-			}
-
+			LevelChange();
 			input.HandleInput();
 
 			sceneManager.Update(float(deltaTime));
 			dae::Singleton<CollisionManager>::GetInstance().Update();
-
-			while (lag >= msPerFrame) {
-				sceneManager.Update(float(deltaTime));
-				dae::Singleton<CollisionManager>::GetInstance().Update();
-				lag -= msPerFrame;
-			}
-			
 			renderer.Render();
-
-
-			doContinue = true;//===================
 		}
 	}
 
 	Cleanup();
+}
+
+void dae::Minigin::LevelChange()
+{
+		if (Singleton<InputManager>::GetInstance().IsKeyDown()) {
+
+			switch (m_CurrentLevel)
+			{
+			case dae::Minigin::Classic:
+				Singleton<SceneManager>::GetInstance().SetSceneActive("ClassicLevel", false);
+				Singleton<SceneManager>::GetInstance().SetSceneActive("CoopLevel", true);
+				m_CurrentLevel = dae::Minigin::Coop;
+				break;
+			case dae::Minigin::Coop:
+				Singleton<SceneManager>::GetInstance().SetSceneActive("CoopLevel", false);
+				Singleton<SceneManager>::GetInstance().SetSceneActive("VersusLevel", true);
+				m_CurrentLevel = dae::Minigin::Versus;
+				break;
+			case dae::Minigin::Versus:
+				Singleton<SceneManager>::GetInstance().SetSceneActive("VersusLevel", false);
+				Singleton<SceneManager>::GetInstance().SetSceneActive("ThreadLevel", true);
+				m_CurrentLevel = dae::Minigin::Thread;
+				break;
+			case dae::Minigin::Thread:
+				Singleton<SceneManager>::GetInstance().SetSceneActive("ThreadLevel", false);
+				Singleton<SceneManager>::GetInstance().SetSceneActive("ClassicLevel", true);
+				m_CurrentLevel = dae::Minigin::Classic;
+				break;
+			default:
+				break;
+			}
+		}
 }

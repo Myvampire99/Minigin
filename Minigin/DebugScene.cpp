@@ -59,7 +59,7 @@ void DebugScene::SceneInitialize() {
 
 
 //	m_GameObject_01->AddComponent(Coll1);
-//	Coll1->AddCollision(CBox);//TODO: Order based, AddCollision after AddComponent
+//	Coll1->AddCollision(CBox);
 //	Add(m_GameObject_01);
 
 
@@ -84,7 +84,7 @@ void DebugScene::SceneInitialize() {
 		tempBoxCollision->SetIsTrigger(true);
 
 
-		m_GridManager->AddComponents(tempComponent, 25);//TODO: Order based
+		m_GridManager->AddComponents(tempComponent, 25);
 		tempComponent->AddCollision(tempBoxCollision);
 
 
@@ -94,7 +94,7 @@ void DebugScene::SceneInitialize() {
 		tempBoxCollision2->SetIsTrigger(true);
 
 
-		m_GridManager->AddComponents(tempComponent2, 20);//TODO: Order based
+		m_GridManager->AddComponents(tempComponent2, 20);
 		tempComponent2->AddCollision(tempBoxCollision2);
 
 
@@ -138,13 +138,12 @@ void DebugScene::SceneInitialize() {
 
 
 
-	//TODO: Mini Function
 	for (int i{}; i < number; ++i) {
 		CollisionComponent* CComponent = new CollisionComponent();
 		CollisionObject* BBoxCollision = new CollisionBox({ 200.f, 200.f }, margin - 1, margin - 1, false);
 		BBoxCollision->SetIsTrigger(false);
 
-		m_GridManager->AddComponents(CComponent, i);//TODO: Order based
+		m_GridManager->AddComponents(CComponent, i);
 		CComponent->AddCollision(BBoxCollision);
 
 
@@ -162,7 +161,7 @@ void DebugScene::SceneInitialize() {
 		CollisionObject* BBoxCollision = new CollisionBox({ 200.f, 200.f }, margin - 1, margin - 1, false);
 		BBoxCollision->SetIsTrigger(false);
 
-		m_GridManager->AddComponents(CComponent, i);//TODO: Order based
+		m_GridManager->AddComponents(CComponent, i);
 		CComponent->AddCollision(BBoxCollision);
 
 
@@ -179,7 +178,7 @@ void DebugScene::SceneInitialize() {
 		CollisionObject* BBoxCollision = new CollisionBox({ 200.f, 200.f }, margin - 1, margin - 1, false);
 		BBoxCollision->SetIsTrigger(false);
 
-		m_GridManager->AddComponents(CComponent, i);//TODO: Order based
+		m_GridManager->AddComponents(CComponent, i);
 		CComponent->AddCollision(BBoxCollision);
 
 
@@ -196,7 +195,7 @@ void DebugScene::SceneInitialize() {
 		CollisionObject* BBoxCollision = new CollisionBox({ 200.f, 200.f }, margin - 1, margin - 1, false);
 		BBoxCollision->SetIsTrigger(false);
 
-		m_GridManager->AddComponents(CComponent, i);//TODO: Order based
+		m_GridManager->AddComponents(CComponent, i);
 		CComponent->AddCollision(BBoxCollision);
 
 
@@ -226,7 +225,7 @@ void DebugScene::SceneInitialize() {
 		collisionBox->SetIsTrigger(false);
 		collisionBox->SetMargin({ 6.f,6.f });
 
-		m_Player->AddComponent(collisionComponent);//TODO: Order based
+		m_Player->AddComponent(collisionComponent);
 		collisionComponent->AddCollision(collisionBox);
 		//
 
@@ -318,7 +317,7 @@ void DebugScene::CreateSnoBee(dae::Vector2 pos,int p) {
 	collisionBox->SetIsTrigger(true);
 	collisionBox->SetMargin({ 6.f,6.f });
 
-	m_SnoBee1->AddComponent(collisionComponent);//TODO: Order based
+	m_SnoBee1->AddComponent(collisionComponent);
 	collisionComponent->AddCollision(collisionBox);
 	//
 
@@ -378,7 +377,7 @@ void DebugScene::CreateAnIceBlockEgg(int IDs, float margin) {
 	tempBoxCollision->SetIsTrigger(true);
 
 
-	m_GridManager->AddComponents(tempComponent, IDs);//TODO: Order based
+	m_GridManager->AddComponents(tempComponent, IDs);
 	tempComponent->AddCollision(tempBoxCollision);
 
 	dae::Sprite *sprite = new dae::Sprite{ "Resources/Textures/IceBlock.png",1,1,1,0.f };
@@ -403,7 +402,7 @@ void DebugScene::CreateAnIceBlock(int IDs,float margin) {
 	tempBoxCollision->SetIsTrigger(true);
 
 
-	m_GridManager->AddComponents(tempComponent, IDs);//TODO: Order based
+	m_GridManager->AddComponents(tempComponent, IDs);
 	tempComponent->AddCollision(tempBoxCollision);
 
 	dae::Sprite *sprite = new dae::Sprite{ "Resources/Textures/IceBlock.png",1,1,1,0.f };
@@ -420,7 +419,6 @@ void DebugScene::CreateAnIceBlock(int IDs,float margin) {
 
 void DebugScene::SceneUpdate() {
 
-	//TODO: on its own update
 	m_GridManager->Update(0.f);
 	//
 	///dae::Singleton<ServiceLocator>::GetInstance().GetCurrentScore()
@@ -507,4 +505,4 @@ void DebugScene::SceneUpdate() {
 
 
 
-void DebugScene::LocalReset() {}//TODO: what is this ?
+void DebugScene::LocalReset() {}

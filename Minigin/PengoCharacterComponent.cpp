@@ -25,8 +25,6 @@ void PengoCharacterComponent::Push() {
 	if (CurrentNode) {
 		switch (m_DirectionState) {
 		case Left:
-			//If left an other node ===============================================================================================================================================================================================
-			//if Has Tag
 			if (CurrentNode->Links->left->tag == 1) {
 				if (CurrentNode->Links->left->Links->left) {
 					if (CurrentNode->Links->left->Links->left->tag != 0) {
@@ -117,7 +115,6 @@ void PengoCharacterComponent::Push() {
 }
 
 void PengoCharacterComponent::localIni() {
-	//TODO: Contoll hardcoded
 	dae::Singleton<InputManager>::GetInstance().AssignButton(m_Input->GetButton(4), new PlayerPush(), m_Input->GetPlayerID(),true);
 }
 

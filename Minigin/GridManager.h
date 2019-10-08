@@ -1,5 +1,5 @@
 #pragma once
-//TODO: must have an offset from 0.0
+//must have an offset from 0.0
 class GridManager
 {
 public:

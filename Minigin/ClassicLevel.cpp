@@ -11,6 +11,8 @@ ClassicLevel::ClassicLevel(std::string name)
 
 ClassicLevel::~ClassicLevel()
 {
+ 	delete m_GridManager;
+	delete m_Subject;
 }
 
 void ClassicLevel::SwitchSceneIni() {
@@ -64,6 +66,9 @@ void ClassicLevel::SceneInitialize() {
 	CreateSnoBee({ (float)margin*(number - 2),(float)margin*(number - 2) }, 2);
 	CreateSnoBee({ (float)margin*(number - 2),(float)margin }, 3);
 
+	m_GridManager->GetClosestNode({ (float)margin*2.f,(float)margin *(number - 2) })->object->MarkForDelete();
+	m_GridManager->FreeBlock(m_GridManager->GetClosestNode({ (float)margin*2.f,(float)margin *(number - 2) }), std::make_shared<dae::GameObject>());
+
 	//SCORE
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	TextRendererComponent* text = new TextRendererComponent("Score: ", font);
@@ -90,7 +95,7 @@ void ClassicLevel::CreateWall(int start, int max, int inc) {
 		CollisionObject* BBoxCollision = new CollisionBox({ 200.f, 200.f }, (float)margin - 1, (float)margin - 1, false);
 		BBoxCollision->SetIsTrigger(false);
 
-		m_GridManager->AddComponents(CComponent, i);//TODO: Order based
+		m_GridManager->AddComponents(CComponent, i);
 		CComponent->AddCollision(BBoxCollision);
 
 		dae::Sprite *SSprite = new dae::Sprite{ "Resources/Textures/Wall.png",1,1,1,0.f };
@@ -112,7 +117,7 @@ void ClassicLevel::CreatePlayer() {
 	collisionBox->SetIsTrigger(false);
 	collisionBox->SetMargin({ 6.f,6.f });
 
-	m_Player->AddComponent(collisionComponent);//TODO: Order based
+	m_Player->AddComponent(collisionComponent);
 	collisionComponent->AddCollision(collisionBox);
 	//
 
@@ -166,7 +171,7 @@ void ClassicLevel::CreateSnoBee(dae::Vector2 pos, int p) {
 	collisionBox->SetIsTrigger(true);
 	collisionBox->SetMargin({ 6.f,6.f });
 
-	m_SnoBee1->AddComponent(collisionComponent);//TODO: Order based
+	m_SnoBee1->AddComponent(collisionComponent);
 	collisionComponent->AddCollision(collisionBox);
 	//
 
@@ -211,12 +216,7 @@ void ClassicLevel::CreateSnoBee(dae::Vector2 pos, int p) {
 	m_Subject->AddObserver(m_SnoBee1->GetComponent<AIStateComponent>());
 
 
-//	Add(m_SnoBee1);
-	AddThreadGameObject(m_SnoBee1);
-
-
-
-
+	Add(m_SnoBee1);
 
 }
 
@@ -227,7 +227,7 @@ void ClassicLevel::CreateAnIceBlockEgg(int IDs) {
 	tempBoxCollision->SetIsTrigger(true);
 
 
-	m_GridManager->AddComponents(tempComponent, IDs);//TODO: Order based
+	m_GridManager->AddComponents(tempComponent, IDs);
 	tempComponent->AddCollision(tempBoxCollision);
 
 	dae::Sprite *sprite = new dae::Sprite{ "Resources/Textures/IceBlock.png",1,1,1,0.f };
@@ -239,8 +239,10 @@ void ClassicLevel::CreateAnIceBlockEgg(int IDs) {
 
 	m_GridManager->AddComponents(new SnoBeeEgg(), IDs);
 
+	AddObjectForDeletion(m_GridManager->GetNode(IDs)->object);
 	m_SnoBeeEgg.push_back(m_GridManager->GetNode(IDs)->object);
 	dae::Singleton<ServiceLocator>::GetInstance().SetSnoBeeRemaining(dae::Singleton<ServiceLocator>::GetInstance().GetSnoBeeRemaining() - 1);
+	
 }
 
 void ClassicLevel::CreateAnIceBlock(int IDs) {
@@ -251,7 +253,7 @@ void ClassicLevel::CreateAnIceBlock(int IDs) {
 	tempBoxCollision->SetIsTrigger(true);
 
 
-	m_GridManager->AddComponents(tempComponent, IDs);//TODO: Order based
+	m_GridManager->AddComponents(tempComponent, IDs);
 	tempComponent->AddCollision(tempBoxCollision);
 
 	dae::Sprite *sprite = new dae::Sprite{ "Resources/Textures/IceBlock.png",1,1,1,0.f };
@@ -265,7 +267,6 @@ void ClassicLevel::CreateAnIceBlock(int IDs) {
 
 void ClassicLevel::SceneUpdate() {
 
-	//TODO: on its own update
 	m_GridManager->Update(0.f);
 
 	std::string score = "Score: ";

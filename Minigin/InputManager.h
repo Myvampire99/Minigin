@@ -32,7 +32,8 @@ public:
 	void AssignButton(ControllerButton button, Command *pointer, int player,bool release = false);
 	void HandleInput();
 	void ForceButton(ControllerButton button,int player);
-
+	bool IsKeyDown();
+	
 	const Uint8* KeyState = nullptr;
 private:
 	std::vector<std::unordered_map<ControllerButton, Command*>> m_Buttons;
@@ -40,6 +41,7 @@ private:
 	bool m_ControllerConected;
 
 	bool m_SkipPlayer[4];
+	bool m_KeyDown = false;
 
 	std::vector<std::unordered_map<ControllerButton, bool>> m_Released;
 	std::vector<std::unordered_map<ControllerButton, bool>> m_NeedToRelease;

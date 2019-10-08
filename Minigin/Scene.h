@@ -18,7 +18,10 @@ namespace dae
 		void Initialize();
 
 		ThreadingGameObject *m_ThreadManager;
-		void AddThreadGameObject(std::shared_ptr<dae::GameObject>& object);
+		void AddThreadGameObject(std::shared_ptr<dae::GameObject> object);
+		void StopThreading();
+
+		void AddObjectForDeletion(std::shared_ptr<dae::GameObject> object);
 
 		virtual ~Scene();
 		Scene(const Scene& other) = delete;
@@ -47,6 +50,7 @@ namespace dae
 	private:
 
 		std::vector <std::shared_ptr<dae::GameObject>> mObjects{};
+		std::vector <std::shared_ptr<dae::GameObject>> mObjectsToDelete{};
 		float m_ElapsedTime;
 
 		bool m_IsActive;

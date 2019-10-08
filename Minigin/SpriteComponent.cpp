@@ -50,11 +50,17 @@ void dae::SpriteComponent::Initialize()
 
 void dae::SpriteComponent::AddSprite(int ID, dae::Sprite *sprite)
 {
+	if (m_Sprites[ID])
+		delete m_Sprites[ID];
+	
 	m_Sprites.insert({ ID, sprite });
 }
 
 void dae::SpriteComponent::AddSprite(int ID, const std::string& path, int nrCols, int nrRows, int maxActs, float framePerSec)
 {
+	if (m_Sprites[ID])
+		delete m_Sprites[ID];
+	
 	m_Sprites.insert({ ID, new Sprite{path,nrCols,nrRows,maxActs,framePerSec} });
 }
 

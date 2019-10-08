@@ -12,8 +12,10 @@ namespace dae
 		void Cleanup();
 		void Run();
 
+		void LevelChange();
+
 		enum Level {
-		Classic,Coop,Versus
+		Classic,Coop,Versus,Thread
 		};
 		Level m_CurrentLevel;
 		Subject *m_Subject;

@@ -14,10 +14,13 @@ public:
 	void SetElapsedTime(float elapsed);
 
 private:
-	std::vector<std::unique_ptr<std::mutex>> m_VI_Mutex; //DEQUE !
-	std::vector<std::unique_lock<std::mutex>> m_VM_UniqueLock;
+	///std::vector<std::unique_ptr<std::mutex>> m_VI_Mutex; //DEQUE !
+	std::mutex m_Mutex;
+	//std::vector<std::unique_ptr<std::unique_lock<std::mutex>>> m_VM_UniqueLock;
+	//std::unique_lock<std::mutex> m_
 	std::condition_variable m_Cv_ContinueThread;
 	std::condition_variable m_Cv_StartThreads;
+	std::condition_variable m_Cv_ContinueMainThread;
 	std::vector<bool> m_VB_Continue;
 public:
 	void WaitAndLock();
@@ -26,7 +29,7 @@ public:
 private:
 	std::vector<std::thread*> m_Threads;
 public:
-	void CreateThread(std::shared_ptr<dae::GameObject> &gameObject);
+	void CreateThread(dae::GameObject *gameObject);
 	void DeleteThreads();
 
 

@@ -9,11 +9,34 @@ dae::Scene::Scene(const std::string& name) : mName(name), m_IsActive(false) {
 }
 
 dae::Scene::~Scene() {
+	delete m_ThreadManager;
+	for(int i{};i<(int)mObjects.size();++i)
+	{
+		mObjects[i]->ClearAllReferenceOfComponents();
+	}
+	mObjects.clear();
 
+	for (int i{}; i < (int)mObjectsToDelete.size(); ++i)
+	{
+		mObjectsToDelete[i]->ClearAllReferenceOfComponents();
+	}
+	mObjectsToDelete.clear();
+	
 }
 
-void dae::Scene::AddThreadGameObject(std::shared_ptr<dae::GameObject>& object) {
-	m_ThreadManager->CreateThread(object);
+void dae::Scene::AddObjectForDeletion(std::shared_ptr<dae::GameObject> object)
+{
+	mObjectsToDelete.push_back(object);
+}
+
+void dae::Scene::AddThreadGameObject(std::shared_ptr<dae::GameObject> object) {
+	mObjectsToDelete.push_back(object);
+	m_ThreadManager->CreateThread(object.get());
+}
+
+void dae::Scene::StopThreading()
+{
+	m_ThreadManager->DeleteThreads();
 }
 
 void dae::Scene::Add(const std::shared_ptr<dae::GameObject>& object)
@@ -56,12 +79,13 @@ void dae::Scene::Update(const float elapsedTime)
 
 void dae::Scene::Render() const
 {
-	m_ThreadManager->Unlock();
+	
 	for (const auto gameObject : mObjects)
 	{
 		if (gameObject->GetEnabled())
 		gameObject->Render();
 	}
+	m_ThreadManager->Unlock();
 	m_ThreadManager->WaitAndLock();
 }
 
@@ -69,6 +93,7 @@ void dae::Scene::Initialize()
 {
 
 	SceneInitialize();
+
 
 	m_ThreadManager->StartThreads();
 	for (const auto gameObject : mObjects)

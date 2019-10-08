@@ -9,11 +9,11 @@ Subject::Subject()
 
 
 Subject::~Subject()
-{
+{/*
 	for (auto &p : m_Observer) {
 		delete p;
 		p = nullptr;
-	}
+	}*/
 	m_Observer.clear();
 }
 

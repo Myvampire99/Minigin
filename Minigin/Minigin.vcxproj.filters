@@ -180,14 +180,17 @@
     <ClInclude Include="ClassicLevel.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="CoopLevel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VersusLevel.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="ThreadingGameObject.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadEnemyLevel.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CoopLevel.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -314,14 +317,17 @@
     <ClCompile Include="ClassicLevel.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="CoopLevel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VersusLevel.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="ThreadingGameObject.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoopLevel.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadEnemyLevel.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
